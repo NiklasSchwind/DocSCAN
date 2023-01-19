@@ -59,7 +59,7 @@ class DocSCANPipeline():
 			if loadpath is None:
 				# Define sentence transformer model using CLS pooling
 				model_name = 'distilroberta-base' #'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
-				word_embedding_model = models.Transformer(model_name, max_seq_length=128)
+				word_embedding_model = models.Transformer(model_name, max_seq_length=32)
 				pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
 				SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model])
 
