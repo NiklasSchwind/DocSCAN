@@ -11,6 +11,8 @@ import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
 from utils.utils import *
 import random
+import nltk
+nltk.download('punkt')
 
 def evaluate(targets, predictions, verbose=0):
 	# right, do this...
