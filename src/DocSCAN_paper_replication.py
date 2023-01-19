@@ -246,7 +246,7 @@ class DocSCANPipeline():
 		if os.path.exists(os.path.join(self.args.path, "embeddings_test.npy")):
 			self.embeddings_test = np.load(os.path.join(self.args.path, "embeddings_test.npy"))
 		else:
-			self.embeddings_test = self.embedd_sentences(self.df_test["sentence"])
+			self.embeddings_test = self.embedd_sentences_method(self.df_test["sentence"], 'SimCSE')# self.embedd_sentences(self.df_test["sentence"])
 			np.save(os.path.join(self.args.path, "embeddings_test"), self.embeddings_test)
 
 		self.X_test = torch.from_numpy(self.embeddings_test)
