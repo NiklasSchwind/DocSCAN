@@ -77,7 +77,7 @@ class DocSCANPipeline():
 				# Call the fit method
 				SimCSEmodel.fit(
 					train_objectives=[(TrainData_batched, train_loss)],
-					epochs=1,
+					epochs=5,
 					show_progress_bar=True
 				)
 
