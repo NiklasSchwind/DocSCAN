@@ -42,7 +42,7 @@ class DocScanDataset(Dataset):
 
 	def load_data(self):
 		examples = []
-		if len(self.raw_sentences) == len(self.neighbor_df["anchor"]):
+		if self.raw_sentences != None:
 			examples =  list(zip(self.neighbor_df["anchor"], self.neighbor_df["neighbor"], self.raw_sentences))
 			random.shuffle(examples)
 			anchors, neighbors, self.raw_sentences = zip(*examples)
