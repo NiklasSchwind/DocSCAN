@@ -25,33 +25,21 @@ import matplotlib.pyplot as plt
 #from visualizations import generate_word_clouds
 
 class DocScanDataset(Dataset):
-	def __init__(self, neighbor_df, embeddings, test_embeddings="", mode="train", sentences = None):
+	def __init__(self, neighbor_df, embeddings, test_embeddings="", mode="train"):
 		self.neighbor_df = neighbor_df
 		self.embeddings = embeddings
 		self.mode = mode
 		self.device = "cuda" if torch.cuda.is_available() else "cpu"
-		self.raw_sentences = sentences
 		if mode == "train":
 			self.examples = self.load_data()
 		elif mode == "predict":
 			self.examples = test_embeddings
-		if self.raw_sentences != None:
-			self.sentences = {self.examples[i]: self.raw_sentences[i] for i in range(len(embeddings))}
-
-
 
 	def load_data(self):
 		examples = []
-		if self.raw_sentences != None:
-			examples =  list(zip(self.neighbor_df["anchor"], self.neighbor_df["neighbor"], self.raw_sentences))
-			random.shuffle(examples)
-			anchors, neighbors, self.raw_sentences = zip(*examples)
-			examples = list(zip(anchors, neighbors))
-		else:
-			examples = list(zip(self.neighbor_df["anchor"], self.neighbor_df["neighbor"]))
-			random.shuffle(examples)
-			anchors, neighbors = zip(*examples)
-			examples = list(zip(anchors, neighbors))
+		for i,j in zip(self.neighbor_df["anchor"], self.neighbor_df["neighbor"]):
+			examples.append((i,j))
+		random.shuffle(examples)
 		return examples
 
 	def __len__(self):
