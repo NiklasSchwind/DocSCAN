@@ -298,8 +298,8 @@ class DocSCANPipeline():
 			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
 			self.df_test["label"] = targets
 			self.df_test["clusters"] = docscan_clusters
-			print(torch.max(torch.nn.Softmax(dim=0)(torch.tensor(probabilities)),1))
-			self.df_test["probabilities"] = torch.nn.Softmax(dim=0)(torch.tensor(probabilities))
+			print(torch.max(torch.nn.Softmax(dim=1)(torch.tensor(probabilities)),1))
+			self.df_test["probabilities"] = torch.nn.Softmax(dim=1ç√)(torch.tensor(probabilities))
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 			results.append(acc_test)
 
