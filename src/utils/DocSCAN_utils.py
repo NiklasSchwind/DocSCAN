@@ -35,7 +35,7 @@ class DocScanDataset(Dataset):
 			self.examples = self.load_data()
 		elif mode == "predict":
 			self.examples = test_embeddings
-		if len(self.examples) == len(self.raw_sentences):
+		if self.raw_sentences != None:
 			self.sentences = {self.examples[i]: self.raw_sentences[i] for i in range(len(embeddings))}
 
 
