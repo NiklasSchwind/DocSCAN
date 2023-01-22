@@ -239,16 +239,18 @@ class DocSCANPipeline():
 		print ("embedding sentences...")
 		if os.path.exists(os.path.join(self.args.path, "embeddings.npy")):
 			self.embeddings = np.load(os.path.join(self.args.path, "embeddings.npy"))
+			sentences_train = df_train["sentence"]
 		else:
-			self.embeddings, sentences = self.embedd_sentences_method(df_train["sentence"], 'SBert') #self.embeddings = self.embedd_sentences(df_train["sentence"])
+			self.embeddings, sentences_train = self.embedd_sentences_method(df_train["sentence"], 'SBert') #self.embeddings = self.embedd_sentences(df_train["sentence"])
 			np.save(os.path.join(self.args.path, "embeddings"), self.embeddings)
 
 		# torch tensor of embeddings
 		self.X = torch.from_numpy(self.embeddings)
 		if os.path.exists(os.path.join(self.args.path, "embeddings_test.npy")):
 			self.embeddings_test = np.load(os.path.join(self.args.path, "embeddings_test.npy"))
+			sentences_test = self.df_test["sentence"]
 		else:
-			self.embeddings_test, sentences = self.embedd_sentences_method(self.df_test["sentence"], 'SBert')# self.embedd_sentences(self.df_test["sentence"])
+			self.embeddings_test, sentences_test = self.embedd_sentences_method(self.df_test["sentence"], 'SBert')# self.embedd_sentences(self.df_test["sentence"])
 			np.save(os.path.join(self.args.path, "embeddings_test"), self.embeddings_test)
 
 		self.X_test = torch.from_numpy(self.embeddings_test)
@@ -279,7 +281,7 @@ class DocSCANPipeline():
 		for _ in range(10):
 			model = self.train_model()
 			# test data
-			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict", test_embeddings=self.X_test, sentences = sentences)
+			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict", test_embeddings=self.X_test, sentences = sentences_test)
 			print(predict_dataset.sentences)
 			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False, collate_fn = predict_dataset.collate_fn_predict, batch_size=self.args.batch_size)
 			predictions, probabilities = self.get_predictions(model, predict_dataloader)
@@ -299,6 +301,7 @@ class DocSCANPipeline():
 			self.df_test["probabilities"] = probabilities
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 			results.append(acc_test)
+			print(self.df_test)
 
 		print ("mean accuracy", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
 
