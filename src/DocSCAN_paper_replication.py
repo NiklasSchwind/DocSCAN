@@ -303,6 +303,14 @@ class DocSCANPipeline():
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 			results.append(acc_test)
 			print(self.df_test["probabilities"])
+			lookup = {}
+			for i,label in enumerate(self.df_test['label']):
+				if self.df_test['probabilities'][i] >= 0.99 and label in lookup.keys():
+					lookup[label] += 1
+				elif self.df_test['probabilities'][i] >= 0.99:
+					lookup[label] = 1
+
+			print(lookup)
 
 		print ("mean accuracy", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
 
