@@ -7,6 +7,7 @@ from utils.DocSCAN_utils import DocScanDataset, DocScanModel
 from utils.losses import SCANLoss
 from sklearn.feature_extraction.text import TfidfVectorizer
 from tqdm import tqdm
+from scipy.special import softmax
 import numpy as np
 from sklearn.metrics.pairwise import pairwise_distances
 from utils.utils import *
@@ -297,7 +298,7 @@ class DocSCANPipeline():
 			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
 			self.df_test["label"] = targets
 			self.df_test["clusters"] = docscan_clusters
-			self.df_test["probabilities"] = np.softmax(probabilities, axis = 0)
+			self.df_test["probabilities"] = torch.nn.Softmax(dim=0 )(probabilities)
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 			results.append(acc_test)
 			print(self.df_test['probabilities'])
