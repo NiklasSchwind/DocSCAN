@@ -79,3 +79,21 @@ class DocScanModel(torch.nn.Module):
 			feature = dropout(feature)
 		output = self.classifier(feature)
 		return output
+
+
+
+class DocScanModel_new(torch.nn.Module):
+	def __init__(self, num_labels, dropout, hidden_dim=768):
+		super(DocScanModel_new, self).__init__()
+		self.num_labels = num_labels
+		self.classifier = torch.nn.Linear(hidden_dim, num_labels)
+		self.device = "cuda" if torch.cuda.is_available() else "cpu"
+		#self.device = "cpu"
+		self.dropout = dropout
+
+	def forward(self, feature):
+		if self.dropout is not None:
+			dropout = torch.nn.Dropout(p=self.dropout)
+			feature = dropout(feature)
+		output = self.classifier(feature)
+		return output
