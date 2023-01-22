@@ -240,7 +240,7 @@ class DocSCANPipeline():
 		if os.path.exists(os.path.join(self.args.path, "embeddings.npy")):
 			self.embeddings = np.load(os.path.join(self.args.path, "embeddings.npy"))
 		else:
-			self.embeddings, sentences = self.embedd_sentences_method(df_train["sentence"], 'SimCSE') #self.embeddings = self.embedd_sentences(df_train["sentence"])
+			self.embeddings, sentences = self.embedd_sentences_method(df_train["sentence"], 'SBert') #self.embeddings = self.embedd_sentences(df_train["sentence"])
 			np.save(os.path.join(self.args.path, "embeddings"), self.embeddings)
 
 		# torch tensor of embeddings
@@ -248,7 +248,7 @@ class DocSCANPipeline():
 		if os.path.exists(os.path.join(self.args.path, "embeddings_test.npy")):
 			self.embeddings_test = np.load(os.path.join(self.args.path, "embeddings_test.npy"))
 		else:
-			self.embeddings_test, sentences = self.embedd_sentences_method(self.df_test["sentence"], 'SimCSE')# self.embedd_sentences(self.df_test["sentence"])
+			self.embeddings_test, sentences = self.embedd_sentences_method(self.df_test["sentence"], 'SBert')# self.embedd_sentences(self.df_test["sentence"])
 			np.save(os.path.join(self.args.path, "embeddings_test"), self.embeddings_test)
 
 		self.X_test = torch.from_numpy(self.embeddings_test)
@@ -280,6 +280,7 @@ class DocSCANPipeline():
 			model = self.train_model()
 			# test data
 			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict", test_embeddings=self.X_test, sentences = sentences)
+			print(predict_dataset.sentences)
 			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False, collate_fn = predict_dataset.collate_fn_predict, batch_size=self.args.batch_size)
 			predictions, probabilities = self.get_predictions(model, predict_dataloader)
 			# train data
