@@ -283,26 +283,43 @@ class DocSCANPipeline():
 			model = self.train_model()
 			# test data
 			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict", test_embeddings=self.X_test)
+			predict_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict", test_embeddings=self.X)
 			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False, collate_fn = predict_dataset.collate_fn_predict, batch_size=self.args.batch_size)
+			predict_train_dataloader = torch.utils.data.DataLoader(predict_train, shuffle=False,
+															 collate_fn=predict_train.collate_fn_predict,
+															 batch_size=self.args.batch_size)
+
 			predictions, probabilities = self.get_predictions(model, predict_dataloader)
 			# train data
+			predictions_train, probabilities_train = self.get_predictions(model, predict_train_dataloader)
 
 			print ("docscan trained with n=", self.args.num_classes, "clusters...")
  
 
 			targets_map = {i:j for j,i in enumerate(np.unique(self.df_test["label"]))}
 			targets = [targets_map[i] for i in self.df_test["label"]]
+			targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
+			targets_train = [targets_map[i] for i in df_train["label"]]
 			print (len(targets), len(predictions))
 			evaluate(np.array(targets), np.array(predictions))
+			print(len(targets_train), len(predictions_train))
+			evaluate(np.array(targets_train), np.array(predictions_train))
 
 			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
+			docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train))["reordered_preds"]
 			self.df_test["label"] = targets
 			self.df_test["clusters"] = docscan_clusters
+			df_train["label"] = targets_train
+			df_train["clusters"] = docscan_clusters_train
 
 			self.df_test["probabilities"] = np.amax(np.array(torch.nn.Softmax(dim=1)(torch.tensor(probabilities)).tolist()),axis = 1)
+			df_train["probabilities"] = np.amax(np.array(torch.nn.Softmax(dim=1)(torch.tensor(probabilities_train)).tolist()), axis=1)
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
+			acc_train = np.mean(df_train["label"] == df_train["clusters"])
 			results.append(acc_test)
+			print('Test Probabilities:')
 			print(self.df_test["probabilities"])
+
 			lookup = {}
 			for i,label in enumerate(self.df_test['label']):
 				if self.df_test['probabilities'][i] >= 0.99 and label in lookup.keys():
@@ -312,7 +329,20 @@ class DocSCANPipeline():
 
 			print(lookup)
 
-		print ("mean accuracy", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
+			print('Train Probabilities:')
+			print(df_train["probabilities"])
+
+			lookup_train = {}
+			for i, label in enumerate(df_train['label']):
+				if df_train['probabilities'][i] >= 0.99 and label in lookup_train.keys():
+					lookup_train[label] += 1
+				elif df_train['probabilities'][i] >= 0.99:
+					lookup_train[label] = 1
+
+			print(lookup_train)
+
+		print ("mean accuracy test", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
+
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
