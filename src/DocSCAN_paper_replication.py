@@ -178,7 +178,7 @@ class DocSCANPipeline():
 		predictions, probs = [], []
 		epoch_iterator = tqdm(dataloader, total=len(dataloader))
 		model.eval()
-		print (len(dataloader))
+		print(len(dataloader))
 		with torch.no_grad():
 			for i, batch in enumerate(epoch_iterator):
 				model.eval()
@@ -186,7 +186,7 @@ class DocSCANPipeline():
 				#probs.extend(torch.nn.functional.softmax(output_i, dim=1).cpu().numpy())
 				probs.extend(output_i.cpu().numpy())
 				predictions.extend(torch.argmax(output_i, dim=1).cpu().numpy())
-		print (len(predictions))
+		print(len(predictions))
 		return predictions, probs
 
 
@@ -272,9 +272,10 @@ class DocSCANPipeline():
 		df_train["label"] = targets_train
 		df_train["clusters"] = docscan_clusters_train
 		df_train["probabilities"] = probabilities_train
-
+		'''
 		df_augmented = self.augment(df_train, method=augmentation)
-
+		'''
+		df_augmented = df_train
 		embeddings_augmented = self.embedd_sentences_method(df_augmented['sentence'], method='SBert_dropout')
 		embeddings_augmented = torch.from_numpy(embeddings_augmented)
 		# augmented data
