@@ -311,8 +311,8 @@ class DocSCANPipeline():
 				optimizer.step()
 				optimizer.zero_grad()
 				model.zero_grad()
-		# predictions, probabilities = self.get_predictions(model, predict_dataloader)
-		# evaluate(np.array(targets), np.array(predictions),verbose=0)
+		predictions, probabilities = self.get_predictions(model, predict_dataloader_train)
+		evaluate(np.array(targets_train), np.array(predictions),verbose=0)
 		optimizer.zero_grad()
 		model.zero_grad()
 		return model
