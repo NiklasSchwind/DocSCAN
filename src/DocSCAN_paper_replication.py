@@ -65,7 +65,7 @@ class DocSCANPipeline():
 			embedder = SentenceTransformer(self.args.sbert_model)
 			embedder.max_seq_length = self.args.max_seq_length
 			embedder.train()
-			corpus_embeddings = encode_with_dropout(embedder, batch_size=32, show_progress_bar=True, eval = False)
+			corpus_embeddings = encode_with_dropout(embedder, sentences, batch_size=32, show_progress_bar=True, eval = False)
 			embedder.eval()
 
 		elif method == 'SimCSE':
@@ -266,9 +266,9 @@ class DocSCANPipeline():
 		targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
 		targets_train = [targets_map_train[i] for i in df_train["label"]]
 		print(len(targets_train), len(predictions_train))
-		evaluate(np.array(targets_train), np.array(predictions_train))
+		evaluate(np.array(targets_train), np.array(predictions_train), mode = 'train')
 
-		docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train))["reordered_preds"]
+		docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train),mode = 'train')["reordered_preds"]
 		df_train["label"] = targets_train
 		df_train["clusters"] = docscan_clusters_train
 		df_train["probabilities"] = probabilities_train
@@ -288,9 +288,9 @@ class DocSCANPipeline():
 		targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
 		targets_augmented = [targets_map_train[i] for i in df_augmented["label"]]
 		print(len(targets_augmented), len(predictions_augmented))
-		evaluate(np.array(targets_augmented), np.array(predictions_augmented))
+		evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode = 'train')
 
-		docscan_clusters_augmented = evaluate(np.array(targets_augmented), np.array(predictions_augmented))["reordered_preds"]
+		docscan_clusters_augmented = evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode= 'train')["reordered_preds"]
 		df_augmented["label"] = targets_augmented
 		df_augmented["clusters"] = docscan_clusters_augmented
 		df_augmented["probabilities"] = probabilities_augmented
@@ -404,11 +404,16 @@ class DocSCANPipeline():
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 			results.append(acc_test)
 
-			self.fine_tune_through_selflabeling(df_train, model, augmentation = 'backtranslation')
+			model = self.fine_tune_through_selflabeling(df_train, model, augmentation = 'backtranslation')
 
+			predictions, probabilities = self.get_predictions(model, predict_dataloader)
 
+			print("docscan trained with n=", self.args.num_classes, "clusters...")
 
-
+			targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+			targets = [targets_map[i] for i in self.df_test["label"]]
+			print(len(targets), len(predictions))
+			evaluate(np.array(targets), np.array(predictions))
 
 
 
