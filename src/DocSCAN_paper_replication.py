@@ -13,6 +13,7 @@ from sklearn.metrics.pairwise import pairwise_distances
 from utils.utils import *
 import random
 import nltk
+from utils.EncodeDropout import encode_with_dropout
 from transformers import MarianMTModel, MarianTokenizer
 nltk.download('punkt')
 
@@ -59,6 +60,14 @@ class DocSCANPipeline():
 			embedder = SentenceTransformer(self.args.sbert_model)
 			embedder.max_seq_length = self.args.max_seq_length
 			corpus_embeddings = embedder.encode(sentences, batch_size=32, show_progress_bar=True)
+
+		elif method == 'SBert_dropout':
+			embedder = SentenceTransformer(self.args.sbert_model)
+			embedder.max_seq_length = self.args.max_seq_length
+			embedder.train()
+			corpus_embeddings = encode_with_dropout(embedder, batch_size=32, show_progress_bar=True, eval = False)
+			embedder.eval()
+
 		elif method == 'SimCSE':
 			if loadpath is None:
 				# Define sentence transformer model using CLS pooling
@@ -233,7 +242,7 @@ class DocSCANPipeline():
 	def augment(self, sentences, method):
 
 		if method == 'backtranslation':
-			Backtranslator = Backtranslation(batch_size = 64)
+			Backtranslator = Backtranslation(batch_size = 128)
 			sentences_augmented = Backtranslator.backtranslate(sentences)
 			df_train_augmented = pd.DataFrame(list(zip(sentences_augmented, list(sentences['label']))),
 											  columns=["sentence", "label"])
@@ -266,7 +275,7 @@ class DocSCANPipeline():
 
 		df_augmented = self.augment(df_train, method=augmentation)
 
-		embeddings_augmented = self.embedd_sentences_method(df_augmented['sentences'], method='SBert')
+		embeddings_augmented = self.embedd_sentences_method(df_augmented['sentence'], method='SBert_dropout')
 
 		# augmented data
 		predict_dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
