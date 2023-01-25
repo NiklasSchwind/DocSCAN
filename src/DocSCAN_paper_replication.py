@@ -3,8 +3,8 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer,InputExample, models, losses, util, datasets, evaluation
 from utils.memory import MemoryBank
 import torch
-from utils.DocSCAN_utils import DocScanDataset, DocScanModel
-from utils.losses import SCANLoss
+from utils.DocSCAN_utils import DocScanDataset, DocScanModel, Backtranslation
+from utils.losses import SCANLoss, ConfidenceBasedCE
 from sklearn.feature_extraction.text import TfidfVectorizer
 from tqdm import tqdm
 from scipy.special import softmax
@@ -13,9 +13,10 @@ from sklearn.metrics.pairwise import pairwise_distances
 from utils.utils import *
 import random
 import nltk
+from transformers import MarianMTModel, MarianTokenizer
 nltk.download('punkt')
 
-def evaluate(targets, predictions, verbose=0):
+def evaluate(targets, predictions, verbose=0, mode = 'test'):
 	# right, do this...
 	# shouldn't be too hard
 	hungarian_match_metrics = hungarian_evaluate(targets, predictions)
@@ -27,7 +28,7 @@ def evaluate(targets, predictions, verbose=0):
 	if verbose:
 		print (cm, "\n", clf_report)
 		print (hungarian_match_metrics)
-	print ("ACCURACY", np.round(hungarian_match_metrics["ACC"], 3))
+	print (f"ACCURACY {mode} ", np.round(hungarian_match_metrics["ACC"], 3))
 	return hungarian_match_metrics
 
 
@@ -126,7 +127,7 @@ class DocSCANPipeline():
 			corpus_embeddings = TSDAEModel.encode(sentences)
 
 
-		return corpus_embeddings, sentences
+		return corpus_embeddings
 
 	def create_neighbor_dataset(self, indices=None):
 		if indices is None:
@@ -225,6 +226,98 @@ class DocSCANPipeline():
 		return model
 
 
+
+
+
+
+	def augment(self, sentences, method):
+
+		if method == 'backtranslation':
+			Backtranslator = Backtranslation(batch_size = 64)
+			sentences_augmented = Backtranslator.backtranslate(sentences)
+			df_train_augmented = pd.DataFrame(list(zip(sentences_augmented, list(sentences['label']))),
+											  columns=["sentence", "label"])
+		else:
+			df_train_augmented = sentences
+
+
+		return df_train_augmented
+
+
+	def fine_tune_through_selflabeling(self, df_train, model, augmentation):
+
+		# train data
+		predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
+											   test_embeddings=self.X)
+		predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
+															   collate_fn=predict_dataset_train.collate_fn_predict,
+															   batch_size=self.args.batch_size)
+
+		predictions_train, probabilities_train = self.get_predictions(model, predict_dataloader_train)
+		targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
+		targets_train = [targets_map_train[i] for i in df_train["label"]]
+		print(len(targets_train), len(predictions_train))
+		evaluate(np.array(targets_train), np.array(predictions_train))
+
+		docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train))["reordered_preds"]
+		df_train["label"] = targets_train
+		df_train["clusters"] = docscan_clusters_train
+		df_train["probabilities"] = probabilities_train
+
+		df_augmented = self.augment(df_train, method=augmentation)
+
+		embeddings_augmented = self.embedd_sentences_method(df_augmented['sentences'], method='SBert')
+
+		# augmented data
+		predict_dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
+											   test_embeddings=embeddings_augmented)
+		predict_dataloader_augmented = torch.utils.data.DataLoader(predict_dataset_augmented, shuffle=False,
+															   collate_fn=predict_dataset_augmented.collate_fn_predict,
+															   batch_size=self.args.batch_size)
+
+		predictions_augmented, probabilities_augmented = self.get_predictions(model, predict_dataloader_augmented)
+		targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
+		targets_augmented = [targets_map_train[i] for i in df_augmented["label"]]
+		print(len(targets_augmented), len(predictions_augmented))
+		evaluate(np.array(targets_augmented), np.array(predictions_augmented))
+
+		docscan_clusters_augmented = evaluate(np.array(targets_augmented), np.array(predictions_augmented))["reordered_preds"]
+		df_augmented["label"] = targets_augmented
+		df_augmented["clusters"] = docscan_clusters_augmented
+		df_augmented["probabilities"] = probabilities_augmented
+
+		optimizer = torch.optim.Adam(model.parameters())
+		criterion = ConfidenceBasedCE(threshold=0.99, apply_class_balancing=True)
+		criterion.to(self.device)
+
+		batch_size = self.args.batch_size
+
+		dataset = list(zip(self.X, embeddings_augmented))
+		dataloader = torch.utils.data.DataLoader(dataset , shuffle=True,batch_size=self.args.batch_size)
+
+		train_iterator = range(int(self.args.num_epochs))
+
+		targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
+		targets_augmented = [targets_map_augmented[i] for i in df_augmented["label"]]
+
+		for epoch in train_iterator:
+			bar_desc = "Epoch %d of %d | num classes %d | Iteration" % (epoch + 1, len(train_iterator), self.args.num_classes)
+			epoch_iterator = tqdm(dataloader, desc=bar_desc)
+			for step, batch in enumerate(epoch_iterator):
+				anchor_weak, anchor_strong = batch[0], batch[1]
+				original_output, augmented_output = model(anchor_weak), model(anchor_strong)
+				total_loss = criterion(original_output, augmented_output)
+				total_loss.backward()
+				optimizer.step()
+				optimizer.zero_grad()
+				model.zero_grad()
+		# predictions, probabilities = self.get_predictions(model, predict_dataloader)
+		# evaluate(np.array(targets), np.array(predictions),verbose=0)
+		optimizer.zero_grad()
+		model.zero_grad()
+		return model
+
+
 	def run_main(self):
 		# embedd using SBERT
 
@@ -240,18 +333,16 @@ class DocSCANPipeline():
 		print ("embedding sentences...")
 		if os.path.exists(os.path.join(self.args.path, "embeddings.npy")):
 			self.embeddings = np.load(os.path.join(self.args.path, "embeddings.npy"))
-			sentences_train = df_train["sentence"]
 		else:
-			self.embeddings, sentences_train = self.embedd_sentences_method(df_train["sentence"], 'SBert') #self.embeddings = self.embedd_sentences(df_train["sentence"])
+			self.embeddings = self.embedd_sentences_method(df_train["sentence"], 'SBert') #self.embeddings = self.embedd_sentences(df_train["sentence"])
 			np.save(os.path.join(self.args.path, "embeddings"), self.embeddings)
 
 		# torch tensor of embeddings
 		self.X = torch.from_numpy(self.embeddings)
 		if os.path.exists(os.path.join(self.args.path, "embeddings_test.npy")):
 			self.embeddings_test = np.load(os.path.join(self.args.path, "embeddings_test.npy"))
-			sentences_test = self.df_test["sentence"]
 		else:
-			self.embeddings_test, sentences_test = self.embedd_sentences_method(self.df_test["sentence"], 'SBert')# self.embedd_sentences(self.df_test["sentence"])
+			self.embeddings_test = self.embedd_sentences_method(self.df_test["sentence"], 'SBert')# self.embedd_sentences(self.df_test["sentence"])
 			np.save(os.path.join(self.args.path, "embeddings_test"), self.embeddings_test)
 
 		self.X_test = torch.from_numpy(self.embeddings_test)
@@ -282,6 +373,44 @@ class DocSCANPipeline():
 		for _ in range(10):
 			model = self.train_model()
 			# test data
+			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
+											 test_embeddings=self.X_test)
+			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
+															 collate_fn=predict_dataset.collate_fn_predict,
+															 batch_size=self.args.batch_size)
+			predictions, probabilities = self.get_predictions(model, predict_dataloader)
+
+
+			print("docscan trained with n=", self.args.num_classes, "clusters...")
+
+			targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+			targets = [targets_map[i] for i in self.df_test["label"]]
+			print(len(targets), len(predictions))
+			evaluate(np.array(targets), np.array(predictions))
+
+			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
+			self.df_test["label"] = targets
+			self.df_test["clusters"] = docscan_clusters
+			self.df_test["probabilities"] = probabilities
+			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
+			results.append(acc_test)
+
+			self.fine_tune_through_selflabeling(df_train, model, augmentation = 'backtranslation')
+
+
+
+
+
+
+
+
+
+
+
+
+			"""
+			model = self.train_model()
+			# test data
 			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict", test_embeddings=self.X_test)
 			predict_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict", test_embeddings=self.X)
 			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False, collate_fn = predict_dataset.collate_fn_predict, batch_size=self.args.batch_size)
@@ -303,10 +432,10 @@ class DocSCANPipeline():
 			print (len(targets), len(predictions))
 			evaluate(np.array(targets), np.array(predictions))
 			print(len(targets_train), len(predictions_train))
-			evaluate(np.array(targets_train), np.array(predictions_train))
+			evaluate(np.array(targets_train), np.array(predictions_train), mode = 'test')
 
 			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
-			docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train))["reordered_preds"]
+			docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train),mode = 'test')["reordered_preds"]
 			self.df_test["label"] = targets
 			self.df_test["clusters"] = docscan_clusters
 			df_train["label"] = targets_train
@@ -340,7 +469,7 @@ class DocSCANPipeline():
 					lookup_train[label] = 1
 
 			print(lookup_train)
-
+			"""
 		print ("mean accuracy test", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
 
 

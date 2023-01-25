@@ -64,3 +64,57 @@ class SCANLoss(nn.Module):
         
         return total_loss, consistency_loss, entropy_loss
 
+
+class MaskedCrossEntropyLoss(nn.Module):
+    def __init__(self):
+        super(MaskedCrossEntropyLoss, self).__init__()
+
+    def forward(self, input, target, mask, weight, reduction='mean'):
+        if not (mask != 0).any():
+            raise ValueError('Mask in MaskedCrossEntropyLoss is all zeros.')
+        target = torch.masked_select(target, mask)
+        b, c = input.size()
+        n = target.size(0)
+        input = torch.masked_select(input, mask.view(b, 1)).view(n, c)
+        return F.cross_entropy(input, target, weight=weight, reduction=reduction)
+
+
+class ConfidenceBasedCE(nn.Module):
+    def __init__(self, threshold, apply_class_balancing):
+        super(ConfidenceBasedCE, self).__init__()
+        self.loss = MaskedCrossEntropyLoss()
+        self.softmax = nn.Softmax(dim=1)
+        self.threshold = threshold
+        self.apply_class_balancing = apply_class_balancing
+
+    def forward(self, anchors_weak, anchors_strong):
+        """
+        Loss function during self-labeling
+        input: logits for original samples and for its strong augmentations
+        output: cross entropy
+        """
+        # Retrieve target and mask based on weakly augmentated anchors
+        weak_anchors_prob = self.softmax(anchors_weak)
+        max_prob, target = torch.max(weak_anchors_prob, dim=1)
+        mask = max_prob > self.threshold
+        b, c = weak_anchors_prob.size()
+        target_masked = torch.masked_select(target, mask.squeeze())
+        n = target_masked.size(0)
+
+        # Inputs are strongly augmented anchors
+        input_ = anchors_strong
+
+        # Class balancing weights
+        if self.apply_class_balancing:
+            idx, counts = torch.unique(target_masked, return_counts=True)
+            freq = 1 / (counts.float() / n)
+            weight = torch.ones(c).cuda()
+            weight[idx] = freq
+
+        else:
+            weight = None
+
+        # Loss
+        loss = self.loss(input_, target, mask, weight=weight, reduction='mean')
+
+        return loss
