@@ -62,11 +62,12 @@ class DocSCANPipeline():
 			corpus_embeddings = embedder.encode(sentences, batch_size=32, show_progress_bar=True)
 
 		elif method == 'SBert_dropout':
-			embedder = SentenceTransformer(self.args.sbert_model)
-			embedder.max_seq_length = self.args.max_seq_length
-			embedder.train()
-			corpus_embeddings = encode_with_dropout(embedder, sentences, batch_size=32, show_progress_bar=True, eval = False)
-			embedder.eval()
+			with torch.no_grad():
+				embedder = SentenceTransformer(self.args.sbert_model)
+				embedder.max_seq_length = self.args.max_seq_length
+				embedder.train()
+				corpus_embeddings = encode_with_dropout(embedder, sentences, batch_size=32, show_progress_bar=True, eval = False)
+				embedder.eval()
 
 		elif method == 'SimCSE':
 			if loadpath is None:
