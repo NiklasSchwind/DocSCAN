@@ -276,10 +276,11 @@ class DocSCANPipeline():
 		df_augmented = self.augment(df_train, method=augmentation)
 
 		embeddings_augmented = self.embedd_sentences_method(df_augmented['sentence'], method='SBert_dropout')
-
+		embeddings_augmented = torch.from_numpy(embeddings_augmented)
 		# augmented data
 		predict_dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
 											   test_embeddings=embeddings_augmented)
+
 		predict_dataloader_augmented = torch.utils.data.DataLoader(predict_dataset_augmented, shuffle=False,
 															   collate_fn=predict_dataset_augmented.collate_fn_predict,
 															   batch_size=self.args.batch_size)
@@ -288,9 +289,9 @@ class DocSCANPipeline():
 		targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
 		targets_augmented = [targets_map_train[i] for i in df_augmented["label"]]
 		print(len(targets_augmented), len(predictions_augmented))
-		evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode = 'train')
+		evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode = 'augmented')
 
-		docscan_clusters_augmented = evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode= 'train')["reordered_preds"]
+		docscan_clusters_augmented = evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode= 'augmented')["reordered_preds"]
 		df_augmented["label"] = targets_augmented
 		df_augmented["clusters"] = docscan_clusters_augmented
 		df_augmented["probabilities"] = probabilities_augmented
@@ -413,7 +414,7 @@ class DocSCANPipeline():
 			targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 			targets = [targets_map[i] for i in self.df_test["label"]]
 			print(len(targets), len(predictions))
-			evaluate(np.array(targets), np.array(predictions))
+			evaluate(np.array(targets), np.array(predictions), mode = 'after selflabeling')
 
 
 
