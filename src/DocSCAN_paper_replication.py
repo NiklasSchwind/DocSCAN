@@ -287,7 +287,7 @@ class DocSCANPipeline():
 
 		predictions_augmented, probabilities_augmented = self.get_predictions(model, predict_dataloader_augmented)
 		targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
-		targets_augmented = [targets_map_train[i] for i in df_augmented["label"]]
+		targets_augmented = [targets_map_augmented[i] for i in df_augmented["label"]]
 		print(len(targets_augmented), len(predictions_augmented))
 		evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode = 'augmented')
 
