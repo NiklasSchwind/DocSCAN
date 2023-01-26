@@ -316,13 +316,17 @@ class DocSCANPipeline():
 			bar_desc = "Epoch %d of %d | num classes %d | Iteration" % (epoch + 1, len(train_iterator), self.args.num_classes)
 			epoch_iterator = tqdm(dataloader, desc=bar_desc)
 			for step, batch in enumerate(epoch_iterator):
-				anchor_weak, anchor_strong = batch[0], batch[1]
-				original_output, augmented_output = model(anchor_weak), model(anchor_strong)
-				total_loss = criterion(original_output, augmented_output)
-				total_loss.backward()
-				optimizer.step()
-				optimizer.zero_grad()
-				model.zero_grad()
+				try:
+					anchor_weak, anchor_strong = batch[0], batch[1]
+					original_output, augmented_output = model(anchor_weak), model(anchor_strong)
+					total_loss = criterion(original_output, augmented_output)
+					total_loss.backward()
+					optimizer.step()
+					optimizer.zero_grad()
+					model.zero_grad()
+				except ValueError:
+					print(f'Recieved Value Error in step {step}')
+
 		predictions, probabilities = self.get_predictions(model, predict_dataloader_train)
 		evaluate(np.array(targets_train), np.array(predictions),verbose=0)
 		optimizer.zero_grad()

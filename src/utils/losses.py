@@ -108,7 +108,10 @@ class ConfidenceBasedCE(nn.Module):
         if self.apply_class_balancing:
             idx, counts = torch.unique(target_masked, return_counts=True)
             freq = 1 / (counts.float() / n)
-            weight = torch.ones(c)#.cuda()
+            if torch.cuda.is_available():
+                weight = torch.ones(c).cuda()
+            else:
+                weight = torch.ones(c)
             weight[idx] = freq
 
         else:
