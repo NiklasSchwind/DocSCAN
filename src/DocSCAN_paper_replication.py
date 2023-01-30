@@ -497,7 +497,9 @@ class DocSCANPipeline():
 
 			print(lookup_train)
 			"""
-		print ("mean accuracy test", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
+		print("mean accuracy test", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
+
+		print("mean accuracy test after selflabeling", np.mean(results_after_selflabeling).round(3), "(" + str(np.std(results_after_selflabeling).round(3)) + ")")
 
 
 if __name__ == "__main__":
