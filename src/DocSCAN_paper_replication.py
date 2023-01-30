@@ -273,10 +273,9 @@ class DocSCANPipeline():
 		df_train["label"] = targets_train
 		df_train["clusters"] = docscan_clusters_train
 		df_train["probabilities"] = probabilities_train
-		'''
+
 		df_augmented = self.augment(df_train, method=augmentation)
-		'''
-		df_augmented = df_train
+
 		embeddings_augmented = self.embedd_sentences_method(df_augmented['sentence'], method='SBert_dropout')
 		embeddings_augmented = torch.from_numpy(embeddings_augmented)
 		# augmented data
@@ -381,6 +380,7 @@ class DocSCANPipeline():
 				self.neighbor_dataset = self.create_neighbor_dataset(indices=indices)
 
 		results = []
+		results_after_selflabeling = []
 
 		targets_map = {i:j for j,i in enumerate(np.unique(self.df_test["label"]))}
 		targets = [targets_map[i] for i in self.df_test["label"]]
@@ -422,7 +422,13 @@ class DocSCANPipeline():
 			print(len(targets), len(predictions))
 			evaluate(np.array(targets), np.array(predictions), mode = 'after selflabeling')
 
+			docscan_clusters = evaluate(np.array(targets), np.array(predictions),mode = 'after selflabeling')["reordered_preds"]
+			self.df_test["label"] = targets
+			self.df_test["clusters"] = docscan_clusters
+			self.df_test["probabilities"] = probabilities
+			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 
+			results_after_selflabeling.append(acc_test)
 
 
 
