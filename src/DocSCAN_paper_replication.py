@@ -599,14 +599,14 @@ class DocSCANPipeline():
 			df_train["clusters"] = docscan_clusters_train
 			df_train["probabilities"] = probabilities_train
 
-			df_ExtraModel = df_train.loc[(np.max(df_train["probabilities"]) >= 0.99)]
+			df_ExtraModel = df_train[np.max(df_train["probabilities"]) >= 0.99]
 			df_ExtraModel = df_ExtraModel[['sentence','clusters']].rename({'sentence':'text', 'clusters': 'cluster'},axis='columns')
 
 
 			Extra_Model = BertClassifier()
 			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 5)
 
-			df_ExtraModel_test = df_train.loc[(np.max(self.df_test["probabilities"]) >= 0.99)]
+			df_ExtraModel_test = self.df_test[np.max(self.df_test["probabilities"]) >= 0.99]
 			df_ExtraModel_test = df_ExtraModel_test[['sentence', 'clusters']].rename({'sentence': 'text', 'clusters': 'cluster'},
 																		   axis='columns')
 
