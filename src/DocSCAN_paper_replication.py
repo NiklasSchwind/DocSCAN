@@ -575,6 +575,7 @@ class DocSCANPipeline():
 			evaluate(np.array(targets), np.array(predictions))
 
 			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
+			print(docscan_clusters)
 			self.df_test["label"] = targets
 			self.df_test["clusters"] = docscan_clusters
 			self.df_test["probabilities"] = probabilities
