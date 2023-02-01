@@ -606,7 +606,7 @@ class DocSCANPipeline():
 			#for predictions_i, targets_i in docscan_clusters['match']:
 			#	label_dict[int(predictions_i)] = int(targets_i)
 
-			df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= 0.99]
+			df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= 0.95]
 			df_ExtraModel = df_ExtraModel[['sentence','clusters']].rename({'sentence':'text', 'clusters': 'cluster'},axis='columns')
 
 
