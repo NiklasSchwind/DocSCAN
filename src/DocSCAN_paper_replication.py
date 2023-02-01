@@ -601,12 +601,12 @@ class DocSCANPipeline():
 
 			df_ExtraModel = pd.DataFrame(columns = ['text', 'cluster'])
 
-			for column in df_train:
-				print(column)
-				print(column["probabilities"])
-				if np.max(column["probabilities"]) >= 0.99:
-					df_ExtraModel['text'] = column['sentence']
-					df_ExtraModel['cluster'] = column['cluster']
+			for index, row in df_train.iterrows():
+				print(row)
+				print(row["probabilities"])
+				if np.max(row["probabilities"]) >= 0.99:
+					df_ExtraModel['text'] = row['sentence']
+					df_ExtraModel['cluster'] = row['cluster']
 
 
 			Extra_Model = BertClassifier()
@@ -614,9 +614,10 @@ class DocSCANPipeline():
 
 			df_ExtraModel_test = pd.DataFrame(columns=['text', 'cluster'])
 
-			for column in self.df_test:
-				df_ExtraModel_test['text'] = column['sentence']
-				df_ExtraModel_test['cluster'] = column['cluster']
+			for index, row in self.df_test.iterrows():
+
+				df_ExtraModel_test['text'] = row['sentence']
+				df_ExtraModel_test['cluster'] = row['cluster']
 
 			acc_extramodel = evaluate_Bert(Extra_Model, df_ExtraModel_test)
 			results_extra.append(acc_extramodel)
