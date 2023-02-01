@@ -611,7 +611,7 @@ class DocSCANPipeline():
 
 
 			Extra_Model = BertClassifier()
-			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 5)
+			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 7)
 
 			df_ExtraModel_test = self.df_test
 			df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
