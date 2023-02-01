@@ -579,7 +579,7 @@ class DocSCANPipeline():
 
 
 			self.df_test["label"] = targets
-			self.df_test["clusters"] = docscan_clusters["reordered_preds"]
+			self.df_test["clusters"] = docscan_clusters
 			self.df_test["probabilities"] = probabilities
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 			results.append(acc_test)
