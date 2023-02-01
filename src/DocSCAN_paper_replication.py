@@ -15,7 +15,7 @@ import random
 import nltk
 from utils.EncodeDropout import encode_with_dropout
 from transformers import MarianMTModel, MarianTokenizer
-from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert
+from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert, softmax
 nltk.download('punkt')
 
 def evaluate(targets, predictions, verbose=0, mode = 'test'):
@@ -599,7 +599,7 @@ class DocSCANPipeline():
 			df_train["clusters"] = docscan_clusters_train
 			df_train["probabilities"] = probabilities_train
 
-			print(df_train["probabilities"])
+			print(df_train["probabilities"].apply(softmax))
 			df_ExtraModel = df_train[np.max(df_train["probabilities"]) >= 0.99]
 			df_ExtraModel = df_ExtraModel[['sentence','clusters']].rename({'sentence':'text', 'clusters': 'cluster'},axis='columns')
 
