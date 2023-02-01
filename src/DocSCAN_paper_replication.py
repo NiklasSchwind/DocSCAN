@@ -575,9 +575,11 @@ class DocSCANPipeline():
 			evaluate(np.array(targets), np.array(predictions))
 
 			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
-			print(docscan_clusters)
+			#print(docscan_clusters['match'])
+
+
 			self.df_test["label"] = targets
-			self.df_test["clusters"] = docscan_clusters
+			self.df_test["clusters"] = docscan_clusters["reordered_preds"]
 			self.df_test["probabilities"] = probabilities
 			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
 			results.append(acc_test)
@@ -594,22 +596,33 @@ class DocSCANPipeline():
 			print(len(targets_train), len(predictions_train))
 			evaluate(np.array(targets_train), np.array(predictions_train), mode='train')
 
-			docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train), mode='train')[
-				"reordered_preds"]
+			docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train), mode='train')
+
 			df_train["label"] = targets_train
-			df_train["clusters"] = docscan_clusters_train
+			df_train["clusters"] = docscan_clusters_train["reordered_preds"]
 			df_train["probabilities"] = probabilities_train
+
+			#label_dict = {}
+			#for predictions_i, targets_i in docscan_clusters['match']:
+			#	label_dict[int(predictions_i)] = int(targets_i)
 
 			df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= 0.99]
 			df_ExtraModel = df_ExtraModel[['sentence','clusters']].rename({'sentence':'text', 'clusters': 'cluster'},axis='columns')
 
-			print(df_ExtraModel )
+
 			Extra_Model = BertClassifier()
 			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 5)
 
-			df_ExtraModel_test = self.df_test[self.df_test["probabilities"].apply(softmax).apply(np.max) >= 0.99]
-			df_ExtraModel_test = df_ExtraModel_test[['sentence', 'clusters']].rename({'sentence': 'text', 'clusters': 'cluster'},
-																		   axis='columns')
+			df_ExtraModel_test = self.df_test
+			df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
+				{'sentence': 'text', 'label': 'cluster'},
+				axis='columns')
+
+			#for pred_i, target_i in docscan_clusters_train['match']:
+			#	df_ExtraModel_test[predictions == int(pred_i)] = int(target_i)
+
+
+
 
 
 

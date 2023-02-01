@@ -137,7 +137,7 @@ LR = 1e-6
 def evaluate_Bert(model, test_data):
     test = Dataset_Bert(test_data)
 
-    test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
+    test_dataloader = torch.utils.data.DataLoader(test, batch_size=16)
 
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
