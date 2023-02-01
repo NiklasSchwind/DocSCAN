@@ -602,7 +602,7 @@ class DocSCANPipeline():
 			df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= 0.99]
 			df_ExtraModel = df_ExtraModel[['sentence','clusters']].rename({'sentence':'text', 'clusters': 'cluster'},axis='columns')
 
-
+			print(df_ExtraModel )
 			Extra_Model = BertClassifier()
 			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 5)
 
