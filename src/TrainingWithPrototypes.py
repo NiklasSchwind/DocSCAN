@@ -65,7 +65,7 @@ class Dataset_Bert(torch.utils.data.Dataset):
 def finetune_BERT(model, train_data,  learning_rate, epochs):
     train = Dataset_Bert(train_data)#, Dataset_Bert(val_data)
 
-    train_dataloader = torch.utils.data.DataLoader(train, batch_size=16, shuffle=True)
+    train_dataloader = torch.utils.data.DataLoader(train, batch_size=2, shuffle=True)
     #val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
 
     use_cuda = torch.cuda.is_available()
@@ -137,7 +137,7 @@ LR = 1e-6
 def evaluate_Bert(model, test_data):
     test = Dataset_Bert(test_data)
 
-    test_dataloader = torch.utils.data.DataLoader(test, batch_size=16)
+    test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
 
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
