@@ -602,6 +602,8 @@ class DocSCANPipeline():
 			df_ExtraModel = pd.DataFrame(columns = ['text', 'cluster'])
 
 			for column in df_train:
+				print(column)
+				print(column["probabilities"])
 				if np.max(column["probabilities"]) >= 0.99:
 					df_ExtraModel['text'] = column['sentence']
 					df_ExtraModel['cluster'] = column['cluster']
