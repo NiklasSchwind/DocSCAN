@@ -21,7 +21,7 @@ def _hungarian_match(flat_preds, flat_targets, preds_k, targets_k):
     match = linear_sum_assignment(num_samples - num_correct)
     #print (match)
     match = np.array(list(zip(*match)))
-    #print (match)
+    print (match)
     # return as list of tuples, out_c to gt_c
     res = []
     for out_c, gt_c in match:
