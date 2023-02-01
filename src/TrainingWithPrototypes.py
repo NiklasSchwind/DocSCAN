@@ -29,18 +29,13 @@ class BertClassifier(nn.Module):
 
 
 tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
-labels = {'business':0,
-          'entertainment':1,
-          'sport':2,
-          'tech':3,
-          'politics':4
-          }
 
-class Dataset(torch.utils.data.Dataset):
+
+class Dataset_Bert(torch.utils.data.Dataset):
 
     def __init__(self, df):
 
-        self.labels = [labels[label] for label in df['cluster']]
+        self.labels = [label for label in df['cluster']]
         self.texts = [tokenizer(text,
                                padding='max_length', max_length = 512, truncation=True,
                                 return_tensors="pt") for text in df['text']]
@@ -67,11 +62,11 @@ class Dataset(torch.utils.data.Dataset):
         return batch_texts, batch_y
 
 
-def train(model, train_data, val_data, learning_rate, epochs):
-    train, val = Dataset(train_data), Dataset(val_data)
+def finetune_BERT(model, train_data,  learning_rate, epochs):
+    train = Dataset_Bert(train_data)#, Dataset_Bert(val_data)
 
     train_dataloader = torch.utils.data.DataLoader(train, batch_size=2, shuffle=True)
-    val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
+    #val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
 
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
@@ -107,7 +102,7 @@ def train(model, train_data, val_data, learning_rate, epochs):
 
         total_acc_val = 0
         total_loss_val = 0
-
+        '''
         with torch.no_grad():
 
             for val_input, val_label in val_dataloader:
@@ -122,23 +117,25 @@ def train(model, train_data, val_data, learning_rate, epochs):
 
                 acc = (output.argmax(dim=1) == val_label).sum().item()
                 total_acc_val += acc
-
+        '''
         print(
             f'Epochs: {epoch_num + 1} | Train Loss: {total_loss_train / len(train_data): .3f} \
-                | Train Accuracy: {total_acc_train / len(train_data): .3f} \
-                | Val Loss: {total_loss_val / len(val_data): .3f} \
-                | Val Accuracy: {total_acc_val / len(val_data): .3f}')
+                | Train Accuracy: {total_acc_train / len(train_data): .3f}' )
+
+
+
+#
 
 
 EPOCHS = 5
 model = BertClassifier()
 LR = 1e-6
 
-train(model, df_train, df_val, LR, EPOCHS)
 
 
-def evaluate(model, test_data):
-    test = Dataset(test_data)
+
+def evaluate_Bert(model, test_data):
+    test = Dataset_Bert(test_data)
 
     test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
 
@@ -163,5 +160,4 @@ def evaluate(model, test_data):
 
     print(f'Test Accuracy: {total_acc_test / len(test_data): .3f}')
 
-
-evaluate(model, df_test)
+    return total_acc_test / len(test_data)

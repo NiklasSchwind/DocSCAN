@@ -15,6 +15,7 @@ import random
 import nltk
 from utils.EncodeDropout import encode_with_dropout
 from transformers import MarianMTModel, MarianTokenizer
+from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert
 nltk.download('punkt')
 
 def evaluate(targets, predictions, verbose=0, mode = 'test'):
@@ -435,6 +436,7 @@ class DocSCANPipeline():
 
 
 
+
 			"""
 			model = self.train_model()
 			# test data
@@ -502,6 +504,131 @@ class DocSCANPipeline():
 		print("mean accuracy test after selflabeling", np.mean(results_after_selflabeling).round(3), "(" + str(np.std(results_after_selflabeling).round(3)) + ")")
 
 
+	def run_main_train_extra_model_with_prototypes(self):
+		# embedd using SBERT
+
+		print("loading data...")
+		train_file = os.path.join(self.args.path, "train.jsonl")
+		predict_file = os.path.join(self.args.path, "test.jsonl")
+
+		df_train = self.load_data(train_file)
+		args.num_classes = df_train.label.nunique()
+		self.df_test = self.load_data(predict_file)
+
+		print("embedding sentences...")
+		if os.path.exists(os.path.join(self.args.path, "embeddings.npy")):
+			self.embeddings = np.load(os.path.join(self.args.path, "embeddings.npy"))
+		else:
+			self.embeddings = self.embedd_sentences(df_train["sentence"])
+			np.save(os.path.join(self.args.path, "embeddings"), self.embeddings)
+
+		# torch tensor of embeddings
+		self.X = torch.from_numpy(self.embeddings)
+		if os.path.exists(os.path.join(self.args.path, "embeddings_test.npy")):
+			self.embeddings_test = np.load(os.path.join(self.args.path, "embeddings_test.npy"))
+		else:
+			self.embeddings_test = self.embedd_sentences(self.df_test["sentence"])
+			np.save(os.path.join(self.args.path, "embeddings_test"), self.embeddings_test)
+
+		self.X_test = torch.from_numpy(self.embeddings_test)
+
+		print("retrieving neighbors...")
+
+		if os.path.exists(os.path.join(self.args.path, "neighbor_dataset.csv")) and self.args.num_neighbors == 5:
+			print("loading neighbor dataset")
+			self.neighbor_dataset = pd.read_csv(os.path.join(self.args.path, "neighbor_dataset.csv"))
+		elif os.path.exists(os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv")):
+			self.neighbor_dataset = pd.read_csv(
+				os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv"))
+		else:
+			if self.device == "cpu":
+				self.memory_bank = MemoryBank(self.X, "", len(self.X),
+											  self.X.shape[-1],
+											  self.args.num_classes)
+				self.neighbor_dataset = self.create_neighbor_dataset()
+			else:
+				indices = self.retrieve_neighbours_gpu(self.X.numpy(), num_neighbors=self.args.num_neighbors)
+				self.neighbor_dataset = self.create_neighbor_dataset(indices=indices)
+
+		results = []
+		results_extra = []
+
+		targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+		targets = [targets_map[i] for i in self.df_test["label"]]
+
+		for _ in range(10):
+			model = self.train_model()
+			# test data
+			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
+											 test_embeddings=self.X_test)
+			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
+															 collate_fn=predict_dataset.collate_fn_predict,
+															 batch_size=self.args.batch_size)
+			predictions, probabilities = self.get_predictions(model, predict_dataloader)
+			# train data
+
+			print("docscan trained with n=", self.args.num_classes, "clusters...")
+
+			targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+			targets = [targets_map[i] for i in self.df_test["label"]]
+			print(len(targets), len(predictions))
+			evaluate(np.array(targets), np.array(predictions))
+
+			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
+			self.df_test["label"] = targets
+			self.df_test["clusters"] = docscan_clusters
+			self.df_test["probabilities"] = probabilities
+			acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
+			results.append(acc_test)
+
+			predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
+												   test_embeddings=self.X)
+			predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
+																   collate_fn=predict_dataset_train.collate_fn_predict,
+																   batch_size=self.args.batch_size)
+
+			predictions_train, probabilities_train = self.get_predictions(model, predict_dataloader_train)
+			targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
+			targets_train = [targets_map_train[i] for i in df_train["label"]]
+			print(len(targets_train), len(predictions_train))
+			evaluate(np.array(targets_train), np.array(predictions_train), mode='train')
+
+			docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train), mode='train')[
+				"reordered_preds"]
+			df_train["label"] = targets_train
+			df_train["clusters"] = docscan_clusters_train
+			df_train["probabilities"] = probabilities_train
+
+			df_ExtraModel = pd.DataFrame(columns = ['text', 'cluster'])
+
+			for column in df_train:
+				if np.max(column["probabilities"]) >= 0.99:
+					df_ExtraModel['text'] = column['sentence']
+					df_ExtraModel['cluster'] = column['cluster']
+
+
+			Extra_Model = BertClassifier()
+			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 5)
+
+			df_ExtraModel_test = pd.DataFrame(columns=['text', 'cluster'])
+
+			for column in self.df_test:
+				df_ExtraModel_test['text'] = column['sentence']
+				df_ExtraModel_test['cluster'] = column['cluster']
+
+			acc_extramodel = evaluate_Bert(Extra_Model, df_ExtraModel_test)
+			results_extra.append(acc_extramodel)
+
+
+
+
+
+
+
+		print("mean accuracy", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
+		print("mean accuracy extra model", np.mean(results_extra).round(3), "(" + str(np.std(results_extra).round(3)) + ")")
+
+
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--path", type=str, help="path to output path where output of docscan gets saved")
@@ -518,5 +645,5 @@ if __name__ == "__main__":
 	if args.dropout == 0:
 		args.dropout = None
 	docscan = DocSCANPipeline(args)
-	docscan.run_main()
+	docscan.run_main_train_extra_model_with_prototypes()
 
