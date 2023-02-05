@@ -683,7 +683,7 @@ class DocSCANPipeline():
 				self.neighbor_dataset = self.create_neighbor_dataset(indices=indices)
 
 		results = []
-
+		print(self.embeddings)
 		targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 		targets = [targets_map[i] for i in self.df_test["label"]]
 
