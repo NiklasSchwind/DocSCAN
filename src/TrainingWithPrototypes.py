@@ -1,3 +1,4 @@
+import pandas as pd
 from torch import nn
 from transformers import BertModel
 import torch
@@ -5,6 +6,8 @@ import numpy as np
 from transformers import BertTokenizer
 from torch.optim import Adam
 from tqdm import tqdm
+from utils.losses import SCANLoss
+from utils.DocSCAN_utils import DocScanDataset_BertFinetune
 
 class BertClassifier(nn.Module):
 
@@ -126,10 +129,62 @@ def finetune_BERT(model, train_data,  learning_rate, epochs):
 
 #
 
+def finetune_BERT_SemanticClustering(model, neighbors, texts, batch_size,  learning_rate, epochs):
+    train = DocScanDataset_BertFinetune(neighbors, [tokenizer(text,padding='max_length', max_length = 512, truncation=True,return_tensors="pt") for text in texts])
 
-EPOCHS = 5
-model = BertClassifier()
-LR = 1e-6
+    train_dataloader = torch.utils.data.DataLoader(train, shuffle=True,
+															 collate_fn=train.collate_fn,
+															 batch_size=batch_size)
+    #val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
+
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
+
+    criterion = SCANLoss()
+    criterion.to(device)
+    optimizer = Adam(model.parameters(), lr=learning_rate)
+
+    if use_cuda:
+        model = model.cuda()
+        #criterion = criterion.cuda()
+
+    for epoch in range(epochs):
+        bar_desc = "Epoch %d of %d | Iteration" % (epoch + 1, len(train_dataloader))
+        epoch_iterator = tqdm(train_dataloader, desc=bar_desc)
+        entropy_loss_train = 0
+        consistency_loss_train = 0
+        total_loss_train = 0
+        for step, batch in enumerate(epoch_iterator):
+            batch = batch.to(device)
+            anchor, neighbor = batch["anchor"], batch["neighbor"]
+
+            mask = anchor['attention_mask'].to(device)
+            input_id = batch['input_ids'].squeeze(1).to(device)
+
+            anchors_output, neighbors_output = model(anchor), model(neighbor)
+
+            total_loss, consistency_loss, entropy_loss = criterion(anchors_output, neighbors_output)
+
+            total_loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+            model.zero_grad()
+
+            entropy_loss_train += entropy_loss
+            consistency_loss_train += consistency_loss
+            total_loss_train += total_loss
+    # predictions, probabilities = self.get_predictions(model, predict_dataloader)
+    # evaluate(np.array(targets), np.array(predictions),verbose=0)
+
+
+
+        print(
+            f'Epochs: {epoch + 1} | Train Loss: {total_loss_train / len(texts): .3f} \
+                | Consistency Loss: {consistency_loss_train / len(texts): .3f}  \
+        | Entropy Loss: {entropy_loss_train / len(texts): .3f}'
+        )
+    optimizer.zero_grad()
+    model.zero_grad()
 
 
 
@@ -167,3 +222,36 @@ def softmax(x):
     """Compute softmax values for each sets of scores in x."""
     e_x = np.exp(x - np.max(x))
     return e_x / e_x.sum(axis=0) # only difference
+
+
+def get_predictions_Bert(model, test_sentences):
+
+
+
+    test = Dataset_Bert(test_sentences)
+
+    test_dataloader = torch.utils.data.DataLoader(test, batch_size=1)
+
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
+
+    if use_cuda:
+        model = model.cuda()
+
+    predictions_test = []
+    probabilities_test = []
+    with torch.no_grad():
+
+        for test_input in test_dataloader:
+            test_label = test_label.to(device)
+            mask = test_input['attention_mask'].to(device)
+            input_id = test_input['input_ids'].squeeze(1).to(device)
+
+            output = model(input_id, mask)
+            probabilities_test.append(output)
+            predictions_test.append(output.argmax(dim=1).item())
+
+
+
+
+    return predictions_test, probabilities_test

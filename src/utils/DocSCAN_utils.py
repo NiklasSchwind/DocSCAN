@@ -65,6 +65,47 @@ class DocScanDataset(Dataset):
 		out = torch.vstack([i["anchor"] for i in batch]).to(self.device)
 		return {"anchor": out}
 
+
+class DocScanDataset_BertFinetune(Dataset):
+	def __init__(self, neighbor_df, texts, test_embeddings="", mode="train"):
+		self.neighbor_df = neighbor_df
+		self.texts = texts
+		self.mode = mode
+		self.device = "cuda" if torch.cuda.is_available() else "cpu"
+		if mode == "train":
+			self.examples = self.load_data()
+		elif mode == "predict":
+			self.examples = test_embeddings
+
+	def load_data(self):
+		examples = []
+		for i,j in zip(self.neighbor_df["anchor"], self.neighbor_df["neighbor"]):
+			examples.append((i,j))
+		random.shuffle(examples)
+		return examples
+
+	def __len__(self):
+		return len(self.examples)
+
+	def __getitem__(self, item):
+		if self.mode == "train":
+			anchor, neighbor = self.examples[item]
+			sample = {"anchor": anchor, "neighbor": neighbor}
+		elif self.mode == "predict":
+			anchor = self.examples[item]
+			sample = {"anchor": anchor}
+		return sample
+	def collate_fn(self, batch):
+		anchors = torch.tensor([i["anchor"] for i in batch])
+		out = self.texts[anchors].to(self.device)
+		neighbors = torch.tensor([i["anchor"] for i in batch])
+		out_2 = self.texts[neighbors].to(self.device)
+		return {"anchor": out, "neighbor": out_2}
+
+	def collate_fn_predict(self, batch):
+		out = torch.vstack([i["anchor"] for i in batch]).to(self.device)
+		return {"anchor": out}
+
 class DocScanModel(torch.nn.Module):
 	def __init__(self, num_labels, dropout, hidden_dim=768):
 		super(DocScanModel, self).__init__()
@@ -105,8 +146,12 @@ class Backtranslation:
 		self.batch_size = batch_size
 		self.tokenizer_fr_en = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-fr-en')
 		self.tokenizer_en_fr = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-en-fr')
+		self.tokenizer_en_de = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-en-de')
+		self.tokenizer_de_en = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-de-en')
 		self.model_fr_en = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-fr-en')
 		self.model_en_fr = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-en-fr')
+		self.model_de_en = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-de-en')
+		self.model_en_de = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-en-de')
 		self.inbetween_language = 'fr'
 
 	def format_batch_texts(self, language_code, batch_texts):
@@ -138,6 +183,14 @@ class Backtranslation:
 
 		# Translate Back to English
 		back_translated_batch = self.perform_translation(tmp_translated_batch, self.model_fr_en, self.tokenizer_fr_en, original_language)
+
+		# Translate from Original to Temporary Language
+		tmp_translated_batch = self.perform_translation(batch_texts, self.model_en_de, self.tokenizer_en_de,
+														"de")
+
+		# Translate Back to English
+		back_translated_batch = self.perform_translation(tmp_translated_batch, self.model_fr_en, self.tokenizer_fr_en,
+														 original_language)
 
 		# Return The Final Result
 		return back_translated_batch

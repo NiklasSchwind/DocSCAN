@@ -15,7 +15,7 @@ import random
 import nltk
 from utils.EncodeDropout import encode_with_dropout
 from transformers import MarianMTModel, MarianTokenizer
-from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert, softmax
+from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert, softmax,finetune_BERT_SemanticClustering, get_predictions_Bert
 nltk.download('punkt')
 
 def evaluate(targets, predictions, verbose=0, mode = 'test'):
@@ -636,6 +636,90 @@ class DocSCANPipeline():
 		print("mean accuracy", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
 		print("mean accuracy extra model", np.mean(results_extra).round(3), "(" + str(np.std(results_extra).round(3)) + ")")
 
+	def run_main_finetune_BERT(self):
+		# embedd using SBERT
+
+		print("loading data...")
+		train_file = os.path.join(self.args.path, "train.jsonl")
+		predict_file = os.path.join(self.args.path, "test.jsonl")
+
+		df_train = self.load_data(train_file)
+		args.num_classes = df_train.label.nunique()
+		self.df_test = self.load_data(predict_file)
+
+		print("embedding sentences...")
+		if os.path.exists(os.path.join(self.args.path, "embeddings.npy")):
+			self.embeddings = np.load(os.path.join(self.args.path, "embeddings.npy"))
+		else:
+			self.embeddings = self.embedd_sentences(df_train["sentence"])
+			np.save(os.path.join(self.args.path, "embeddings"), self.embeddings)
+
+		# torch tensor of embeddings
+		self.X = torch.from_numpy(self.embeddings)
+		if os.path.exists(os.path.join(self.args.path, "embeddings_test.npy")):
+			self.embeddings_test = np.load(os.path.join(self.args.path, "embeddings_test.npy"))
+		else:
+			self.embeddings_test = self.embedd_sentences(self.df_test["sentence"])
+			np.save(os.path.join(self.args.path, "embeddings_test"), self.embeddings_test)
+
+		self.X_test = torch.from_numpy(self.embeddings_test)
+
+		print("retrieving neighbors...")
+
+		if os.path.exists(os.path.join(self.args.path, "neighbor_dataset.csv")) and self.args.num_neighbors == 5:
+			print("loading neighbor dataset")
+			self.neighbor_dataset = pd.read_csv(os.path.join(self.args.path, "neighbor_dataset.csv"))
+		elif os.path.exists(os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv")):
+			self.neighbor_dataset = pd.read_csv(
+				os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv"))
+		else:
+			if self.device == "cpu":
+				self.memory_bank = MemoryBank(self.X, "", len(self.X),
+											  self.X.shape[-1],
+											  self.args.num_classes)
+				self.neighbor_dataset = self.create_neighbor_dataset()
+			else:
+				indices = self.retrieve_neighbours_gpu(self.X.numpy(), num_neighbors=self.args.num_neighbors)
+				self.neighbor_dataset = self.create_neighbor_dataset(indices=indices)
+
+		results = []
+
+		targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+		targets = [targets_map[i] for i in self.df_test["label"]]
+
+		for _ in range(10):
+
+			model = BertClassifier()
+			finetune_BERT_SemanticClustering(model, self.neighbor_dataset, df_train["sentence"], self.args.batch_size, 1e-6, 5)
+
+			print("docscan trained with n=", self.args.num_classes, "clusters...")
+
+			df_ExtraModel_test = self.df_test
+			df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
+				{'sentence': 'text', 'label': 'cluster'},
+				axis='columns')
+
+			predictions, probabilities = get_predictions_Bert(model, df_ExtraModel_test)
+
+			df_ExtraModel_test = df_ExtraModel_test.rename({ 'cluster': 'label'},
+				axis='columns')
+			targets_map = {i: j for j, i in enumerate(np.unique(df_ExtraModel_test["label"]))}
+			targets = [targets_map[i] for i in df_ExtraModel_test ["label"]]
+
+			print(len(targets), len(predictions))
+
+			evaluate(np.array(targets), np.array(predictions))
+
+			docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
+
+			df_ExtraModel_test["label"] = targets
+			df_ExtraModel_test["clusters"] = docscan_clusters
+			df_ExtraModel_test["probabilities"] = probabilities
+			acc_test = np.mean(df_ExtraModel_test["label"] == self.df_test["clusters"])
+			results.append(acc_test)
+
+		print("mean accuracy", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
+
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
@@ -653,5 +737,5 @@ if __name__ == "__main__":
 	if args.dropout == 0:
 		args.dropout = None
 	docscan = DocSCANPipeline(args)
-	docscan.run_main_train_extra_model_with_prototypes()
+	docscan.run_main_finetune_BERT()
 
