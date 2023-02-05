@@ -159,10 +159,11 @@ def finetune_BERT_SemanticClustering(model, neighbors, texts, batch_size,  learn
             anchor, neighbor = batch["anchor"], batch["neighbor"]
             print(len(anchor))
             print(len(neighbor))
-            #for anchor, neighbor in zip(anchor,neighbor):
-            mask = anchor['attention_mask'].to(device)
-            input_id_anchor = anchor['input_ids'].squeeze(1).to(device)
-            input_id_neighbor = neighbor['input_ids'].squeeze(1).to(device)
+            mask = torch.tensor()
+            for anchor, neighbor in zip(anchor,neighbor):
+                mask = anchor['attention_mask'].to(device)
+                input_id_anchor = anchor['input_ids'].squeeze(1).to(device)
+                input_id_neighbor = neighbor['input_ids'].squeeze(1).to(device)
 
             anchors_output, neighbors_output = model(input_id_anchor,mask), model(input_id_neighbor,mask)
 
