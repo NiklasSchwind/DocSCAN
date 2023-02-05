@@ -159,9 +159,10 @@ def finetune_BERT_SemanticClustering(model, neighbors, texts, batch_size,  learn
             anchor, neighbor = batch["anchor"], batch["neighbor"]
 
             mask = anchor['attention_mask'].to(device)
-            input_id = batch['input_ids'].squeeze(1).to(device)
+            input_id_anchor = anchor['input_ids'].squeeze(1).to(device)
+            input_id_neighbor = neighbor['input_ids'].squeeze(1).to(device)
 
-            anchors_output, neighbors_output = model(anchor), model(neighbor)
+            anchors_output, neighbors_output = model(input_id_anchor,mask), model(input_id_neighbor,mask)
 
             total_loss, consistency_loss, entropy_loss = criterion(anchors_output, neighbors_output)
 
