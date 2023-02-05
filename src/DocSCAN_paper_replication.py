@@ -690,9 +690,8 @@ class DocSCANPipeline():
 		for _ in range(10):
 
 			model = BertClassifier()
-			print([text for text in df_train["sentence"]])
-			print(self.embeddings)
-			finetune_BERT_SemanticClustering(model, self.neighbor_dataset, df_train["sentence"], self.args.batch_size, 1e-6, 5)
+
+			finetune_BERT_SemanticClustering(model, self.neighbor_dataset, [text for text in df_train["sentence"]], self.args.batch_size, 1e-6, 5)
 
 			print("docscan trained with n=", self.args.num_classes, "clusters...")
 
