@@ -99,9 +99,9 @@ class DocScanDataset_BertFinetune(Dataset):
 		#lol
 		anchors = torch.tensor([i["anchor"] for i in batch]).to(torch.int)
 		print(anchors)
-		out = self.texts[anchors].to(self.device)
+		out = [self.texts[anchor] for anchor in anchors]
 		neighbors = torch.tensor([i["anchor"] for i in batch]).to(torch.int)
-		out_2 = self.texts[neighbors].to(self.device)
+		out_2 = [self.texts[neighbor] for neighbor in neighbors]
 		return {"anchor": out, "neighbor": out_2}
 
 	def collate_fn_predict(self, batch):
