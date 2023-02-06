@@ -247,8 +247,7 @@ def get_predictions_Bert(model, test_sentences):
     probabilities_test = []
     with torch.no_grad():
 
-        for test_input in test_dataloader:
-            test_label = test_label.to(device)
+        for test_input, test_label in test_dataloader:
             mask = test_input['attention_mask'].to(device)
             input_id = test_input['input_ids'].squeeze(1).to(device)
 
