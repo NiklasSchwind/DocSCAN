@@ -229,11 +229,8 @@ def softmax(x):
     return e_x / e_x.sum(axis=0) # only difference
 
 
-def get_predictions_Bert(model, test_sentences):
-
-
-
-    test = Dataset_Bert(test_sentences)
+def get_predictions_Bert(model, test_data):
+    test = Dataset_Bert(test_data)
 
     test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
 
@@ -249,10 +246,12 @@ def get_predictions_Bert(model, test_sentences):
     with torch.no_grad():
 
         for test_input, test_label in test_dataloader:
+
             mask = test_input['attention_mask'].to(device)
             input_id = test_input['input_ids'].squeeze(1).to(device)
 
             output = model(input_id, mask)
+
             if i <= 10:
                 print(output)
                 print(output.argmax(dim=1))

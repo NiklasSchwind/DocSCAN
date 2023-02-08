@@ -695,6 +695,11 @@ class DocSCANPipeline():
 
 			print("docscan trained with n=", self.args.num_classes, "clusters...")
 
+			targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+			targets = [targets_map[i] for i in self.df_test["label"]]
+
+			self.df_test['label'] = targets
+
 			df_ExtraModel_test = self.df_test
 			df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
 				{'sentence': 'text', 'label': 'cluster'},
@@ -704,6 +709,7 @@ class DocSCANPipeline():
 
 			df_ExtraModel_test = df_ExtraModel_test.rename({ 'cluster': 'label'},
 				axis='columns')
+
 			targets_map = {i: j for j, i in enumerate(np.unique(df_ExtraModel_test["label"]))}
 			targets = [targets_map[i] for i in df_ExtraModel_test ["label"]]
 
