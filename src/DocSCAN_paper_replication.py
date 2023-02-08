@@ -722,7 +722,7 @@ class DocSCANPipeline():
 			df_ExtraModel_test["label"] = targets
 			df_ExtraModel_test["clusters"] = docscan_clusters
 			df_ExtraModel_test["probabilities"] = probabilities
-			acc_test = np.mean(df_ExtraModel_test["label"] == self.df_test["clusters"])
+			acc_test = np.mean(df_ExtraModel_test["label"] == df_ExtraModel_test["clusters"])
 			results.append(acc_test)
 
 		print("mean accuracy", np.mean(results).round(3), "(" + str(np.std(results).round(3)) + ")")
