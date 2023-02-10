@@ -687,11 +687,11 @@ class DocSCANPipeline():
 		targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 		targets = [targets_map[i] for i in self.df_test["label"]]
 
-		for _ in range(10):
+		for _ in range(2):
 
 			model = BertClassifier()
 
-			finetune_BERT_SemanticClustering(model, self.neighbor_dataset, [text for text in df_train["sentence"]], self.args.batch_size, 1e-6, 1)
+			finetune_BERT_SemanticClustering(model, self.neighbor_dataset, [text for text in df_train["sentence"]], self.args.batch_size, 1e-6, 5)
 
 			print("docscan trained with n=", self.args.num_classes, "clusters...")
 
