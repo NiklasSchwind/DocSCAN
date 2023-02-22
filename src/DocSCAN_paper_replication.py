@@ -744,5 +744,5 @@ if __name__ == "__main__":
 	if args.dropout == 0:
 		args.dropout = None
 	docscan = DocSCANPipeline(args)
-	docscan.run_main_finetune_BERT()
+	docscan.run_main()
 

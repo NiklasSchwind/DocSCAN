@@ -186,7 +186,7 @@ class Backtranslation:
 		back_translated_batch = self.perform_translation(tmp_translated_batch, self.model_fr_en, self.tokenizer_fr_en, original_language)
 
 		# Translate from Original to Temporary Language
-		tmp_translated_batch = self.perform_translation(batch_texts, self.model_en_de, self.tokenizer_en_de,
+		tmp_translated_batch = self.perform_translation(back_translated_batch, self.model_en_de, self.tokenizer_en_de,
 														"de")
 
 		# Translate Back to English
