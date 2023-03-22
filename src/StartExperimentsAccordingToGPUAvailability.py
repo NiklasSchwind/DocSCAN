@@ -59,6 +59,7 @@ while count <= len(Experiments):
 			possible_devices.remove(i)
 			process_device[i] =  count
 			used_devices.append(i)
+			count += 1
 
 	#check if experiments are done and deblock cuda if yes
 	for i in used_devices:
