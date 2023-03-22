@@ -7,7 +7,7 @@ import os
 
 
 
-Experiments = ['PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py']
+Experiments = ['PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python src/test.py']
 
 def start_experiment(experiment, device, outfile):
 	with open(outfile, 'w') as f:
@@ -60,12 +60,12 @@ while count <= len(Experiments):
 			process_device[i] =  count
 			used_devices.append(i)
 			count += 1
-	print('Was executed')
+
 	#check if experiments are done and deblock cuda if yes
 	for i in used_devices:
 		proc = processes[process_device[i]]
 		proc.join(timeout=0)
-		print('Was executed2')
+
 		if proc.is_alive():
 			pass
 		else:
