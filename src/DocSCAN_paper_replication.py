@@ -16,7 +16,7 @@ import nltk
 from utils.EncodeDropout import encode_with_dropout
 from transformers import MarianMTModel, MarianTokenizer
 from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert, softmax,finetune_BERT_SemanticClustering, get_predictions_Bert
-from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo
+from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlDeviceGetUtilizationRates
 import time
 nltk.download('punkt')
 
@@ -754,7 +754,9 @@ if __name__ == "__main__":
 	while True:
 		for i in range(3):
 			info = nvmlDeviceGetMemoryInfo(CUDA[i])
+			util_rate = nvmlDeviceGetUtilizationRates(CUDA[i])
 			print(f'{i} uses     : {info.used}')
+			print(f'{i} util rate     : {util_rate}')
 		time.sleep(10)
 
 	docscan = DocSCANPipeline(args)
