@@ -37,7 +37,7 @@ possible_devices = list(range(deviceCount))
 used_devices = []
 process_device = {}
 
-while count <= len(Experiments):
+while count < len(Experiments):
 
 	#See if any CUDA is free
 	for i in possible_devices:
