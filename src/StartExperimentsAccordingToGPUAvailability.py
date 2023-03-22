@@ -10,6 +10,8 @@ import os
 Experiments = ['PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py']
 
 def start_experiment(experiment, device, outfile):
+	with open(outfile, 'w') as f:
+		f.write('Start')
 	print(f'{experiment} --device {device} --outfile {outfile}')
 	os.system(f'{experiment} --device {device} --outfile {outfile}')
 	print("Comment finished")
