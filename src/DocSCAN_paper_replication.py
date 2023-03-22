@@ -741,33 +741,12 @@ if __name__ == "__main__":
 	parser.add_argument("--dropout", default=0.1, type=float, help="dropout for DocSCAN model")
 	parser.add_argument("--num_epochs", default=5, type=int, help="number of epochs to train DocSCAN model")
 	parser.add_argument("--num_neighbors", default=5, type=int, help="number of epochs to train DocSCAN model")
+	parser.add_argument("--device", default='cpu', type=str, help="device the code should be run on")
 	args = parser.parse_args()
 
 	if args.dropout == 0:
 		args.dropout = None
 
-	nvmlInit()
-	deviceCount = nvmlDeviceGetCount()
-	if deviceCount > 0:
-		CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(deviceCount)}
-		device = 'CUDA'
-	else:
-		device = 'cpu'
-
-
-
-	while device == 'CUDA':
-		for i in range(deviceCount):
-			info = nvmlDeviceGetMemoryInfo(CUDA[i])
-			util_rate = nvmlDeviceGetUtilizationRates(CUDA[i]).memory
-			if util_rate == 0:
-				device = f'cuda:{deviceCount}'
-		print('Looking for free device')
-		time.sleep(10)
-	print(device)
-
-
-	lol
 	docscan = DocSCANPipeline(args)
 	docscan.run_main()
 
