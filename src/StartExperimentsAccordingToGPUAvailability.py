@@ -10,6 +10,7 @@ import os
 Experiments = ['PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py']
 
 def start_experiment(experiment, device, outfile):
+	print(f'{experiment} --device {device} --outfile {outfile}')
 	os.system(f'{experiment} --device {device} --outfile {outfile}')
 	print("Comment finished")
 
@@ -49,7 +50,7 @@ while count <= len(Experiments):
 			device = f'cuda:{i}'
 			now = datetime.now()
 			current_time = now.strftime("%H:%M:%S")
-			outfile = f"{Experiments[count]}, started {current_time}.txt"
+			outfile = f"logs/{Experiments[count]}, started {current_time}.txt"
 			processes[count] = mp.Process(target=start_experiment(Experiments[count], device, outfile))
 			processes[count].start()
 			freeCUDA[i] = False
@@ -69,7 +70,8 @@ while count <= len(Experiments):
 	print("Looking for free devices")
 	time.sleep(10)
 
-print(device)
+print("Finished all Experiments")
+
 
 
 
