@@ -754,7 +754,7 @@ if __name__ == "__main__":
 	while True:
 		for i in range(3):
 			info = nvmlDeviceGetMemoryInfo(CUDA[i])
-			print(f'used     : {info.used}')
+			print(f'{i} uses     : {info.used}')
 		time.sleep(10)
 
 	docscan = DocSCANPipeline(args)
