@@ -2,14 +2,16 @@ import multiprocessing as mp
 from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlDeviceGetUtilizationRates, nvmlDeviceGetCount
 import time
 from datetime import datetime
+import os
 
 
 
 
-Experiments = []
+Experiments = ['PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py']
 
 def start_experiment(experiment, device, outfile):
-	pass
+	os.system(f'{experiment} --device {device} --outfile {outfile}')
+	print("Comment finished")
 
 
 #processes = [mp.Process(target=start_experiment()) for experiment in Experiments]
@@ -64,9 +66,7 @@ while count <= len(Experiments):
 		else:
 			possible_devices.append(i)
 			used_devices.remove(i)
-
-
-	print('Looking for free device')
+	print("Looking for free devices")
 	time.sleep(10)
 
 print(device)
