@@ -60,11 +60,12 @@ while count <= len(Experiments):
 			process_device[i] =  count
 			used_devices.append(i)
 			count += 1
-
+	print('Was executed')
 	#check if experiments are done and deblock cuda if yes
 	for i in used_devices:
 		proc = processes[process_device[i]]
 		proc.join(timeout=0)
+		print('Was executed2')
 		if proc.is_alive():
 			pass
 		else:
