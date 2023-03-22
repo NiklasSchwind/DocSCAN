@@ -7,7 +7,7 @@ import os
 
 
 
-Experiments = ['PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py']
+Experiments = ['PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python test.py', 'PYTHONPATH=src python test.py']
 
 def start_experiment(experiment, device, outfile):
 	os.system(f'{experiment} --device {device} --outfile {outfile}')
@@ -49,7 +49,7 @@ while count <= len(Experiments):
 			device = f'cuda:{i}'
 			now = datetime.now()
 			current_time = now.strftime("%H:%M:%S")
-			outfile = f"{Experiments[count]}, started {current_time}"
+			outfile = f"{Experiments[count]}, started {current_time}.txt"
 			processes[count] = mp.Process(target=start_experiment(Experiments[count], device, outfile))
 			processes[count].start()
 			freeCUDA[i] = False
