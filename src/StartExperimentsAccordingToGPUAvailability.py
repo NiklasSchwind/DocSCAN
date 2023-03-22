@@ -52,7 +52,7 @@ while count <= len(Experiments):
 			device = f'cuda:{i}'
 			now = datetime.now()
 			current_time = now.strftime("%H:%M:%S")
-			outfile = f"DocSCAN/Logs/{Experiments[count].replace(' ','_').replace('.','_')}_started_{current_time}.txt"
+			outfile = f"Logs/{Experiments[count].replace(' ','_').replace('.','_').replace('/','_')}_started_{current_time}.txt"
 			processes[count] = mp.Process(target=start_experiment(Experiments[count], device, outfile))
 			processes[count].start()
 			freeCUDA[i] = False
