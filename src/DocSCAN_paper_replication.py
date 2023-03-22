@@ -16,6 +16,8 @@ import nltk
 from utils.EncodeDropout import encode_with_dropout
 from transformers import MarianMTModel, MarianTokenizer
 from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert, softmax,finetune_BERT_SemanticClustering, get_predictions_Bert
+from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo
+import time
 nltk.download('punkt')
 
 def evaluate(targets, predictions, verbose=0, mode = 'test'):
@@ -743,6 +745,18 @@ if __name__ == "__main__":
 
 	if args.dropout == 0:
 		args.dropout = None
+
+	nvmlInit()
+	CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(3)}
+
+
+
+	while True:
+		for i in range(3):
+			info = nvmlDeviceGetMemoryInfo(CUDA[i])
+			print(f'used     : {info.used}')
+		time.sleep(10)
+
 	docscan = DocSCANPipeline(args)
 	docscan.run_main()
 
