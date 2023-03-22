@@ -43,6 +43,8 @@ while count < len(Experiments):
 	for i in possible_devices:
 		info = nvmlDeviceGetMemoryInfo(CUDA[i])
 		util_rate = nvmlDeviceGetUtilizationRates(CUDA[i]).memory
+		gpu_cores = nvmlDeviceGetUtilizationRates(CUDA[i]).gpu
+		print(f'{i} {gpu_cores}')
 		if util_rate == 0:
 			freeCUDA[i] = True
 
