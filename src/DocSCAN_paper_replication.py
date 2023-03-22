@@ -754,7 +754,7 @@ if __name__ == "__main__":
 	while True:
 		for i in range(3):
 			info = nvmlDeviceGetMemoryInfo(CUDA[i])
-			util_rate = nvmlDeviceGetUtilizationRates(CUDA[i])
+			util_rate = nvmlDeviceGetUtilizationRates(CUDA[i]).memory
 			print(f'{i} uses     : {info.used}')
 			print(f'{i} util rate     : {util_rate}')
 		time.sleep(10)
