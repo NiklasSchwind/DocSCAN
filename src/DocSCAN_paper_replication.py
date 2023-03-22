@@ -16,7 +16,7 @@ import nltk
 from utils.EncodeDropout import encode_with_dropout
 from transformers import MarianMTModel, MarianTokenizer
 from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert, softmax,finetune_BERT_SemanticClustering, get_predictions_Bert
-from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlDeviceGetUtilizationRates
+from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlDeviceGetUtilizationRates, nvmlDeviceGetCount
 import time
 nltk.download('punkt')
 
@@ -747,18 +747,27 @@ if __name__ == "__main__":
 		args.dropout = None
 
 	nvmlInit()
-	CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(3)}
+	deviceCount = nvmlDeviceGetCount()
+	if deviceCount > 0:
+		CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(deviceCount)}
+		device = 'CUDA'
+	else:
+		device = 'cpu'
 
 
 
-	while True:
-		for i in range(3):
+	while device == 'CUDA':
+		for i in range(deviceCount):
 			info = nvmlDeviceGetMemoryInfo(CUDA[i])
 			util_rate = nvmlDeviceGetUtilizationRates(CUDA[i]).memory
-			print(f'{i} uses     : {info.used}')
-			print(f'{i} util rate     : {util_rate}')
+			if util_rate == 0:
+				device = f'cuda:{deviceCount}'
+		print('Looking for free device')
 		time.sleep(10)
+	print(device)
 
+
+	lol
 	docscan = DocSCANPipeline(args)
 	docscan.run_main()
 
