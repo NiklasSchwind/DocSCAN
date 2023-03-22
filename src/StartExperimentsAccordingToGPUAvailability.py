@@ -52,6 +52,7 @@ while count <= len(Experiments):
 			device = f'cuda:{i}'
 			now = datetime.now()
 			current_time = now.strftime("%H:%M:%S")
+			print(count)
 			outfile = f"Logs/{Experiments[count].replace(' ','_').replace('.','_').replace('/','_')}_started_{current_time}.txt"
 			processes[count] = mp.Process(target=start_experiment,args=(Experiments[count], device, outfile))
 			processes[count].start()
