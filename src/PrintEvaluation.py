@@ -121,6 +121,8 @@ class Evaluation:
 
     def evaluate(self,targets, predictions):
 
+        targets = np.array(targets)
+        predictions = np.array(predictions)
         hungarian_match_metrics = self.hungarian_evaluate(targets, predictions)
         self.add_evaluation(hungarian_match_metrics['full_statistics'])
 

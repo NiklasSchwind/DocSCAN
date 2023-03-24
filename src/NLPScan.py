@@ -213,7 +213,7 @@ class DocSCANPipeline():
 
             targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
             targets = [targets_map[i] for i in self.df_test["label"]]
-            evaluation.evaluate(targets, predictions)
+            evaluation.evaluate(np.array(targets), np.array(predictions))
             print(len(targets), len(predictions))
             evaluation.print_statistic_of_latest_experiment()
 
