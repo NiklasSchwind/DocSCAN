@@ -34,5 +34,5 @@ def write_in_jsonl(list, outfile):
             f.write('\n')
 
 
-dictlist = read_csv(filename)
-write_in_jsonl(dictlist,filename)
+dictlist = read_csv(filename_in)
+write_in_jsonl(dictlist,filename_out)
