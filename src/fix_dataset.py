@@ -2,7 +2,7 @@ import json
 import csv
 
 
-filename_in = 'dbpedia/test.csv'
+filename_in = 'dbpedia_csv/test.csv'
 filename_out = 'test.jsonl'
 
 
