@@ -161,7 +161,7 @@ class Evaluation:
     # Returns mean and standartdeviation of a result indicator calculated from all experiments if the indicator depends on the class
     def return_median_and_std_classwise(self, experiments, variable, target):
 
-        values = np.array([experiments[i][target][variable] for i in range(self.experiment_counter)])
+        values = np.array([experiments[i][target][variable] for i in self.experiment_list])
 
         return f'{np.mean(values).round(3)}, ({np.std(values).round(3)})'
 
@@ -174,13 +174,13 @@ class Evaluation:
        print('\n')
        print(f'Corpus Statistics')
        print(
-           f'Corpus Name: {self.name_dataset}, Number Classes: {experiments[self.experiment_counter[0]]["number_classes"]}, Number Texts: {experiments[self.experiment_counter[0]]["full_score"]}')
+           f'Corpus Name: {self.name_dataset}, Number Classes: {experiments[self.experiment_list[0]]["number_classes"]}, Number Texts: {experiments[self.experiment_list[0]]["full_score"]}')
        print('\n')
        print('Class Statistics:')
-       for target in experiments[self.experiment_counter[0]]['class_recall'].keys():
+       for target in experiments[self.experiment_list[0]]['class_recall'].keys():
            print(f'Class: {target}')
            print(
-               f'Class Recall: {self.return_median_and_std_classwise(experiments,"class_recall",target)}, Class Precition: {eself.return_median_and_std_classwise(experiments,"class_precition",target)}, Class F1-Score: {self.return_median_and_std_classwise(experiments,"class_f1",target)}, Class Score: {experiments[self.experiment_counter[0]]["score"][target]}, Class Relative Score: {experiments[self.experiment_counter[0]]["relative_score"][target]} ')
+               f'Class Recall: {self.return_median_and_std_classwise(experiments,"class_recall",target)}, Class Precition: {self.return_median_and_std_classwise(experiments,"class_precition",target)}, Class F1-Score: {self.return_median_and_std_classwise(experiments,"class_f1",target)}, Class Score: {experiments[self.experiment_list[0]]["score"][target]}, Class Relative Score: {experiments[self.experiment_list[0]]["relative_score"][target]} ')
        print('\n')
        print('Macro Averages:')
        print(
