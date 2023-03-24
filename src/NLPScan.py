@@ -205,6 +205,7 @@ class DocSCANPipeline():
             predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
                                                              collate_fn=predict_dataset.collate_fn_predict,
                                                              batch_size=self.args.batch_size)
+
             predictions, probabilities = self.get_predictions(model, predict_dataloader)
             # train data
 
@@ -213,16 +214,9 @@ class DocSCANPipeline():
             targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
             targets = [targets_map[i] for i in self.df_test["label"]]
             print(len(targets), len(predictions))
-            evaluation_experiment = evaluation.evaluate(np.array(targets), np.array(predictions))
             evaluation.print_statistic_of_latest_experiment()
-            '''
-            docscan_clusters = evaluation_experiment["reordered_preds"]
-            self.df_test["label"] = targets
-            self.df_test["clusters"] = docscan_clusters
-            self.df_test["probabilities"] = probabilities
-            acc_test = np.mean(self.df_test["label"] == self.df_test["clusters"])
-            results.append(acc_test)
-            '''
+
+
         evaluation.print_full_statistics()
 
 

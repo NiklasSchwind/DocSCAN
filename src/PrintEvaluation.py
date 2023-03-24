@@ -48,8 +48,8 @@ class Evaluation:
         '''
         Note for future Niklas:
         targets = tatsächliche klasse
-        predictions = predictions direkt von docscan
-        reodered_predicitons = predictions nach hungarian matching
+        predictions = predictions direkt von docscan (d.h clusternummer)
+        reodered_predicitons = predictions nach hungarian matching (d.h clusternummer entspricht optimalem target)
         '''
 
         num_classes = len(np.unique(targets))
