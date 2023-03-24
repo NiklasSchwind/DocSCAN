@@ -32,7 +32,7 @@ def evaluate(targets, predictions, verbose=0):
 class DocSCANPipeline():
     def __init__(self, args):
         self.args = args
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.device = args.device
         os.makedirs(self.args.path, exist_ok=True)
 
     def load_data(self, filename):
@@ -132,7 +132,7 @@ class DocSCANPipeline():
         return model
 
     def train_model(self):
-        train_dataset = DocScanDataset(self.neighbor_dataset, self.X, mode="train")
+        train_dataset = DocScanDataset(self.neighbor_dataset, self.X, mode="train").to(self.device)
         model = DocScanModel(self.args.num_classes, self.args.dropout).to(self.device)
         optimizer = torch.optim.Adam(model.parameters())
         criterion = SCANLoss()
