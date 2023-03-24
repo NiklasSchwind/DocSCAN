@@ -248,6 +248,7 @@ if __name__ == "__main__":
     if args.outfile != 'NO':
         sys.stdout = open(args.outfile, 'wt')
 
+    print(args.device)
     docscan = DocSCANPipeline(args)
     evaluation = Evaluation(name_dataset = args.path, name_embeddings = args.embedding_model)
     docscan.run_main()
