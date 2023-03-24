@@ -207,12 +207,13 @@ class DocSCANPipeline():
                                                              batch_size=self.args.batch_size)
 
             predictions, probabilities = self.get_predictions(model, predict_dataloader)
-            # train data
-            evaluation.evaluate(targets, predictions)
+
+
             print("docscan trained with n=", self.args.num_classes, "clusters...")
 
             targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
             targets = [targets_map[i] for i in self.df_test["label"]]
+            evaluation.evaluate(targets, predictions)
             print(len(targets), len(predictions))
             evaluation.print_statistic_of_latest_experiment()
 
