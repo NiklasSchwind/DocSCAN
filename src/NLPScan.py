@@ -46,7 +46,7 @@ class DocSCANPipeline():
         return df
 
     def embedd_sentences(self, sentences):
-        embedder = SentenceTransformer(self.args.sbert_model)
+        embedder = SentenceTransformer(self.args.embedding_model)
         embedder.max_seq_length = self.args.max_seq_length
         corpus_embeddings = embedder.encode(sentences, batch_size=32, show_progress_bar=True)
         return corpus_embeddings
