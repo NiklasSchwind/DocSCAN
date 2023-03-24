@@ -19,7 +19,7 @@ def read_csv(infile):
     for f in onlyfiles_pos:
         with open(join('/vol/fob-vol7/mi19/schwindn/DocSCAN/IMDB/aclImdb/train/pos', f), encoding='utf-8') as text:
             dictlist.append({"text": str(text), "label": "positiv"})
-    for f in onlyfiles_pos:
+    for f in onlyfiles_neg:
         with open(join('/vol/fob-vol7/mi19/schwindn/DocSCAN/IMDB/aclImdb/train/neg', f), encoding='utf-8') as text:
             dictlist.append({"text": str(text), "label": "negativ"})
 
