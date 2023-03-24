@@ -208,7 +208,7 @@ class DocSCANPipeline():
 
             predictions, probabilities = self.get_predictions(model, predict_dataloader)
             # train data
-
+            evaluation.evaluate(targets, predictions)
             print("docscan trained with n=", self.args.num_classes, "clusters...")
 
             targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
