@@ -201,7 +201,7 @@ class DocSCANPipeline():
             model = self.train_model()
             # test data
             predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
-                                             test_embeddings=self.X_test)
+                                             test_embeddings=self.X_test, device= self.device)
             predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
                                                              collate_fn=predict_dataset.collate_fn_predict,
                                                              batch_size=self.args.batch_size)
