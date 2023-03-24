@@ -11,7 +11,7 @@ def read_jsonl(infile):
         for line in f:
             lines = json.loads(line)
             print(lines)
-            for lin in lines:
+            for lin in lines["rows"]:
                 print(lin)
                 dictlist.append({"text": lin["row"]["text"], "label": rename[str(lin["row"]["label"])]})
     return dictlist
