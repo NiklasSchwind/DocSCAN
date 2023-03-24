@@ -44,8 +44,7 @@ while count < len(Experiments):
 		info = nvmlDeviceGetMemoryInfo(CUDA[i])
 		util_rate = nvmlDeviceGetUtilizationRates(CUDA[i]).memory
 		gpu_cores = nvmlDeviceGetUtilizationRates(CUDA[i]).gpu
-		print(f'{i} {gpu_cores}')
-		if util_rate == 0:
+		if util_rate == 0 and gpu_cores == 0:
 			freeCUDA[i] = True
 
 	#If yes, relocate an experiment to CUDA and block cuda

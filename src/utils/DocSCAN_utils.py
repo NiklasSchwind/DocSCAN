@@ -26,11 +26,11 @@ import matplotlib.pyplot as plt
 #from visualizations import generate_word_clouds
 
 class DocScanDataset(Dataset):
-	def __init__(self, neighbor_df, embeddings, test_embeddings="", mode="train"):
+	def __init__(self, neighbor_df, embeddings, test_embeddings="", mode="train", device = 'cpu' ):
 		self.neighbor_df = neighbor_df
 		self.embeddings = embeddings
 		self.mode = mode
-		self.device = "cuda" if torch.cuda.is_available() else "cpu"
+		self.device = device
 		if mode == "train":
 			self.examples = self.load_data()
 		elif mode == "predict":
@@ -67,11 +67,11 @@ class DocScanDataset(Dataset):
 
 
 class DocScanDataset_BertFinetune(Dataset):
-	def __init__(self, neighbor_df, texts, test_embeddings="", mode="train"):
+	def __init__(self, neighbor_df, texts, test_embeddings="", mode="train", device = 'cpu'):
 		self.neighbor_df = neighbor_df
 		self.texts = texts
 		self.mode = mode
-		self.device = "cuda" if torch.cuda.is_available() else "cpu"
+		self.device = device
 		if mode == "train":
 			self.examples = self.load_data()
 		elif mode == "predict":
@@ -108,11 +108,11 @@ class DocScanDataset_BertFinetune(Dataset):
 		return {"anchor": out}
 
 class DocScanModel(torch.nn.Module):
-	def __init__(self, num_labels, dropout, hidden_dim=768):
+	def __init__(self, num_labels, dropout, hidden_dim=768, device = 'cpu'):
 		super(DocScanModel, self).__init__()
 		self.num_labels = num_labels
 		self.classifier = torch.nn.Linear(hidden_dim, num_labels)
-		self.device = "cuda" if torch.cuda.is_available() else "cpu"
+		self.device = device
 		#self.device = "cpu"
 		self.dropout = dropout
 
@@ -143,17 +143,18 @@ class DocScanModel_new(torch.nn.Module):
 
 
 class Backtranslation:
-	def __init__(self, batch_size ):
+	def __init__(self, batch_size, device ):
 		self.batch_size = batch_size
-		self.tokenizer_fr_en = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-fr-en')
-		self.tokenizer_en_fr = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-en-fr')
-		self.tokenizer_en_de = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-en-de')
-		self.tokenizer_de_en = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-de-en')
-		self.model_fr_en = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-fr-en')
-		self.model_en_fr = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-en-fr')
-		self.model_de_en = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-de-en')
-		self.model_en_de = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-en-de')
+		self.tokenizer_fr_en = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-fr-en').to(device)
+		self.tokenizer_en_fr = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-en-fr').to(device)
+		self.tokenizer_en_de = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-en-de').to(device)
+		self.tokenizer_de_en = MarianTokenizer.from_pretrained('Helsinki-NLP/opus-mt-de-en').to(device)
+		self.model_fr_en = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-fr-en').to(device)
+		self.model_en_fr = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-en-fr').to(device)
+		self.model_de_en = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-de-en').to(device)
+		self.model_en_de = MarianMTModel.from_pretrained('Helsinki-NLP/opus-mt-en-de').to(device)
 		self.inbetween_language = 'fr'
+		self.device = device
 
 	def format_batch_texts(self, language_code, batch_texts):
 
@@ -204,6 +205,7 @@ class Backtranslation:
 	def backtranslate(self,texts):
 		augmented_texts = []
 		for batch in self.divide_chunks(texts,self.batch_size):
+			batch.to(self.device)
 			augmented_texts.append(self.perform_back_translation_with_augmentation(batch))
 
 		return augmented_texts

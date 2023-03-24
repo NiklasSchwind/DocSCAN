@@ -5,19 +5,14 @@ from utils.memory import MemoryBank
 import torch
 from utils.DocSCAN_utils import DocScanDataset, DocScanModel, Backtranslation
 from utils.losses import SCANLoss, ConfidenceBasedCE
-from sklearn.feature_extraction.text import TfidfVectorizer
 from tqdm import tqdm
 from scipy.special import softmax
-import numpy as np
-from sklearn.metrics.pairwise import pairwise_distances
 from utils.utils import *
-import random
 import nltk
 from utils.EncodeDropout import encode_with_dropout
-from transformers import MarianMTModel, MarianTokenizer
 from TrainingWithPrototypes import Dataset_Bert, BertClassifier, finetune_BERT,evaluate_Bert, softmax,finetune_BERT_SemanticClustering, get_predictions_Bert
-from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo, nvmlDeviceGetUtilizationRates, nvmlDeviceGetCount
-import time
+import sys
+from PrintEvaluation import Evaluation
 nltk.download('punkt')
 
 def evaluate(targets, predictions, verbose=0, mode = 'test'):
@@ -39,7 +34,7 @@ def evaluate(targets, predictions, verbose=0, mode = 'test'):
 class DocSCANPipeline():
 	def __init__(self, args):
 		self.args = args
-		self.device = "cuda" if torch.cuda.is_available() else "cpu"
+		self.device = args.device #"cuda" if torch.cuda.is_available() else "cpu"
 		os.makedirs(self.args.path, exist_ok=True)
 
 	def load_data(self, filename):
@@ -69,7 +64,7 @@ class DocSCANPipeline():
 				embedder = SentenceTransformer(self.args.sbert_model)
 				embedder.max_seq_length = self.args.max_seq_length
 				embedder.train()
-				corpus_embeddings = encode_with_dropout(embedder, sentences, batch_size=32, show_progress_bar=True, eval = False)
+				corpus_embeddings = encode_with_dropout(embedder, sentences, batch_size=32, show_progress_bar=True, eval = False, device = self.device)
 				embedder.eval()
 
 		elif method == 'SimCSE':
@@ -225,8 +220,8 @@ class DocSCANPipeline():
 
 
 	def train_model(self):
-		train_dataset = DocScanDataset(self.neighbor_dataset, self.X, mode="train")
-		model = DocScanModel(self.args.num_classes, self.args.dropout).to(self.device)
+		train_dataset = DocScanDataset(self.neighbor_dataset, self.X, mode="train", device =self.device)
+		model = DocScanModel(self.args.num_classes, self.args.dropout, device).to(self.device)
 		optimizer = torch.optim.Adam(model.parameters())
 		criterion = SCANLoss()
 		criterion.to(self.device)
@@ -246,7 +241,7 @@ class DocSCANPipeline():
 	def augment(self, sentences, method):
 
 		if method == 'backtranslation':
-			Backtranslator = Backtranslation(batch_size = 128)
+			Backtranslator = Backtranslation(batch_size = 128, device = self.device)
 			sentences_augmented = Backtranslator.backtranslate(sentences)
 			df_train_augmented = pd.DataFrame(list(zip(sentences_augmented, list(sentences['label']))),
 											  columns=["sentence", "label"])
@@ -261,7 +256,7 @@ class DocSCANPipeline():
 
 		# train data
 		predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
-											   test_embeddings=self.X)
+											   test_embeddings=self.X, device = self.device)
 		predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
 															   collate_fn=predict_dataset_train.collate_fn_predict,
 															   batch_size=self.args.batch_size)
@@ -283,7 +278,7 @@ class DocSCANPipeline():
 		embeddings_augmented = torch.from_numpy(embeddings_augmented)
 		# augmented data
 		predict_dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
-											   test_embeddings=embeddings_augmented)
+											   test_embeddings=embeddings_augmented, device = self.device)
 
 		predict_dataloader_augmented = torch.utils.data.DataLoader(predict_dataset_augmented, shuffle=False,
 															   collate_fn=predict_dataset_augmented.collate_fn_predict,
@@ -336,7 +331,7 @@ class DocSCANPipeline():
 		return model
 
 
-	def run_main(self):
+	def run_main_selflabeling(self):
 		# embedd using SBERT
 
 		print ("loading data...")
@@ -393,7 +388,7 @@ class DocSCANPipeline():
 			model = self.train_model()
 			# test data
 			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
-											 test_embeddings=self.X_test)
+											 test_embeddings=self.X_test, device = self.device)
 			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
 															 collate_fn=predict_dataset.collate_fn_predict,
 															 batch_size=self.args.batch_size)
@@ -562,7 +557,7 @@ class DocSCANPipeline():
 			model = self.train_model()
 			# test data
 			predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
-											 test_embeddings=self.X_test)
+											 test_embeddings=self.X_test, device = self.device)
 			predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
 															 collate_fn=predict_dataset.collate_fn_predict,
 															 batch_size=self.args.batch_size)
@@ -587,7 +582,7 @@ class DocSCANPipeline():
 			results.append(acc_test)
 
 			predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
-												   test_embeddings=self.X)
+												   test_embeddings=self.X, device = self.device)
 			predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
 																   collate_fn=predict_dataset_train.collate_fn_predict,
 																   batch_size=self.args.batch_size)
@@ -612,8 +607,8 @@ class DocSCANPipeline():
 			df_ExtraModel = df_ExtraModel[['sentence','clusters']].rename({'sentence':'text', 'clusters': 'cluster'},axis='columns')
 
 
-			Extra_Model = BertClassifier()
-			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 7)
+			Extra_Model = BertClassifier().to(self.device)
+			finetune_BERT(Extra_Model, df_ExtraModel, 1e-6, 7, self.device)
 
 			df_ExtraModel_test = self.df_test
 			df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
@@ -628,7 +623,7 @@ class DocSCANPipeline():
 
 
 
-			acc_extramodel = evaluate_Bert(Extra_Model, df_ExtraModel_test)
+			acc_extramodel = evaluate_Bert(Extra_Model, df_ExtraModel_test, self.device)
 			results_extra.append(acc_extramodel)
 
 
@@ -691,9 +686,9 @@ class DocSCANPipeline():
 
 		for _ in range(2):
 
-			model = BertClassifier()
+			model = BertClassifier().to(self.device)
 
-			finetune_BERT_SemanticClustering(model, self.neighbor_dataset, [text for text in df_train["sentence"]], self.args.batch_size, 1e-6, 5)
+			finetune_BERT_SemanticClustering(model, self.neighbor_dataset, [text for text in df_train["sentence"]], self.args.batch_size, 1e-6, 5, self.device)
 
 			print("docscan trained with n=", self.args.num_classes, "clusters...")
 
@@ -707,7 +702,7 @@ class DocSCANPipeline():
 				{'sentence': 'text', 'label': 'cluster'},
 				axis='columns')
 
-			predictions, probabilities = get_predictions_Bert(model, df_ExtraModel_test)
+			predictions, probabilities = get_predictions_Bert(model, df_ExtraModel_test, self.device)
 
 			df_ExtraModel_test = df_ExtraModel_test.rename({ 'cluster': 'label'},
 				axis='columns')
@@ -742,11 +737,16 @@ if __name__ == "__main__":
 	parser.add_argument("--num_epochs", default=5, type=int, help="number of epochs to train DocSCAN model")
 	parser.add_argument("--num_neighbors", default=5, type=int, help="number of epochs to train DocSCAN model")
 	parser.add_argument("--device", default='cpu', type=str, help="device the code should be run on")
+	parser.add_argument("--outfile", default='NO', type=str, help="file to print outputs to")
 	args = parser.parse_args()
 
 	if args.dropout == 0:
 		args.dropout = None
+	if args.outfile != 'NO':
+		sys.stdout = open(args.outfile, 'wt')
+
 
 	docscan = DocSCANPipeline(args)
+	#evaluation = evaluation(args.)
 	docscan.run_main()
 

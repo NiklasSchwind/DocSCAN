@@ -65,21 +65,20 @@ class Dataset_Bert(torch.utils.data.Dataset):
         return batch_texts, batch_y
 
 
-def finetune_BERT(model, train_data,  learning_rate, epochs):
+def finetune_BERT(model, train_data,  learning_rate, epochs, device):
     train = Dataset_Bert(train_data)#, Dataset_Bert(val_data)
 
     train_dataloader = torch.utils.data.DataLoader(train, batch_size=2, shuffle=True)
     #val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
 
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
+
 
     criterion = nn.CrossEntropyLoss()
     optimizer = Adam(model.parameters(), lr=learning_rate)
 
-    if use_cuda:
-        model = model.cuda()
-        criterion = criterion.cuda()
+
+    model = model.to(device)
+    criterion = criterion.to(device)
 
     for epoch_num in range(epochs):
 
@@ -129,23 +128,21 @@ def finetune_BERT(model, train_data,  learning_rate, epochs):
 
 #
 
-def finetune_BERT_SemanticClustering(model, neighbors, texts, batch_size,  learning_rate, epochs):
-    train = DocScanDataset_BertFinetune(neighbors, [tokenizer(text,padding='max_length', max_length = 512, truncation=True,return_tensors="pt") for text in texts])
+def finetune_BERT_SemanticClustering(model, neighbors, texts, batch_size,  learning_rate, epochs, device):
+    train = DocScanDataset_BertFinetune(neighbors, [tokenizer(text,padding='max_length', max_length = 512, truncation=True,return_tensors="pt") for text in texts], device)
 
     train_dataloader = torch.utils.data.DataLoader(train, shuffle=True,
 															 collate_fn=train.collate_fn,
 															 batch_size=batch_size)
     #val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
 
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
 
     criterion = SCANLoss()
     criterion.to(device)
     optimizer = Adam(model.parameters(), lr=learning_rate)
 
-    if use_cuda:
-        model = model.cuda()
+
+    model.to(device)
         #criterion = criterion.cuda()
 
     for epoch in range(epochs):
@@ -194,16 +191,13 @@ def finetune_BERT_SemanticClustering(model, neighbors, texts, batch_size,  learn
 
 
 
-def evaluate_Bert(model, test_data):
+def evaluate_Bert(model, test_data, device):
     test = Dataset_Bert(test_data)
 
     test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
 
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
 
-    if use_cuda:
-        model = model.cuda()
+    model = model.to(device)
 
     total_acc_test = 0
     with torch.no_grad():
@@ -229,16 +223,16 @@ def softmax(x):
     return e_x / e_x.sum(axis=0) # only difference
 
 
-def get_predictions_Bert(model, test_data):
+def get_predictions_Bert(model, test_data, device):
     test = Dataset_Bert(test_data)
 
     test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
 
-    use_cuda = torch.cuda.is_available()
-    device = torch.device("cuda" if use_cuda else "cpu")
+    #use_cuda = torch.cuda.is_available()
+    #device = torch.device("cuda" if use_cuda else "cpu")
 
-    if use_cuda:
-        model = model.cuda()
+
+    model = model.to(device)
 
     predictions_test = []
     probabilities_test = []

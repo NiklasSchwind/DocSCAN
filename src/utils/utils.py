@@ -45,8 +45,39 @@ def hungarian_evaluate(targets, predictions, class_names=None,
 
     # Gather performance metrics
     acc = int((reordered_preds == targets).sum()) / float(num_elems)
+
+
+    full_statistics = {}
+    full_statistics['class_recall'] = {}
+    full_statistics['class_precition'] = {}
+    full_statistics['class_f1'] = {}
+    full_statistics['score'] = {}
+    full_statistics['relative_score'] = {}
+    full_statistics['number_classes'] = num_classes
+
+    for target in np.unique(targets):
+        full_statistics['class_recall'][target] = int(sum([1 for i,predictions in enumerate(reordered_preds) if predictions == target and targets[i] == target]))/targets.count(target)
+        full_statistics['class_precition'][target] = int(sum([1 for i,preds in enumerate(reordered_preds) if preds == target and targets[i] == target]))/sum([1 for preds in reordered_preds if preds == target])
+        full_statistics['class_f1'][target] = (full_statistics['class_recall'][target]*full_statistics['class_precition'][target])/(full_statistics['class_recall'][target]+full_statistics['class_precition'][target])
+        full_statistics['score'][target] = targets.count(target)
+        full_statistics['relative_score'][target] = targets.count(target) / len(targets)
+
+    full_statistics['macro_f1'] = sum([full_statistics['class_f1'][target] for target in np.unique(targets)]) / (len(np.unique(targets)))
+    full_statistics['macro_avg_recall'] = sum([full_statistics['class_recall'][target] for target in np.unique(targets)]) / (len(np.unique(targets)))
+    full_statistics['macro_avg_precition'] = sum([full_statistics['class_precition'][target] for target in np.unique(targets)]) / (len(np.unique(targets)))
+
+    full_statistics['weighted_average_f1'] = sum([(targets.count(target) / len(targets)) * full_statistics['class_f1'][target] for target in np.unique(targets)])
+    full_statistics['weighted_average_recall'] = sum([(targets.count(target) / len(targets)) * full_statistics['class_recall'][target] for target in np.unique(targets)])
+    full_statistics['weighted_average_precition'] = sum([(targets.count(target) / len(targets)) * full_statistics['class_precition'][target] for target in np.unique(targets)])
+
+    full_statistics['accuracy'] = acc
+    full_statistics['full_score'] = len(targets)
+
+
     nmi = metrics.normalized_mutual_info_score(targets, predictions)
     ari = metrics.adjusted_rand_score(targets, predictions)
+
+    full_statistics['normalised_mutual_information'] = nmi
 
     classification_report = metrics.classification_report(targets, reordered_preds)
     cm = metrics.confusion_matrix(targets, reordered_preds)
@@ -63,5 +94,5 @@ def hungarian_evaluate(targets, predictions, class_names=None,
     #confusion_matrix(reordered_preds, targets, 
     #                class_names, confusion_matrix_file)
 
-    return {'ACC': acc, 'ARI': ari, 'NMI': nmi, 'hungarian_match': match, "classification_report": classification_report, "confusion matrix": cm, "reordered_preds": reordered_preds}
+    return {'full_statistics': full_statistics,'ACC': acc, 'ARI': ari, 'NMI': nmi, 'hungarian_match': match, "classification_report": classification_report, "confusion matrix": cm, "reordered_preds": reordered_preds}
 
