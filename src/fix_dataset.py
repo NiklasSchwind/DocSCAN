@@ -1,6 +1,6 @@
 import json
 
-filename = 'train.jsonl'
+filename = 'test.jsonl'
 
 
 
