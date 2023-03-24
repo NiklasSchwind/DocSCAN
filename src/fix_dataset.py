@@ -8,9 +8,10 @@ def read_jsonl(infile):
     inlist = json.loads(infile)
     dictlist = []
     rename = {'0': 'World', '1': 'Sports' ,'2': 'Business', '3': 'Science and Technology' }
-    for line in inlist:
-        line = json.loads(line)
-        dictlist.append({"text": line["row"]["text"], "label": rename[str(line["row"]["label"])]})
+    with open(filename) as f:
+        for line in f:
+            line = json.loads(line)
+            dictlist.append({"text": line["row"]["text"], "label": rename[str(line["row"]["label"])]})
     return dictlist
 
 
