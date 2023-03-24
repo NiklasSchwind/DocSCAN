@@ -65,9 +65,10 @@ class Evaluation:
         full_statistics['number_classes'] = num_classes
 
         for target in np.unique(targets):
+            full_statistics['score'][target] = list(targets).count(target)
             full_statistics['class_recall'][target] = int(sum([1 for i, predictions in enumerate(reordered_preds) if
                                                                predictions == target and targets[
-                                                                   i] == target])) / targets.count(target)
+                                                                   i] == target])) /full_statistics['score'][target]
             full_statistics['class_precition'][target] = int(
                 sum([1 for i, preds in enumerate(reordered_preds) if preds == target and targets[i] == target])) / sum(
                 [1 for preds in reordered_preds if preds == target])
@@ -75,8 +76,8 @@ class Evaluation:
                                                    full_statistics['class_precition'][target]) / (
                                                               full_statistics['class_recall'][target] +
                                                               full_statistics['class_precition'][target])
-            full_statistics['score'][target] = targets.count(target)
-            full_statistics['relative_score'][target] = targets.count(target) / len(targets)
+
+            full_statistics['relative_score'][target] = full_statistics['score'][target] / len(targets)
 
         full_statistics['macro_f1'] = sum([full_statistics['class_f1'][target] for target in np.unique(targets)]) / (
             len(np.unique(targets)))
@@ -86,13 +87,13 @@ class Evaluation:
             [full_statistics['class_precition'][target] for target in np.unique(targets)]) / (len(np.unique(targets)))
 
         full_statistics['weighted_average_f1'] = sum(
-            [(targets.count(target) / len(targets)) * full_statistics['class_f1'][target] for target in
+            [(full_statistics['score'][target] / len(targets)) * full_statistics['class_f1'][target] for target in
              np.unique(targets)])
         full_statistics['weighted_average_recall'] = sum(
-            [(targets.count(target) / len(targets)) * full_statistics['class_recall'][target] for target in
+            [(full_statistics['score'][target] / len(targets)) * full_statistics['class_recall'][target] for target in
              np.unique(targets)])
         full_statistics['weighted_average_precition'] = sum(
-            [(targets.count(target) / len(targets)) * full_statistics['class_precition'][target] for target in
+            [(full_statistics['score'][target] / len(targets)) * full_statistics['class_precition'][target] for target in
              np.unique(targets)])
 
         full_statistics['accuracy'] = acc
