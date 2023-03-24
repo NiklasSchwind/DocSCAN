@@ -71,7 +71,7 @@ class Evaluation:
                                                                predictions == target and reordered_preds[
                                                                    i] == target])) / full_statistics['score'][target]
             full_statistics['class_precition'][target] = int(
-                sum([1 for i, preds in enumerate(reordered_preds) if preds == target and reordered_preds[i] == target])) / sum([1 for preds in reordered_preds if preds == target])
+                sum([1 for i, preds in enumerate(reordered_preds) if preds == target and reordered_preds[i] == target])) / sum([1 for preds in predictions if preds == target])
             if full_statistics['class_recall'][target] +full_statistics['class_precition'][target] != 0:
                 full_statistics['class_f1'][target] = (full_statistics['class_recall'][target] *
                                                    full_statistics['class_precition'][target]) / (
