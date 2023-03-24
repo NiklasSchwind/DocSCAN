@@ -132,7 +132,7 @@ class DocSCANPipeline():
         return model
 
     def train_model(self):
-        train_dataset = DocScanDataset(self.neighbor_dataset, self.X, mode="train").to(self.device)
+        train_dataset = DocScanDataset(self.neighbor_dataset, self.X, mode="train", device = self.device)
         model = DocScanModel(self.args.num_classes, self.args.dropout).to(self.device)
         optimizer = torch.optim.Adam(model.parameters())
         criterion = SCANLoss()
@@ -248,7 +248,7 @@ if __name__ == "__main__":
     if args.outfile != 'NO':
         sys.stdout = open(args.outfile, 'wt')
 
-    print(args.device)
+
     docscan = DocSCANPipeline(args)
     evaluation = Evaluation(name_dataset = args.path, name_embeddings = args.embedding_model)
     docscan.run_main()
