@@ -54,6 +54,8 @@ class Evaluation:
 
         num_classes = len(np.unique(targets))
         num_elems = len(targets)
+        print(targets)
+        print(predictions)
         match = self._hungarian_match(predictions, targets, preds_k=num_classes, targets_k=num_classes)
         reordered_preds = np.zeros(num_elems, dtype=predictions.dtype)
         for pred_i, target_i in match:
