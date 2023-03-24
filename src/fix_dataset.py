@@ -10,10 +10,9 @@ def read_jsonl(infile):
     with open(filename) as f:
         for line in f:
             lines = json.loads(line)
-            print(lines)
             for lin in lines["rows"]:
-                print(lin)
                 dictlist.append({"text": lin["row"]["text"], "label": rename[str(lin["row"]["label"])]})
+            print(len(lines["rows"]))
     return dictlist
 
 
