@@ -161,7 +161,7 @@ class Evaluation:
     # Returns mean and standartdeviation of a result indicator calculated from all experiments if the indicator depends on the class
     def return_median_and_std_classwise(self, experiments, variable, target):
 
-        values = np.array([experiments[i][target][variable] for i in self.experiment_list])
+        values = np.array([experiments[i][variable][target] for i in self.experiment_list])
 
         return f'{np.mean(values).round(3)}, ({np.std(values).round(3)})'
 
@@ -180,7 +180,7 @@ class Evaluation:
        for target in experiments[self.experiment_list[0]]['class_recall'].keys():
            print(f'Class: {target}')
            print(
-               f'Class Recall: {self.return_median_and_std_classwise(experiments,"class_recall",target)}, Class Precition: {self.return_median_and_std_classwise(experiments,"class_precition",target)}, Class F1-Score: {self.return_median_and_std_classwise(experiments,"class_f1",target)}, Class Score: {experiments[self.experiment_list[0]]["score"][target]}, Class Relative Score: {experiments[self.experiment_list[0]]["relative_score"][target]} ')
+               f'Class Recall: {self.return_median_and_std_classwise(experiments,"class_recall",target)}, Class Precition: {self.return_median_and_std_classwise(experiments,"class_precition",target)}, Class F1-Score: {self.return_median_and_std_classwise(experiments,"class_f1",target)}')
        print('\n')
        print('Macro Averages:')
        print(
