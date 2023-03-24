@@ -2,13 +2,26 @@ import json
 import csv
 
 
-filename_in = 'test.csv'
+filename_in = 'dbpedia/test.csv'
 filename_out = 'test.jsonl'
 
 
 
 def read_csv(infile):
-    rename = {0:'World', 1:'Sports', 2:'Business', 3:'Sci/Tech'}
+    rename = {1:"Company",
+                        2:"EducationalInstitution",
+                        3:"Artist",
+                        4:"Athlete",
+                        5:"OfficeHolder",
+                        6:"MeanOfTransportation",
+                        7:"Building",
+                        8:"NaturalPlace",
+                        9:"Village",
+                        10:"Animal",
+                        11:"Plant",
+                        12:"Album",
+                        13:"Film",
+                        14:"WrittenWork"}
     dictlist = []
     with open(infile, encoding="utf-8") as csv_file:
         csv_reader = csv.reader(
