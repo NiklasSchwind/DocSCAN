@@ -5,7 +5,6 @@ filename = 'train.jsonl'
 
 
 def read_jsonl(infile):
-    inlist = json.loads(infile)
     dictlist = []
     rename = {'0': 'World', '1': 'Sports' ,'2': 'Business', '3': 'Science and Technology' }
     with open(filename) as f:
