@@ -66,11 +66,12 @@ class Evaluation:
 
         for target in np.unique(targets):
             full_statistics['score'][target] = list(targets).count(target)
+
             full_statistics['class_recall'][target] = int(sum([1 for i, predictions in enumerate(reordered_preds) if
-                                                               predictions == target and targets[
+                                                               predictions == target and reordered_preds[
                                                                    i] == target])) /full_statistics['score'][target]
             full_statistics['class_precition'][target] = int(
-                sum([1 for i, preds in enumerate(reordered_preds) if preds == target and targets[i] == target])) / sum(
+                sum([1 for i, preds in enumerate(reordered_preds) if preds == target and reordered_preds[i] == target])) / sum(
                 [1 for preds in reordered_preds if preds == target])
             if full_statistics['class_recall'][target] +full_statistics['class_precition'][target] != 0:
                 full_statistics['class_f1'][target] = (full_statistics['class_recall'][target] *
@@ -139,13 +140,13 @@ class Evaluation:
         print('Class Statistics:')
         for target in experiment['class_recall'].keys():
             print(f'Class: {target}')
-            print(f'Class Recall: {experiment["class_recall"][target]}, Class Precition: {experiment["class_precition"][target]}, Class F1-Score: {experiment["class_f1"][target]}, Class Score: {experiment["score"][target]}, Class Relative Score: {experiment["relative_score"][target]} ')
+            print(f'Class Recall: {experiment["class_recall"][target]}, Class Precision: {experiment["class_precition"][target]}, Class F1-Score: {experiment["class_f1"][target]}, Class Score: {experiment["score"][target]}, Class Relative Score: {experiment["relative_score"][target]} ')
         print('\n')
         print('Macro Averages:')
-        print(f'Macro Average F1: {experiment["macro_f1"]}, Macro Average Recall: {experiment["macro_avg_recall"]}, Macro Average Precition: {experiment["macro_avg_precition"]}, ')
+        print(f'Macro Average F1: {experiment["macro_f1"]}, Macro Average Recall: {experiment["macro_avg_recall"]}, Macro Average Precision: {experiment["macro_avg_precition"]}, ')
         print('\n')
         print('Weighted Averages:')
-        print(f'Weighted Average F1: {experiment["weighted_average_f1"]}, Weighted Average Recall: {experiment["weighted_average_recall"]}, Weighted Average Precition: {experiment["weighted_average_precition"]}, ')
+        print(f'Weighted Average F1: {experiment["weighted_average_f1"]}, Weighted Average Recall: {experiment["weighted_average_recall"]}, Weighted Average Precision: {experiment["weighted_average_precition"]}, ')
         print('\n')
         print('Other statistics:')
         print(f'Accuracy: {experiment["accuracy"]}, Normalised Mutual Information: {experiment["normalised_mutual_information"]}')
@@ -156,14 +157,14 @@ class Evaluation:
 
         values = np.array([experiments[i][variable] for i in range(self.experiment_counter)])
 
-        return f'{np.mean(values).round(3)}, ({np.std(values).round(3)})'
+        return f'{np.mean(values).round(3)} ({np.std(values).round(3)})'
 
     # Returns mean and standartdeviation of a result indicator calculated from all experiments if the indicator depends on the class
     def return_median_and_std_classwise(self, experiments, variable, target):
 
         values = np.array([experiments[i][variable][target] for i in self.experiment_list])
 
-        return f'{np.mean(values).round(3)}, ({np.std(values).round(3)})'
+        return f'{np.mean(values).round(3)} ({np.std(values).round(3)})'
 
     def print_full_statistics(self):
 
@@ -180,15 +181,15 @@ class Evaluation:
        for target in experiments[self.experiment_list[0]]['class_recall'].keys():
            print(f'Class: {target}')
            print(
-               f'Class Recall: {self.return_median_and_std_classwise(experiments,"class_recall",target)}, Class Precition: {self.return_median_and_std_classwise(experiments,"class_precition",target)}, Class F1-Score: {self.return_median_and_std_classwise(experiments,"class_f1",target)}')
+               f'Class Recall: {self.return_median_and_std_classwise(experiments,"class_recall",target)}, Class Precision: {self.return_median_and_std_classwise(experiments,"class_precition",target)}, Class F1-Score: {self.return_median_and_std_classwise(experiments,"class_f1",target)}')
        print('\n')
        print('Macro Averages:')
        print(
-           f'Macro Average F1: {self.return_median_and_std(experiments,"macro_f1")}, Macro Average Recall: {self.return_median_and_std(experiments,"macro_avg_recall")}, Macro Average Precition: {self.return_median_and_std(experiments,"macro_avg_precition")}, ')
+           f'Macro Average F1: {self.return_median_and_std(experiments,"macro_f1")}, Macro Average Recall: {self.return_median_and_std(experiments,"macro_avg_recall")}, Macro Average Precision: {self.return_median_and_std(experiments,"macro_avg_precition")}, ')
        print('\n')
        print('Weighted Averages:')
        print(
-           f'Weighted Average F1: {self.return_median_and_std(experiments,"weighted_average_f1")}, Weighted Average Recall: {self.return_median_and_std(experiments,"weighted_average_recall")}, Weighted Average Precition: {self.return_median_and_std(experiments,"weighted_average_precition")}, ')
+           f'Weighted Average F1: {self.return_median_and_std(experiments,"weighted_average_f1")}, Weighted Average Recall: {self.return_median_and_std(experiments,"weighted_average_recall")}, Weighted Average Precision: {self.return_median_and_std(experiments,"weighted_average_precition")}, ')
        print('\n')
        print('Other statistics:')
        print(
