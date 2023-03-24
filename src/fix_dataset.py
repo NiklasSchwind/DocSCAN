@@ -8,20 +8,20 @@ filename_out = 'test.jsonl'
 
 
 def read_csv(infile):
-    rename = {1:"Company",
-                        2:"EducationalInstitution",
-                        3:"Artist",
-                        4:"Athlete",
-                        5:"OfficeHolder",
-                        6:"MeanOfTransportation",
-                        7:"Building",
-                        8:"NaturalPlace",
-                        9:"Village",
-                        10:"Animal",
-                        11:"Plant",
-                        12:"Album",
-                        13:"Film",
-                        14:"WrittenWork"}
+    rename = {0:"Company",
+                        1:"EducationalInstitution",
+                        2:"Artist",
+                        3:"Athlete",
+                        4:"OfficeHolder",
+                        5:"MeanOfTransportation",
+                        6:"Building",
+                        7:"NaturalPlace",
+                        8:"Village",
+                        9:"Animal",
+                        10:"Plant",
+                        11:"Album",
+                        12:"Film",
+                        13:"WrittenWork"}
     dictlist = []
     with open(infile) as csv_file:  #, encoding="utf-8"
         csv_reader = csv.reader(
@@ -32,7 +32,7 @@ def read_csv(infile):
             # Original labels are [1, 2, 3, 4] ->
             #                   ['World', 'Sports', 'Business', 'Sci/Tech']
             # Re-map to [0, 1, 2, 3].
-            label = int(label) - 1
+            label = int(label) -1
             text = " ".join((title, description))
             dictlist.append({"text": text, "label": rename[int(label)]})
     print(len(dictlist))
