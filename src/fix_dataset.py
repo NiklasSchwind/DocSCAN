@@ -23,7 +23,7 @@ def read_csv(infile):
                         13:"Film",
                         14:"WrittenWork"}
     dictlist = []
-    with open(infile, encoding="utf-8") as csv_file:
+    with open(infile) as csv_file:  #, encoding="utf-8"
         csv_reader = csv.reader(
             csv_file, quotechar='"', delimiter=",", quoting=csv.QUOTE_ALL, skipinitialspace=True
         )
