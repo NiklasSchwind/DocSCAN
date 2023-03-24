@@ -67,12 +67,13 @@ class Evaluation:
         full_statistics['class_precition'] = {}
         full_statistics['class_f1'] = {}
         full_statistics['score'] = {}
+        full_statistics['number_predictions'] = {}
         full_statistics['relative_score'] = {}
         full_statistics['number_classes'] = num_classes
 
         for target in np.unique(targets):
             full_statistics['score'][target] = list(targets).count(target)
-
+            full_statistics['number_predictions'] = list(reordered_preds).count(target)
             full_statistics['class_recall'][target] = int(sum([1 for i, prediction in enumerate(reordered_preds) if (prediction == target and targets[i] == target)])) / full_statistics['score'][target]
             full_statistics['class_precition'][target] = int(
                 sum([1 for i, prediction in enumerate(reordered_preds) if (prediction == target and targets[i] == target)])) / sum([1 for preds in reordered_preds if preds == target])
@@ -143,7 +144,7 @@ class Evaluation:
         print('Class Statistics:')
         for target in experiment['class_recall'].keys():
             print(f'Class: {target}')
-            print(f'Class Recall: {experiment["class_recall"][target]}, Class Precision: {experiment["class_precition"][target]}, Class F1-Score: {experiment["class_f1"][target]}, Class Score: {experiment["score"][target]}, Class Relative Score: {experiment["relative_score"][target]} ')
+            print(f'Class Recall: {experiment["class_recall"][target]}, Class Precision: {experiment["class_precition"][target]}, Class F1-Score: {experiment["class_f1"][target]}, Class Score: {experiment["score"][target]}, Class Relative Score: {experiment["relative_score"][target]}, Total Number of Predictions: {experiment["number_predictions"][target]} ')
         print('\n')
         print('Macro Averages:')
         print(f'Macro Average F1: {experiment["macro_f1"]}, Macro Average Recall: {experiment["macro_avg_recall"]}, Macro Average Precision: {experiment["macro_avg_precition"]}, ')
