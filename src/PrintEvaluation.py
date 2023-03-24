@@ -130,33 +130,22 @@ class Evaluation:
 
         print(f'DocSCAN Experiment with {self.name_dataset} using {self.name_embeddings} number {int(self.experiment_counter)+1}:')
         print('\n')
-        print('\n')
         print(f'Corpus Statistics')
-        print('\n')
         print(f'Corpus Name: {self.name_dataset}, Number Classes: {experiment["number_classes"]}, Number Texts: {experiment["full_score"]}')
         print('\n')
-        print('\n')
         print('Class Statistics:')
-        print('\n')
         for target in experiment['class_recall'].keys():
             print(f'Class: {target}')
             print(f'Class Recall: {experiment["class_recall"][target]}, Class Precition: {experiment["class_precition"][target]}, Class F1-Score: {experiment["class_f1"][target]}, Class Score: {experiment["score"][target]}, Class Relative Score: {experiment["relative_score"][target]} ')
-            print('\n')
         print('\n')
         print('Macro Averages:')
-        print('\n')
         print(f'Macro Average F1: {experiment["macro_f1"]}, Macro Average Recall: {experiment["macro_avg_recall"]}, Macro Average Precition: {experiment["macro_avg_precition"]}, ')
         print('\n')
-        print('\n')
         print('Weighted Averages:')
-        print('\n')
         print(f'Weighted Average F1: {experiment["weighted_average_f1"]}, Weighted Average Recall: {experiment["weighted_average_recall"]}, Weighted Average Precition: {experiment["weighted_average_precition"]}, ')
         print('\n')
-        print('\n')
         print('Other statistics:')
-        print('\n')
         print(f'Accuracy: {experiment["accuracy"]}, Normalised Mutual Information: {experiment["normalised_mutual_information"]}')
-        print('\n')
         print('\n')
 
     #Returns mean and standartdeviation of a result indicator calculated from all experiments
@@ -180,38 +169,27 @@ class Evaluation:
        print(
            f'Average outcomes of DocSCAN Experiment with {self.name_dataset} using {self.name_embeddings} evaluating {int(self.experiment_counter) + 1} Experiments:')
        print('\n')
-       print('\n')
        print(f'Corpus Statistics')
-       print('\n')
        print(
            f'Corpus Name: {self.name_dataset}, Number Classes: {experiments[0]["number_classes"]}, Number Texts: {experiments[0]["full_score"]}')
        print('\n')
-       print('\n')
        print('Class Statistics:')
-       print('\n')
        for target in experiments[0]['class_recall'].keys():
            print(f'Class: {target}')
            print(
                f'Class Recall: {self.return_median_and_std_classwise(experiments,"class_recall",target)}, Class Precition: {eself.return_median_and_std_classwise(experiments,"class_precition",target)}, Class F1-Score: {self.return_median_and_std_classwise(experiments,"class_f1",target)}, Class Score: {experiments[0]["score"][target]}, Class Relative Score: {experiments[0]["relative_score"][target]} ')
-           print('\n')
        print('\n')
        print('Macro Averages:')
-       print('\n')
        print(
            f'Macro Average F1: {self.return_median_and_std(experiments,"macro_f1")}, Macro Average Recall: {self.return_median_and_std(experiments,"macro_avg_recall")}, Macro Average Precition: {self.return_median_and_std(experiments,"macro_avg_precition")}, ')
        print('\n')
-       print('\n')
        print('Weighted Averages:')
-       print('\n')
        print(
            f'Weighted Average F1: {self.return_median_and_std(experiments,"weighted_average_f1")}, Weighted Average Recall: {self.return_median_and_std(experiments,"weighted_average_recall")}, Weighted Average Precition: {self.return_median_and_std(experiments,"weighted_average_precition")}, ')
        print('\n')
-       print('\n')
        print('Other statistics:')
-       print('\n')
        print(
            f'Accuracy: {self.return_median_and_std(experiments,"accuracy")}, Normalised Mutual Information: {self.return_median_and_std(experiments,"normalised_mutual_information")}')
-       print('\n')
        print('\n')
 
 
