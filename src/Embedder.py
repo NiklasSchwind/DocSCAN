@@ -91,8 +91,8 @@ class Embedder:
         model = RobertaModel.from_pretrained(model_name).to(self.device)
         text_tokenized = []
         for text in embedding_text:
-            text_tokenized.append(torch.tensor(tokenizer.encode(text, add_special_tokens=True, padding = True, max_length=128)))
-            print(torch.tensor(tokenizer.encode(text, add_special_tokens=True, padding = True, max_length=128)))
+            text_tokenized.append(torch.tensor([tokenizer.encode(text, add_special_tokens=True, padding = 'max_length', max_length=512)]))
+            print(torch.tensor(tokenizer.encode(text, add_special_tokens=True, padding = 'max_length', max_length=512)))
         num_sentences = len(self.texts)
         num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
 
