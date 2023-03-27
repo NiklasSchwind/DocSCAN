@@ -102,15 +102,23 @@ class Embedder:
             end = min((i + 1) * self.batch_size, num_sentences)
 
             # Extract the input tensors for the current batch
-            encoded_inputs = tokenizer.batch_encode_plus(embedding_text[start:end], padding='max_length', return_tensors='pt').to(
+            input_ids = []
+            attention_mask = []
+            for text in embedding_text[start:end]:
+                encoded_inputs = tokenizer.encode_plus(text, padding='max_length', return_tensors='pt').to(
                 self.device)
+                input_ids.append(encoded_inputs['input_ids'])
+                attention_mask.append(encoded_inputs['attention_mask'])
 
+            input_ids = torch.tensor(input_ids)
+            attention_mask = torch.tensor(attention_mask)
+            '''
             print(encoded_inputs)
             # Split the input tensors into batches
             input_ids = encoded_inputs['input_ids']
             print(input_ids.shape)
             attention_mask = encoded_inputs['attention_mask']
-
+            '''
             # Feed the input tensors to the RoBERTa model
             with torch.no_grad():
                 batch_output = model(input_ids, attention_mask = attention_mask)#, attention_mask=attention_mask)
