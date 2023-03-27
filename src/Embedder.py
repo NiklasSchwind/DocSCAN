@@ -87,7 +87,7 @@ class Embedder:
                 embedding_text.append(text + self.indicative_sentence + ' <mask>')
 
             # Load the RoBERTa model and tokenizer
-            tokenizer = RobertaTokenizer.from_pretrained(model_name).to(self.device)
+            tokenizer = RobertaTokenizer.from_pretrained(model_name)
             model = RobertaModel.from_pretrained(model_name).to(self.device)
 
             # Encode the input sentences using the tokenizer's batch_encode_plus method
