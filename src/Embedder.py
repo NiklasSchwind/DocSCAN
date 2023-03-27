@@ -109,6 +109,7 @@ class Embedder:
 
             # Extract the input tensors for the current batch
             batch_input_ids = input_ids[start:end]
+            print(batch_input_ids)
             batch_attention_mask = attention_mask[start:end]
 
             # Feed the input tensors to the RoBERTa model
