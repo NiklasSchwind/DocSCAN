@@ -111,8 +111,8 @@ class Embedder:
                 print(encoded_inputs['input_ids'][0,:512].shape)
                 attention_mask.append(encoded_inputs['attention_mask'][:512])
 
-            input_ids = torch.cat(input_ids, dim=1 )
-            attention_mask = torch.cat(attention_mask,dim=1)
+            input_ids = torch.cat(input_ids, dim=0 )
+            attention_mask = torch.cat(attention_mask,dim=0)
             print(input_ids)
             '''
             print(encoded_inputs)
