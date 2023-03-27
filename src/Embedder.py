@@ -12,7 +12,7 @@ class Embedder:
     def __init__(self,
                  texts: List[str],
                  path: str,
-                 embedding_method: Literal['SBert', 'TSDEA', 'SimCSE', 'OpenAI', 'IndicativeSentence'],
+                 embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence'],
                  device: str,
                  mode: Literal['test', 'train'] = 'train',
                  indicative_sentence: str = 'Topic:',
