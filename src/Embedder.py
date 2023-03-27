@@ -108,12 +108,11 @@ class Embedder:
                 encoded_inputs = tokenizer.encode_plus(text, padding='max_length', return_tensors='pt').to(
                 self.device)
                 input_ids.append(encoded_inputs['input_ids'][0,:512])
-                print(encoded_inputs['input_ids'][0,:512].shape)
                 attention_mask.append(encoded_inputs['attention_mask'][0,:512])
 
             input_ids = torch.cat(input_ids, dim=0 )
             attention_mask = torch.cat(attention_mask,dim=0)
-            print(input_ids)
+            print(input_ids.shape)
             '''
             print(encoded_inputs)
             # Split the input tensors into batches
