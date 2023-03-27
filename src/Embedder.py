@@ -91,7 +91,7 @@ class Embedder:
             model = RobertaModel.from_pretrained(model_name).to(self.device)
 
             # Encode the input sentences using the tokenizer's batch_encode_plus method
-            encoded_inputs = tokenizer.batch_encode_plus(embedding_text, padding=True, return_tensors='pt')
+            encoded_inputs = tokenizer.batch_encode_plus(embedding_text, padding=True, return_tensors='pt').to(self.device)
 
             # Split the input tensors into batches
             input_ids = encoded_inputs['input_ids']
