@@ -91,7 +91,7 @@ class Embedder:
         model = RobertaModel.from_pretrained(model_name).to(self.device)
         text_tokenized = []
         for text in embedding_text:
-            text_tokenized.append(tokenizer.embed(text))
+            text_tokenized.append(tokenizer.encode(text))
 
         num_sentences = len(self.texts)
         num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
