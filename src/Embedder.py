@@ -107,7 +107,7 @@ class Embedder:
             # Extract the input tensors for the current batch
             #encoded_inputs = tokenizer.batch_encode_plus(embedding_text[start:end], padding=True, return_tensors='pt').to(
               #  self.device)
-            input_ids = text_tokenized[start:end]
+            input_ids = torch.tensor(text_tokenized[start:end], device = self.device)
             """
             print(encoded_inputs)
             # Split the input tensors into batches
