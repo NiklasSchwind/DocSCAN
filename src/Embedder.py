@@ -91,7 +91,7 @@ class Embedder:
         model = RobertaModel.from_pretrained(model_name).to(self.device)
         text_tokenized = []
         for text in embedding_text:
-            text_tokenized.append(tokenizer.encode(text))
+            text_tokenized.append(tokenizer.encode(text, add_special_tokens=True, padding = True, max_length=128))
 
         num_sentences = len(self.texts)
         num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
@@ -107,7 +107,7 @@ class Embedder:
             # Extract the input tensors for the current batch
             #encoded_inputs = tokenizer.batch_encode_plus(embedding_text[start:end], padding=True, return_tensors='pt').to(
               #  self.device)
-            input_ids = torch.tensor(text_tokenized[start:end], device = self.device)
+            input_ids = torch.cat(text_tokenized[start:end], dim = 0).to(self.device)
             """
             print(encoded_inputs)
             # Split the input tensors into batches
