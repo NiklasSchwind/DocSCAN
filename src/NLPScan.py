@@ -12,22 +12,9 @@ from sklearn.metrics.pairwise import pairwise_distances
 from utils.utils import *
 import random
 from PrintEvaluation import Evaluation
-'''
-def evaluate(targets, predictions, verbose=0):
-    # right, do this...
-    # shouldn't be too hard
-    hungarian_match_metrics = hungarian_evaluate(targets, predictions)
-    cm = hungarian_match_metrics["confusion matrix"]
-    clf_report = hungarian_match_metrics["classification_report"]
-    # print (fn_val, hungarian_match_metrics)
-    del hungarian_match_metrics["classification_report"]
-    del hungarian_match_metrics["confusion matrix"]
-    if verbose:
-        print(cm, "\n", clf_report)
-        print(hungarian_match_metrics)
-    print("ACCURACY", np.round(hungarian_match_metrics["ACC"], 3))
-    return hungarian_match_metrics
-'''
+from Embedder import Embedder
+
+
 
 class DocSCANPipeline():
     def __init__(self, args):
@@ -158,21 +145,14 @@ class DocSCANPipeline():
         self.df_test = self.load_data(predict_file)
 
         print("embedding sentences...")
-        if os.path.exists(os.path.join(self.args.path, "embeddings.npy")):
-            self.embeddings = np.load(os.path.join(self.args.path, "embeddings.npy"))
-        else:
-            self.embeddings = self.embedd_sentences(df_train["sentence"])
-            np.save(os.path.join(self.args.path, "embeddings"), self.embeddings)
 
-        # torch tensor of embeddings
-        self.X = torch.from_numpy(self.embeddings)
-        if os.path.exists(os.path.join(self.args.path, "embeddings_test.npy")):
-            self.embeddings_test = np.load(os.path.join(self.args.path, "embeddings_test.npy"))
-        else:
-            self.embeddings_test = self.embedd_sentences(self.df_test["sentence"])
-            np.save(os.path.join(self.args.path, "embeddings_test"), self.embeddings_test)
+        embedder_train = Embedder(texts = df_train["sentence"],  path = self.args.path,
+                 embedding_method = 'IndicativeSentence', device = self.args.device, mode = 'train')
+        embedder_test = Embedder(texts = self.df_test["sentence"],  path = self.args.path,
+                 embedding_method = 'IndicativeSentence', device = self.args.device, mode = 'test')
 
-        self.X_test = torch.from_numpy(self.embeddings_test)
+        self.X = torch.from_numpy(embedder_train.embed())
+        self.X_test = torch.from_numpy(embedder_test.embed())
 
         print("retrieving neighbors...")
 
@@ -246,4 +226,5 @@ if __name__ == "__main__":
 
     docscan = DocSCANPipeline(args)
     evaluation = Evaluation(name_dataset = args.path, name_embeddings = args.embedding_model)
+    embedder = Embedder()
     docscan.run_main()

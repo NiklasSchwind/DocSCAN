@@ -76,7 +76,7 @@ def read_csv(infile):
             # One non-ASCII byte: sisterBADBYTEcity. We replace it with a space
             fine_label, _, text = row.replace(b"\xf0", b" ").strip().decode().partition(" ")
             coarse_label = fine_label.split(":")[0]
-            dictlist.append({"text": str(text), "label": label_name_map_50[coarse_label]})
+            dictlist.append({"text": str(text), "label": label_name_map_50[fine_label]})
 
 
     return dictlist
