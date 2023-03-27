@@ -57,7 +57,7 @@ class Embedder:
               safeEmbeddings: bool = True
               ):
 
-        if os.path.exists(os.path.join(self.path, f"{self.dataset_name}-{self.embedding_method}-embeddings.npy")) and not createNewEmbeddings:
+        if os.path.exists(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy")) and not createNewEmbeddings:
             embeddings = self.load_embeddings()
             self.embeddings = embeddings
         else:
