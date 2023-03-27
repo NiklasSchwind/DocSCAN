@@ -92,7 +92,7 @@ class Embedder:
 
 
         num_sentences = len(self.texts)
-        num_batches = (num_sentences + self.batch_size - 1) / self.batch_size
+        num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
 
         # Initialize a list to store the mask token encodings for all batches
         mask_token_encodings = []
