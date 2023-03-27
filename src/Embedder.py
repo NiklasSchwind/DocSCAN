@@ -103,8 +103,7 @@ class Embedder:
             end = min((i + 1) * self.batch_size, num_sentences)
 
             # Extract the input tensors for the current batch
-            encoded_inputs = tokenizer.encode(embedding_text[start:end], add_special_tokens=True ).to(
-                self.device)
+            encoded_inputs = tokenizer.encode(embedding_text[start:end], add_special_tokens=True )
 
             # Split the input tensors into batches
             input_ids = encoded_inputs['input_ids']
