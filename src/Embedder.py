@@ -86,43 +86,43 @@ class Embedder:
             elif self.indicative_sentence_position == 'last':
                 embedding_text.append(text + self.indicative_sentence + ' <mask>')
 
-            # Load the RoBERTa model and tokenizer
-            tokenizer = RobertaTokenizer.from_pretrained(model_name)
-            model = RobertaModel.from_pretrained(model_name).to(self.device)
+        # Load the RoBERTa model and tokenizer
+        tokenizer = RobertaTokenizer.from_pretrained(model_name)
+        model = RobertaModel.from_pretrained(model_name).to(self.device)
 
-            # Encode the input sentences using the tokenizer's batch_encode_plus method
-            encoded_inputs = tokenizer.batch_encode_plus(embedding_text, padding=True, return_tensors='pt').to(self.device)
+        # Encode the input sentences using the tokenizer's batch_encode_plus method
+        encoded_inputs = tokenizer.batch_encode_plus(embedding_text, padding=True, return_tensors='pt').to(self.device)
 
-            # Split the input tensors into batches
-            input_ids = encoded_inputs['input_ids']
-            attention_mask = encoded_inputs['attention_mask']
-            num_sentences = input_ids.shape[0]
-            num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
+        # Split the input tensors into batches
+        input_ids = encoded_inputs['input_ids']
+        attention_mask = encoded_inputs['attention_mask']
+        num_sentences = input_ids.shape[0]
+        num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
 
-            # Initialize a list to store the mask token encodings for all batches
-            mask_token_encodings = []
+        # Initialize a list to store the mask token encodings for all batches
+        mask_token_encodings = []
 
-            # Process each batch of input sentences
-            for i in range(num_batches):
-                start = i * self.batch_size
-                end = min((i + 1) * self.batch_size, num_sentences)
+        # Process each batch of input sentences
+        for i in range(num_batches):
+            start = i * self.batch_size
+            end = min((i + 1) * self.batch_size, num_sentences)
 
-                # Extract the input tensors for the current batch
-                batch_input_ids = input_ids[start:end]
-                batch_attention_mask = attention_mask[start:end]
+            # Extract the input tensors for the current batch
+            batch_input_ids = input_ids[start:end]
+            batch_attention_mask = attention_mask[start:end]
 
-                # Feed the input tensors to the RoBERTa model
-                with torch.no_grad():
-                    batch_output = model(batch_input_ids, attention_mask=batch_attention_mask)
+            # Feed the input tensors to the RoBERTa model
+            with torch.no_grad():
+                batch_output = model(batch_input_ids, attention_mask=batch_attention_mask)
 
-                # Retrieve the encodings of the mask tokens from the output tensor
-                mask_token_indices = torch.where(batch_input_ids == tokenizer.mask_token_id)
-                batch_mask_token_encodings = batch_output[0][mask_token_indices[0], mask_token_indices[1], :]
+            # Retrieve the encodings of the mask tokens from the output tensor
+            mask_token_indices = torch.where(batch_input_ids == tokenizer.mask_token_id)
+            batch_mask_token_encodings = batch_output[0][mask_token_indices[0], mask_token_indices[1], :]
 
-                # Add the mask token encodings for the current batch to the list
-                mask_token_encodings.append(batch_mask_token_encodings)
+            # Add the mask token encodings for the current batch to the list
+            mask_token_encodings.append(batch_mask_token_encodings)
 
-            return mask_token_encodings
+        return torch.cat(mask_token_encodings,dim=0)
 
     def _embed_TSDEA(self):
         # Define your sentence transformer model using CLS pooling
