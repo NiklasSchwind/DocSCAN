@@ -226,5 +226,4 @@ if __name__ == "__main__":
 
     docscan = DocSCANPipeline(args)
     evaluation = Evaluation(name_dataset = args.path, name_embeddings = args.embedding_model)
-    embedder = Embedder()
     docscan.run_main()
