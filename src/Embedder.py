@@ -82,21 +82,16 @@ class Embedder:
         model_name = 'roberta-base'
         for text in self.texts:
             if self.indicative_sentence_position == 'first':
-                embedding_text.append(self.indicative_sentence + ' <mask> ' + text)
+                embedding_text.append(self.indicative_sentence + ' <mask>.' + text)
             elif self.indicative_sentence_position == 'last':
-                embedding_text.append(text + self.indicative_sentence + ' <mask>')
+                embedding_text.append(text + self.indicative_sentence + ' <mask>.')
 
         # Load the RoBERTa model and tokenizer
         tokenizer = RobertaTokenizer.from_pretrained(model_name)
         model = RobertaModel.from_pretrained(model_name).to(self.device)
 
-        # Encode the input sentences using the tokenizer's batch_encode_plus method
-        encoded_inputs = tokenizer.batch_encode_plus(embedding_text, padding=True, return_tensors='pt').to(self.device)
 
-        # Split the input tensors into batches
-        input_ids = encoded_inputs['input_ids']
-        attention_mask = encoded_inputs['attention_mask']
-        num_sentences = input_ids.shape[0]
+        num_sentences = len(self.texts)
         num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
 
         # Initialize a list to store the mask token encodings for all batches
@@ -108,16 +103,19 @@ class Embedder:
             end = min((i + 1) * self.batch_size, num_sentences)
 
             # Extract the input tensors for the current batch
-            batch_input_ids = input_ids[start:end]
-            print(batch_input_ids)
-            batch_attention_mask = attention_mask[start:end]
+            encoded_inputs = tokenizer.batch_encode_plus(embedding_text[start:end], padding=True, return_tensors='pt').to(
+                self.device)
+
+            # Split the input tensors into batches
+            input_ids = encoded_inputs['input_ids']
+            attention_mask = encoded_inputs['attention_mask']
 
             # Feed the input tensors to the RoBERTa model
             with torch.no_grad():
-                batch_output = model(batch_input_ids, attention_mask=batch_attention_mask)
+                batch_output = model(input_ids, attention_mask=attention_mask)
 
             # Retrieve the encodings of the mask tokens from the output tensor
-            mask_token_indices = torch.where(batch_input_ids == tokenizer.mask_token_id)
+            mask_token_indices = torch.where(input_ids == tokenizer.mask_token_id)
             batch_mask_token_encodings = batch_output[0][mask_token_indices[0], mask_token_indices[1], :]
 
             # Add the mask token encodings for the current batch to the list
