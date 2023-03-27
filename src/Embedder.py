@@ -109,9 +109,10 @@ class Embedder:
                 self.device)
                 input_ids.append(encoded_inputs['input_ids'])
                 attention_mask.append(encoded_inputs['attention_mask'])
+
+            input_ids = torch.cat(input_ids, dim=0 )
+            attention_mask = torch.cat(attention_mask,dim=0)
             print(input_ids)
-            input_ids = torch.tensor(input_ids)
-            attention_mask = torch.tensor(attention_mask)
             '''
             print(encoded_inputs)
             # Split the input tensors into batches
