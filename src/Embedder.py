@@ -1,4 +1,8 @@
-from typing import List, Literal
+from typing import List
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 from sentence_transformers import SentenceTransformer,models, losses, datasets
 from transformers import RobertaTokenizer, RobertaModel
 import torch
