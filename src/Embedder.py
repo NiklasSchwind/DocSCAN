@@ -108,6 +108,7 @@ class Embedder:
             print(encoded_inputs)
             # Split the input tensors into batches
             input_ids = encoded_inputs['input_ids']
+            print(input_ids.shape)
             attention_mask = encoded_inputs['attention_mask']
 
             # Feed the input tensors to the RoBERTa model
