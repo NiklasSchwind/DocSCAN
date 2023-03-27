@@ -109,7 +109,7 @@ class Embedder:
                 self.device)
                 input_ids.append(encoded_inputs['input_ids'])
                 attention_mask.append(encoded_inputs['attention_mask'])
-
+            print(input_ids)
             input_ids = torch.tensor(input_ids)
             attention_mask = torch.tensor(attention_mask)
             '''
