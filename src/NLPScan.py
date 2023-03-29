@@ -151,8 +151,8 @@ class DocSCANPipeline():
         embedder_test = Embedder(texts = self.df_test["sentence"],  path = self.args.path,
                  embedding_method = 'IndicativeSentence', device = self.args.device, mode = 'test')
 
-        self.X = embedder_train.embed(createNewEmbeddings= True)
-        self.X_test = embedder_test.embed(createNewEmbeddings = True)
+        self.X = embedder_train.embed(createNewEmbeddings= False)
+        self.X_test = embedder_test.embed(createNewEmbeddings = False)
 
         print("retrieving neighbors...")
 

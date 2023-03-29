@@ -3,7 +3,7 @@ try:
     from typing import Literal
 except ImportError:
     from typing_extensions import Literal
-from sentence_transformers import SentenceTransformer,models, losses, datasets
+from sentence_transformers import SentenceTransformer,models, losses, datasets, InputExample
 from transformers import RobertaTokenizer, RobertaModel
 import torch
 import numpy as np
@@ -156,8 +156,57 @@ class Embedder:
         return corpus_embeddings
 
 
-    def _embed_SimCSE(self):
-        pass
+    def _embed_SimCSE_unsupervised(self):
+        # Define sentence transformer model using CLS pooling
+        model_name = 'distilroberta-base'  # 'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
+        word_embedding_model = models.Transformer(model_name, max_seq_length=128)
+        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
+        SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model]).to(self.device)
+
+        # Create sentence pairs for training
+        TrainData_paired = [InputExample(texts=[s, s]) for s in self.texts]
+
+        # DataLoader to batch the data using recommended batchsize
+        TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=128, shuffle=True).to(self.device)
+
+        # Define recommended loss function
+        train_loss = losses.MultipleNegativesRankingLoss(SimCSEmodel).to(self.device)
+
+        # Call the fit method
+        SimCSEmodel.fit(
+            train_objectives=[(TrainData_batched, train_loss)],
+            epochs=5,
+            show_progress_bar=True
+        )
+        corpus_embeddings = SimCSEmodel.encode(self.texts)
+
+        return corpus_embeddings
+
+    def _embed_SimCSE_supervised(self):
+        # Define sentence transformer model using CLS pooling
+        model_name = 'distilroberta-base'  # 'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
+        word_embedding_model = models.Transformer(model_name, max_seq_length=128)
+        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
+        SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model]).to(self.device)
+
+        # Create sentence pairs for training
+        TrainData_paired = [InputExample(texts=[s, s]) for s in self.texts]
+
+        # DataLoader to batch the data using recommended batchsize
+        TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=128, shuffle=True).to(self.device)
+
+        # Define recommended loss function
+        train_loss = losses.MultipleNegativesRankingLoss(SimCSEmodel).to(self.device)
+
+        # Call the fit method
+        SimCSEmodel.fit(
+            train_objectives=[(TrainData_batched, train_loss)],
+            epochs=5,
+            show_progress_bar=True
+        )
+        corpus_embeddings = SimCSEmodel.encode(self.texts)
+
+        return corpus_embeddings
 
 
 
