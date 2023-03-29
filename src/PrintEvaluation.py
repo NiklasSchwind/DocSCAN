@@ -35,10 +35,6 @@ class Evaluation:
     def hungarian_evaluate(self, targets, predictions, class_names=None,
                            compute_purity=True, compute_confusion_matrix=True,
                            confusion_matrix_file=None):
-        # Evaluate model based on hungarian matching between predicted cluster assignment and gt classes.
-        # This is computed only for the passed subhead index.
-
-        # Hungarian matching
         '''
         Note for future Niklas:
         targets = tatsächliche klasse
