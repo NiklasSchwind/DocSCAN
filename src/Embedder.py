@@ -19,8 +19,8 @@ class Embedder:
                  embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence'],
                  device: str,
                  mode: Literal['test', 'train'] = 'train',
-                 indicative_sentence: str = 'Sentiment:',
-                 indicative_sentence_position: Literal['first', 'last'] = 'first',
+                 indicative_sentence: str = 'I <mask> the movie.',
+                 indicative_sentence_position: Literal['first', 'last'] = 'last',
                  batch_size: int = 128,
                  embedding_model_name: str = 'sentence-transformers/all-mpnet-base-v2',
                  max_sequence_length: int = 128,
@@ -82,9 +82,9 @@ class Embedder:
         model_name = 'roberta-base'
         for text in self.texts:
             if self.indicative_sentence_position == 'first':
-                embedding_text.append(self.indicative_sentence + ' <mask>.' + text)
+                embedding_text.append(self.indicative_sentence + text)
             elif self.indicative_sentence_position == 'last':
-                embedding_text.append(text + self.indicative_sentence + ' <mask>.')
+                embedding_text.append(text + self.indicative_sentence)
 
         # Load the RoBERTa model and tokenizer
         tokenizer = RobertaTokenizer.from_pretrained(model_name)
@@ -157,7 +157,7 @@ class Embedder:
 
 
     def _embed_SimCSE(self):
-
+        pass
 
 
 
