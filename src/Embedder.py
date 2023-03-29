@@ -46,7 +46,7 @@ class Embedder:
 
     def safe_embeddings(self):
 
-        np.save(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy"), self.embeddings)
+        np.save(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy"), self.embeddings.cpu())
 
     def load_embeddings(self):
 
