@@ -50,7 +50,7 @@ class Embedder:
 
     def load_embeddings(self):
 
-        return np.load(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy"))
+        return torch.from_numpy(np.load(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy")))
 
     def embed(self,
               createNewEmbeddings: bool = False,
