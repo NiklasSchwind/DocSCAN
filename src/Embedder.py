@@ -106,9 +106,12 @@ class Embedder:
             for text in embedding_text[start:end]:
                 encoded_inputs = tokenizer.encode_plus(text, padding='max_length', return_tensors='pt').to(
                 self.device)
-                input_ids.append(encoded_inputs['input_ids'][0,:512])
-                attention_mask.append(encoded_inputs['attention_mask'][0,:512])
-
+                if self.indicative_sentence_position == 'first':
+                    input_ids.append(encoded_inputs['input_ids'][0,:512])
+                    attention_mask.append(encoded_inputs['attention_mask'][0,:512])
+                elif self.indicative_sentence_position == 'last':
+                    input_ids.append(encoded_inputs['input_ids'][0, -512:])
+                    attention_mask.append(encoded_inputs['attention_mask'][0, -512:])
             input_ids = torch.cat(input_ids, dim=0 ).reshape((end-start, 512))
             attention_mask = torch.cat(attention_mask,dim=0).reshape((end-start, 512))
             # Feed the input tensors to the RoBERTa model
