@@ -151,8 +151,8 @@ class DocSCANPipeline():
         embedder_test = Embedder(texts = self.df_test["sentence"],  path = self.args.path,
                  embedding_method = 'IndicativeSentence', device = self.args.device, mode = 'test')
 
-        self.X = torch.from_numpy(embedder_train.embed())
-        self.X_test = torch.from_numpy(embedder_test.embed())
+        self.X = embedder_train.embed()
+        self.X_test = embedder_test.embed()
 
         print("retrieving neighbors...")
 
