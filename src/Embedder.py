@@ -100,7 +100,6 @@ class Embedder:
         for i in range(num_batches):
             start = i * self.batch_size
             end = min((i + 1) * self.batch_size, num_sentences)
-
             # Extract the input tensors for the current batch
             input_ids = []
             attention_mask = []
@@ -112,22 +111,12 @@ class Embedder:
 
             input_ids = torch.cat(input_ids, dim=0 ).reshape((end-start, 512))
             attention_mask = torch.cat(attention_mask,dim=0).reshape((end-start, 512))
-            print(input_ids.shape)
-            '''
-            print(encoded_inputs)
-            # Split the input tensors into batches
-            input_ids = encoded_inputs['input_ids']
-            print(input_ids.shape)
-            attention_mask = encoded_inputs['attention_mask']
-            '''
             # Feed the input tensors to the RoBERTa model
             with torch.no_grad():
                 batch_output = model(input_ids, attention_mask = attention_mask)#, attention_mask=attention_mask)
-
             # Retrieve the encodings of the mask tokens from the output tensor
             mask_token_indices = torch.where(input_ids == tokenizer.mask_token_id)
             batch_mask_token_encodings = batch_output[0][mask_token_indices[0], mask_token_indices[1], :]
-
             # Add the mask token encodings for the current batch to the list
             mask_token_encodings.append(batch_mask_token_encodings)
 
@@ -165,6 +154,10 @@ class Embedder:
         corpus_embeddings = TSDAEModel.encode(self.texts)
 
         return corpus_embeddings
+
+
+    def _embed_SimCSE(self):
+
 
 
 
