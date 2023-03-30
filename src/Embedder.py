@@ -189,8 +189,8 @@ class Embedder:
         # Define sentence transformer model using CLS pooling
         tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
         model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
-        #tokenized_texts = tokenizer.encode_plus(self.texts, padding=True, return_tensors='pt').to(self.device)
-        tokenized_texts = tokenizer.encode_plus((self.texts,), padding=True, return_tensors='pt').to(self.device)
+        texts = [i for i in self.texts if i is not None]
+        tokenized_texts = tokenizer.encode_plus(texts, padding=True, return_tensors='pt').to(self.device)
         corpus_embeddings = model.encode(tokenized_texts)
 
         return corpus_embeddings
