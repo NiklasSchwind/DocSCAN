@@ -74,7 +74,7 @@ class Embedder:
         embedder.max_seq_length = self.max_sequence_length
         corpus_embeddings = embedder.encode(self.texts, batch_size=32, show_progress_bar=True)
 
-        return corpus_embeddings
+        return torch.from_numpy(corpus_embeddings)
 
     def _embed_IndicativeWordPrediction(self):
 
