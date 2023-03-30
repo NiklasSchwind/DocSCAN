@@ -4,7 +4,7 @@ try:
 except ImportError:
     from typing_extensions import Literal
 from sentence_transformers import SentenceTransformer,models, losses, datasets, InputExample
-from transformers import RobertaTokenizer, RobertaModel
+from transformers import RobertaTokenizer, RobertaModel,AutoTokenizer, AutoModel
 import torch
 import numpy as np
 import os
@@ -16,7 +16,7 @@ class Embedder:
     def __init__(self,
                  texts: List[str],
                  path: str,
-                 embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence'],
+                 embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised'],
                  device: str,
                  mode: Literal['test', 'train'] = 'train',
                  indicative_sentence: str = 'I <mask> it!', #I <mask> it! for sentiment
@@ -33,7 +33,7 @@ class Embedder:
         self.path = path
         self.mode = mode
         self.device = device
-        self.embedding_methods = {'SBert': self._embed_SBert, 'TSDEA': self._embed_TSDEA, 'IndicativeSentence': self._embed_IndicativeWordPrediction}
+        self.embedding_methods = {'SBert': self._embed_SBert, 'TSDEA': self._embed_TSDEA, 'IndicativeSentence': self._embed_IndicativeWordPrediction, 'SimCSEsupervised': self._embed_SimCSE_supervised}
         if self.embedding_method == 'IndicativeSentence':
             self.indicative_sentence = indicative_sentence
             self.indicative_sentence_position = indicative_sentence_position
@@ -156,13 +156,13 @@ class Embedder:
 
         corpus_embeddings = TSDAEModel.encode(self.texts)
 
-        return corpus_embeddings
+        return torch.cat(corpus_embeddings)
 
 
     def _embed_SimCSE_unsupervised(self):
         # Define sentence transformer model using CLS pooling
         model_name = 'distilroberta-base'  # 'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
-        word_embedding_model = models.Transformer(model_name, max_seq_length=128)
+        word_embedding_model = models.Transformer(model_name, max_seq_length=512)
         pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
         SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model]).to(self.device)
 
@@ -183,31 +183,14 @@ class Embedder:
         )
         corpus_embeddings = SimCSEmodel.encode(self.texts)
 
-        return corpus_embeddings
+        return torch.cat(corpus_embeddings)
 
     def _embed_SimCSE_supervised(self):
         # Define sentence transformer model using CLS pooling
-        model_name = 'distilroberta-base'  # 'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
-        word_embedding_model = models.Transformer(model_name, max_seq_length=128)
-        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
-        SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model]).to(self.device)
-
-        # Create sentence pairs for training
-        TrainData_paired = [InputExample(texts=[s, s]) for s in self.texts]
-
-        # DataLoader to batch the data using recommended batchsize
-        TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=128, shuffle=True).to(self.device)
-
-        # Define recommended loss function
-        train_loss = losses.MultipleNegativesRankingLoss(SimCSEmodel).to(self.device)
-
-        # Call the fit method
-        SimCSEmodel.fit(
-            train_objectives=[(TrainData_batched, train_loss)],
-            epochs=5,
-            show_progress_bar=True
-        )
-        corpus_embeddings = SimCSEmodel.encode(self.texts)
+        tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
+        model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
+        tokenized_texts = tokenizer.encode(self.texts)
+        corpus_embeddings = model.encode(tokenized_texts)
 
         return corpus_embeddings
 

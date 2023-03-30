@@ -142,9 +142,9 @@ class DocSCANPipeline():
         print("embedding sentences...")
 
         embedder_train = Embedder(texts = df_train["sentence"],  path = self.args.path,
-                 embedding_method = 'SBert', device = self.args.device, mode = 'train')
+                 embedding_method = 'SimCSEsupervised', device = self.args.device, mode = 'train')
         embedder_test = Embedder(texts = self.df_test["sentence"],  path = self.args.path,
-                 embedding_method = 'SBert', device = self.args.device, mode = 'test')
+                 embedding_method = 'SimCSEsupervised', device = self.args.device, mode = 'test')
 
         self.X = embedder_train.embed(createNewEmbeddings= True)
         self.X_test = embedder_test.embed(createNewEmbeddings = True)
