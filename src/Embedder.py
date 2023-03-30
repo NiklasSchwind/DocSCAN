@@ -26,7 +26,7 @@ class Embedder:
                  max_sequence_length: int = 128,
 
                  ):
-        self.texts = texts
+        self.texts = [str(text) for text in texts]
         self.embeddings = []
         self.max_sequence_length = max_sequence_length
         self.embedding_method = embedding_method
@@ -189,7 +189,7 @@ class Embedder:
         # Define sentence transformer model using CLS pooling
         tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
         model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
-        tokenized_texts = tokenizer.encode(self.texts.astype(str))
+        tokenized_texts = tokenizer.encode(self.texts)
         corpus_embeddings = model.encode(tokenized_texts)
 
         return corpus_embeddings
