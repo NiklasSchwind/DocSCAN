@@ -21,7 +21,7 @@ class Embedder:
                  mode: Literal['test', 'train'] = 'train',
                  indicative_sentence: str = 'I <mask> it!', #I <mask> it! for sentiment
                  indicative_sentence_position: Literal['first', 'last'] = 'last',
-                 batch_size: int = 128,
+                 batch_size: int = 64,
                  embedding_model_name: str = 'sentence-transformers/all-mpnet-base-v2',
                  max_sequence_length: int = 128,
 
