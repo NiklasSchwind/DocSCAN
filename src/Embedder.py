@@ -41,7 +41,8 @@ class Embedder:
         elif self.embedding_method == 'SBert':
             self.embedding_model_name = embedding_model_name
             self.max_sequence_length = max_sequence_length
-
+        elif self.embedding_method == 'SimCSEsupervised':
+            self.batch_size = batch_size
 
 
     def safe_embeddings(self):
