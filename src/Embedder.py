@@ -19,8 +19,8 @@ class Embedder:
                  embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence'],
                  device: str,
                  mode: Literal['test', 'train'] = 'train',
-                 indicative_sentence: str = 'I want to ask you a question about: <mask>.',
-                 indicative_sentence_position: Literal['first', 'last'] = 'first',
+                 indicative_sentence: str = 'I <mask> it!', #I <mask> it! for sentiment
+                 indicative_sentence_position: Literal['first', 'last'] = 'last',
                  batch_size: int = 128,
                  embedding_model_name: str = 'sentence-transformers/all-mpnet-base-v2',
                  max_sequence_length: int = 128,
