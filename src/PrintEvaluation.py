@@ -64,9 +64,15 @@ class Evaluation:
         for target in np.unique(targets):
             full_statistics['score'][target] = list(targets).count(target)
             full_statistics['number_predictions'][target] = list(reordered_preds).count(target)
-            full_statistics['class_recall'][target] = int(sum([1 for i, prediction in enumerate(reordered_preds) if (prediction == target and targets[i] == target)])) / full_statistics['score'][target]
-            full_statistics['class_precition'][target] = int(
-                sum([1 for i, prediction in enumerate(reordered_preds) if (prediction == target and targets[i] == target)])) / sum([1 for preds in reordered_preds if preds == target])
+            if full_statistics['score'][target] != 0:
+                full_statistics['class_recall'][target] = int(sum([1 for i, prediction in enumerate(reordered_preds) if (prediction == target and targets[i] == target)])) / full_statistics['score'][target]
+            else:
+                full_statistics['class_recall'][target] = 0
+            if sum([1 for preds in reordered_preds if preds == target]) != 0:
+                full_statistics['class_precition'][target] = int(
+                    sum([1 for i, prediction in enumerate(reordered_preds) if (prediction == target and targets[i] == target)])) / sum([1 for preds in reordered_preds if preds == target])
+            else:
+                full_statistics['class_precition'][target] = 0
             if full_statistics['class_recall'][target] +full_statistics['class_precition'][target] != 0:
                 full_statistics['class_f1'][target] = 2*(full_statistics['class_recall'][target] *
                                                    full_statistics['class_precition'][target]) / (
