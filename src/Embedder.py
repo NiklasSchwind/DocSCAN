@@ -188,14 +188,38 @@ class Embedder:
     def _embed_SimCSE_supervised(self):
         # Define sentence transformer model using CLS pooling
         tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
-        model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
+        model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large").to(self.device)
         texts = [i for i in self.texts if i is not None]
         tokenized_texts = []
-        for text in texts:
-            tokenized_texts.append(tokenizer.encode_plus(text, padding=True, return_tensors='pt').to(self.device))
-        corpus_embeddings = model.encode(tokenized_texts)
+        num_sentences = len(self.texts)
+        num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
+        corpus_embeddings = []
+        # Initialize a list to store the mask token encodings for all batches
+        mask_token_encodings = []
 
-        return corpus_embeddings
+        # Process each batch of input sentences
+        for i in range(num_batches):
+            start = i * self.batch_size
+            end = min((i + 1) * self.batch_size, num_sentences)
+            # Extract the input tensors for the current batch
+            input_ids = []
+            attention_mask = []
+            for text in self.texts[start:end]:
+                encoded_inputs = tokenizer.encode_plus(text, padding='max_length', return_tensors='pt').to(
+                    self.device)
+                input_ids.append(encoded_inputs['input_ids'][0, :512])
+                attention_mask.append(encoded_inputs['attention_mask'][0,:512])
+
+
+            input_ids = torch.cat(input_ids, dim=0).reshape((end - start, 512))
+            attention_mask = torch.cat(attention_mask, dim=0).reshape((end - start, 512))
+            # Feed the input tensors to the RoBERTa model
+            with torch.no_grad():
+                batch_output = model(input_ids, attention_mask=attention_mask)
+
+            corpus_embeddings.append(batch_output)
+
+        return torch.cat(corpus_embeddings,dim=0)
 
 
 
