@@ -5,14 +5,12 @@ from utils.memory import MemoryBank
 import torch
 from utils.DocSCAN_utils import DocScanDataset, DocScanModel
 from utils.losses import SCANLoss
-from sklearn.feature_extraction.text import TfidfVectorizer
 from tqdm import tqdm
-import numpy as np
-from sklearn.metrics.pairwise import pairwise_distances
 from utils.utils import *
-import random
 from PrintEvaluation import Evaluation
 from Embedder import Embedder
+
+
 
 
 
@@ -46,7 +44,6 @@ class DocSCANPipeline():
         for i, index in enumerate(indices):
             anchor = i
             neighbors = index
-            # print (len(neighbors))
             for neighbor in neighbors:
                 if neighbor == i:
                     continue
@@ -56,8 +53,6 @@ class DocSCANPipeline():
             df.to_csv(os.path.join(self.args.path, "neighbor_dataset.csv"))
         else:
             df.to_csv(os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv"))
-        # sys.exit(0)
-        # sys.exit(0)
         return df
 
     def retrieve_neighbours_gpu(self, X, batchsize=16384, num_neighbors=5):
@@ -137,12 +132,12 @@ class DocSCANPipeline():
         # embedd using SBERT
 
         print("loading data...")
-        train_file = os.path.join(self.args.path, "train.jsonl")
-        predict_file = os.path.join(self.args.path, "test.jsonl")
+        train_data = os.path.join(self.args.path, "train.jsonl")
+        test_data = os.path.join(self.args.path, "test.jsonl")
 
-        df_train = self.load_data(train_file)
+        df_train = self.load_data(train_data)
         args.num_classes = df_train.label.nunique()
-        self.df_test = self.load_data(predict_file)
+        self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
 
@@ -172,10 +167,8 @@ class DocSCANPipeline():
                 indices = self.retrieve_neighbours_gpu(self.X.numpy(), num_neighbors=self.args.num_neighbors)
                 self.neighbor_dataset = self.create_neighbor_dataset(indices=indices)
 
-        results = []
 
         targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
-        targets = [targets_map[i] for i in self.df_test["label"]]
 
         for _ in range(10):
             model = self.train_model()
