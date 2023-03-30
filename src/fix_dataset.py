@@ -10,7 +10,12 @@ split = 'test'
 
 
 def read_csv(infile):
-
+    dictlist = []
+    with open(infile, newline='') as csvfile:
+        spamreader = csv.reader(csvfile)
+        for row in spamreader:
+            dictlist.append({'text': int(row[0]) - 1 ,'label': })
+            print(', '.join(row))
     with open(infile) as f:
         lines = (line.decode("utf-8") for line in f)
         rows = csv.reader(lines)
