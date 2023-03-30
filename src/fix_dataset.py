@@ -4,7 +4,7 @@ from os import listdir
 from os.path import isfile, join
 
 
-filename_in = '/vol/fob-vol7/mi19/schwindn/DocSCAN/TREC-50/raw_train.label'
+filename_in = '//vol/fob-vol7/mi19/schwindn/DocSCAN/yahoo_answers_topic/yahoo_answers_csv/train.csv'
 filename_out = 'train.jsonl'
 split = 'test'
 
@@ -14,20 +14,14 @@ def read_csv(infile):
     with open(infile, newline='') as csvfile:
         spamreader = csv.reader(csvfile)
         for row in spamreader:
-            dictlist.append({'text': int(row[0]) - 1 ,'label': })
-            print(', '.join(row))
-    with open(infile) as f:
-        lines = (line.decode("utf-8") for line in f)
-        rows = csv.reader(lines)
-        for i, row in enumerate(rows):
-            yield i, {
-                "id": i,
-                "topic": int(row[0]) - 1,
-                "question_title": row[1],
-                "question_content": row[2],
-                "best_answer": row[3],
-            }
-        break
+            dictlist.append({'text': row[3]  ,'label': int(row[0]) - 1 })
+
+
+                #"topic": int(row[0]) - 1,
+                #"question_title": row[1],
+                #"question_content": row[2],
+                #"best_answer": row[3],
+
 
 
     return dictlist
