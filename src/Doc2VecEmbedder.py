@@ -92,8 +92,8 @@ def load_data(filename):
 def create_embeddings(dataset_folder: str):
     train_data = os.path.join( dataset_folder, "train.jsonl")
     test_data = os.path.join( dataset_folder, "test.jsonl")
-    print(train_data)
     df_train = load_data(train_data)
+    print(df_train)
     df_test = load_data(test_data)
     train = df_train["sentence"]
     test = df_test["sentence"]
