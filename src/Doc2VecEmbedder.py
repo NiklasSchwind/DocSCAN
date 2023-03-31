@@ -16,6 +16,7 @@ from typing import List
 import nltk
 from nltk.corpus import stopwords
 import multiprocessing
+import json
 
 
 
@@ -25,12 +26,14 @@ import multiprocessing
 
 
 class Doc2Vec_Embedder:
-    def __init__(self, train: List[str], test: List[str]):
+    def __init__(self, train: List[str]):
+
         self.train = pd.DataFrame(train, columns = ['text'])
-        self.test = pd.DataFrame(test, columns = ['text'])
         self.cores = multiprocessing.cpu_count()
+        self.model = None
 
     def clean_text(self, text):
+
         text = BeautifulSoup(text, "lxml").text
         text = re.sub(r'\|\|\|', r' ', text)
         text = re.sub(r'http\S+', r'<URL>', text)
@@ -39,6 +42,7 @@ class Doc2Vec_Embedder:
         return text
 
     def tokenize_text(self, text):
+
         tokens = []
         for sent in nltk.sent_tokenize(text):
             for word in nltk.word_tokenize(sent):
@@ -48,10 +52,9 @@ class Doc2Vec_Embedder:
         return tokens
 
     def TrainDoc2Vec(self):
+
         train = self.train['text'].apply(self.clean_text)
-        test = self.test['text'].apply(self.clean_text)
         train_tagged = train.apply(lambda r: TaggedDocument(words=self.tokenize_text(r['text']),axis=1))
-        test_tagged = test.apply(lambda r: TaggedDocument(words=self.tokenize_text(r['text']), axis=1))
         model_dbow = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=2, sample=0, workers= self.cores)
         model_dbow.build_vocab([x for x in tqdm(train_tagged.values)])
         for epoch in range(30):
@@ -60,5 +63,32 @@ class Doc2Vec_Embedder:
             model_dbow.alpha -= 0.002
             model_dbow.min_alpha = model_dbow.alpha
 
+        return model_dbow
 
+    def embed(self, data: List[str]):
+
+        if self.model is None:
+            self.model = self.TrainDoc2Vec()
+
+        data = pd.DataFrame(data, columns = ['text'])
+        data = data['text'].apply(self.clean_text)
+        data_tagged = data.apply(lambda r: TaggedDocument(words=self.tokenize_text(r['text']), axis=1))
+        embeddings = [self.model.infer_vector(doc.words, steps=20) for doc in data_tagged.values ]
+
+        return embeddings
+
+
+    def load_data(self, filename):
+        sentences, labels = [], []
+        with open(filename) as f:
+            for line in f:
+                line = json.loads(line)
+                sentences.append(line["text"])
+                labels.append(line["label"])
+        df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
+        return df
+
+
+    def create_embeddings(self, dataset_folder: str):
+        train =
 
