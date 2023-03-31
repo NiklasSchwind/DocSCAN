@@ -93,10 +93,11 @@ def create_embeddings(dataset_folder: str):
     train_data = os.path.join( dataset_folder, "train.jsonl")
     test_data = os.path.join( dataset_folder, "test.jsonl")
     df_train = load_data(train_data)
-    print(df_train)
+
     df_test = load_data(test_data)
     train = df_train["sentence"]
     test = df_test["sentence"]
+    print(train)
     Model = Doc2Vec_Embedder(train = train)
     embeddings_train = np.array(Model.embed(train))
     embeddings_test = np.array(Model.embed(test))
