@@ -95,8 +95,8 @@ def create_embeddings(dataset_folder: str):
     df_train = load_data(train_data)
 
     df_test = load_data(test_data)
-    train = df_train["sentence"]
-    test = df_test["sentence"]
+    train = df_train.sentence.values.tolist()
+    test = df_test.sentence.values.tolist()
     print(train)
     Model = Doc2Vec_Embedder(train = train)
     embeddings_train = np.array(Model.embed(train))
