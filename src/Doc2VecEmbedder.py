@@ -72,7 +72,11 @@ class Doc2Vec_Embedder:
         return embeddings
 
 
- def load_data(filename):
+
+
+
+
+def load_data(filename):
     sentences, labels = [], []
     with open(filename) as f:
         for line in f:
