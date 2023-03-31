@@ -4,17 +4,11 @@ from tqdm import tqdm
 tqdm.pandas(desc="progress-bar")
 from gensim.models import Doc2Vec
 from sklearn import utils
-from sklearn.model_selection import train_test_split
-import gensim
-from sklearn.linear_model import LogisticRegression
 from gensim.models.doc2vec import TaggedDocument
 import re
-import seaborn as sns
-import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from typing import List
 import nltk
-from nltk.corpus import stopwords
 import multiprocessing
 import json
 import os
@@ -103,4 +97,4 @@ def create_embeddings(dataset_folder: str):
     np.save(os.path.join(dataset_folder, f"test-{Doc2Vec}-embeddings.npy"), embeddings_test)
 
 if __name__ == '__main__':
-    create_embeddings()
+    create_embeddings('/vol/fob-vol7/mi19/schwindn/DocSCAN/TREC-6')
