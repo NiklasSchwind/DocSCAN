@@ -158,7 +158,7 @@ class Embedder:
 
         corpus_embeddings = TSDAEModel.encode(self.texts)
 
-        return torch.cat(corpus_embeddings)
+        return torch.from_numpy(corpus_embeddings)
 
 
     def _embed_SimCSE_unsupervised(self):
