@@ -138,7 +138,7 @@ class Embedder:
         train_dataset = datasets.DenoisingAutoEncoderDataset(self.texts)
 
         # DataLoader to batch data, use recommended batch size
-        train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=8, shuffle=True, device = self.device)
+        train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=8, shuffle=True).to(self.device)
 
         # Define recommanded loss function
         train_loss = losses.DenoisingAutoEncoderLoss(TSDAEModel, decoder_name_or_path=model_name,
