@@ -192,7 +192,7 @@ class Embedder:
         model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large").to(self.device)
         texts = [i for i in self.texts if i is not None]
         tokenized_texts = []
-        num_sentences = len(self.texts)
+        num_sentences = len(texts)
         num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
         corpus_embeddings = []
         # Initialize a list to store the mask token encodings for all batches
@@ -205,7 +205,7 @@ class Embedder:
             # Extract the input tensors for the current batch
             input_ids = []
             attention_mask = []
-            for text in self.texts[start:end]:
+            for text in texts[start:end]:
                 encoded_inputs = tokenizer.encode_plus(text, padding='max_length', return_tensors='pt').to(
                     self.device)
                 input_ids.append(encoded_inputs['input_ids'][0, :512])
