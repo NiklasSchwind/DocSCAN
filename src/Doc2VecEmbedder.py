@@ -17,7 +17,7 @@ import nltk
 from nltk.corpus import stopwords
 import multiprocessing
 import json
-
+import os
 
 
 
@@ -78,17 +78,29 @@ class Doc2Vec_Embedder:
         return embeddings
 
 
-    def load_data(self, filename):
-        sentences, labels = [], []
-        with open(filename) as f:
-            for line in f:
-                line = json.loads(line)
-                sentences.append(line["text"])
-                labels.append(line["label"])
-        df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
-        return df
+ def load_data(filename):
+    sentences, labels = [], []
+    with open(filename) as f:
+        for line in f:
+            line = json.loads(line)
+            sentences.append(line["text"])
+            labels.append(line["label"])
+    df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
+    return df
 
 
-    def create_embeddings(self, dataset_folder: str):
-        train =
+def create_embeddings(dataset_folder: str):
+    train_data = os.path.join( dataset_folder, "train.jsonl")
+    test_data = os.path.join( dataset_folder, "test.jsonl")
+    df_train = load_data(train_data)
+    df_test = load_data(test_data)
+    train = df_train["sentence"]
+    test = df_test["sentence"]
+    Model = Doc2Vec_Embedder(train = train)
+    embeddings_train = np.array(Model.embed(train))
+    embeddings_test = np.array(Model.embed(test))
+    np.save(os.path.join(dataset_folder, f"train-{Doc2Vec}-embeddings.npy"), embeddings_train)
+    np.save(os.path.join(dataset_folder, f"test-{Doc2Vec}-embeddings.npy"), embeddings_test)
 
+if __name__ == '__main__':
+    create_embeddings()
