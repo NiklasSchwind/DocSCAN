@@ -51,7 +51,7 @@ class Doc2Vec_Embedder:
         train_tagged = train.apply(lambda r: TaggedDocument(words=self.tokenize_text(r['text']),axis=1))
         model_dbow = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=2, sample=0, workers= self.cores)
         model_dbow.build_vocab([x for x in tqdm(train_tagged.values)])
-        print(train_tagged.values)
+        print(train_tagged)
 
         for epoch in range(30):
             model_dbow.train(utils.shuffle([x for x in tqdm(train_tagged.values)]),
