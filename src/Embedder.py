@@ -17,7 +17,7 @@ class Embedder:
     def __init__(self,
                  texts: List[str],
                  path: str,
-                 embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised'],
+                 embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised', 'SimCSEunsupervised'],
                  device: str,
                  mode: Literal['test', 'train'] = 'train',
                  indicative_sentence: str = 'Category: <mask>. ', #I <mask> it! for sentiment
@@ -34,7 +34,11 @@ class Embedder:
         self.path = path
         self.mode = mode
         self.device = device
-        self.embedding_methods = {'SBert': self._embed_SBert, 'TSDEA': self._embed_TSDEA, 'IndicativeSentence': self._embed_IndicativeWordPrediction, 'SimCSEsupervised': self._embed_SimCSE_supervised}
+        self.embedding_methods = {'SBert': self._embed_SBert,
+                                  'TSDEA': self._embed_TSDEA,
+                                  'IndicativeSentence': self._embed_IndicativeWordPrediction,
+                                  'SimCSEsupervised': self._embed_SimCSE_supervised,
+                                  'SimCSEunsupervised': self._embed_SimCSE_unsupervised}
         if self.embedding_method == 'IndicativeSentence':
             self.indicative_sentence = indicative_sentence
             self.indicative_sentence_position = indicative_sentence_position
@@ -185,7 +189,7 @@ class Embedder:
         )
         corpus_embeddings = SimCSEmodel.encode(self.texts)
 
-        return torch.cat(corpus_embeddings)
+        return torch.from_numpy(corpus_embeddings)
 
     def _embed_SimCSE_supervised(self):
         # Define sentence transformer model using CLS pooling
