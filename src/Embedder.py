@@ -176,7 +176,7 @@ class Embedder:
         TrainData_paired = [InputExample(texts=[s, s]) for s in self.texts]
 
         # DataLoader to batch the data using recommended batchsize
-        TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=128, shuffle=True)
+        TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=64, shuffle=True)
 
         # Define recommended loss function
         train_loss = losses.MultipleNegativesRankingLoss(SimCSEmodel).to(self.device)
