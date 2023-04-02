@@ -73,7 +73,7 @@ class Embedder:
     def _embed_SBert(self):
 
         embedder = SentenceTransformer(self.embedding_model_name, device = self.device)
-        #embedder.max_seq_length = self.max_sequence_length
+        embedder.max_seq_length = self.max_sequence_length
         corpus_embeddings = embedder.encode(self.texts, batch_size=32, show_progress_bar=True)
 
         return torch.from_numpy(corpus_embeddings)
