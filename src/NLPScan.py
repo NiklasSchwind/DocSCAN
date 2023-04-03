@@ -140,14 +140,14 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embeddings_method = 'SimCSEunsupervised'
+        embeddings_method = 'Doc2Vec'
         embedder_train = Embedder(texts = df_train["sentence"],  path = self.args.path,
                  embedding_method = embeddings_method, device = self.args.device, mode = 'train')
         embedder_test = Embedder(texts = self.df_test["sentence"],  path = self.args.path,
                  embedding_method = embeddings_method, device = self.args.device, mode = 'test')
 
-        self.X = embedder_train.embed(createNewEmbeddings= True)
-        self.X_test = embedder_test.embed(createNewEmbeddings = True)
+        self.X = embedder_train.embed(createNewEmbeddings= False)
+        self.X_test = embedder_test.embed(createNewEmbeddings = False)
 
         print("retrieving neighbors...")
 
