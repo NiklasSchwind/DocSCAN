@@ -101,8 +101,8 @@ def create_embeddings(dataset_folder: str):
     Model = Doc2Vec_Embedder(train = train)
     embeddings_train = np.array(Model.embed(train))
     embeddings_test = np.array(Model.embed(test))
-    np.save(os.path.join(dataset_folder, f"train-{Doc2Vec}-embeddings.npy"), embeddings_train)
-    np.save(os.path.join(dataset_folder, f"test-{Doc2Vec}-embeddings.npy"), embeddings_test)
+    np.save(os.path.join(dataset_folder, f"train-Doc2Vec-embeddings.npy"), embeddings_train)
+    np.save(os.path.join(dataset_folder, f"test-Doc2Vec-embeddings.npy"), embeddings_test)
 
 if __name__ == '__main__':
     create_embeddings('/vol/fob-vol7/mi19/schwindn/DocSCAN/TREC-6')
