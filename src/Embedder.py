@@ -134,7 +134,7 @@ class Embedder:
     def _embed_TSDEA(self):
 
         try:
-            TSDAEModel = torch.load(f'models/tsdea-model_{self.path}/modules.json')
+            TSDAEModel = SentenceTransformer(f'models/tsdea-model_{self.path}/')
             print('Loaded TSDEA model!!!')
         except:
             # Define your sentence transformer model using CLS pooling
@@ -174,7 +174,7 @@ class Embedder:
     def _embed_SimCSE_unsupervised(self):
         # Define sentence transformer model using CLS pooling
         try:
-            SimCSEmodel = torch.load(f'models/simcse-model_{self.path}')
+            SimCSEmodel = SentenceTransformer(f'models/simcse-model_{self.path}/')
             print('Loaded SimCSE model!!!')
         except:
 
