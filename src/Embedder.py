@@ -134,7 +134,7 @@ class Embedder:
     def _embed_TSDEA(self):
 
         try:
-            TSDAEModel = SentenceTransformer(f'models/tsdea-model_{self.path}/')
+            TSDAEModel = SentenceTransformer(f'./models/tsdea-model_{self.path}/')
             print('Loaded TSDEA model!!!')
         except:
             # Define your sentence transformer model using CLS pooling
@@ -198,7 +198,7 @@ class Embedder:
                 epochs=5,
                 show_progress_bar=True
             )
-            SimCSEmodel.save(f'models/simcse-model_{self.path}')
+            SimCSEmodel.save(f'./models/simcse-model_{self.path}')
             print('Saved SimCSE model')
 
         corpus_embeddings = SimCSEmodel.encode(self.texts)
