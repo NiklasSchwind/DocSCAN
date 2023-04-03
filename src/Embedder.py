@@ -60,7 +60,7 @@ class Embedder:
 
     def embed(self,
               createNewEmbeddings: bool = False,
-              safeEmbeddings: bool = True
+              safeEmbeddings: bool = True,
               ):
 
         if os.path.exists(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy")) and not createNewEmbeddings:
@@ -132,33 +132,39 @@ class Embedder:
         return torch.cat(mask_token_encodings,dim=0)
 
     def _embed_TSDEA(self):
-        # Define your sentence transformer model using CLS pooling
-        model_name = 'bert-base-uncased'
-        word_embedding_model = models.Transformer(model_name)
-        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(), 'cls')
-        TSDAEModel = SentenceTransformer(modules=[word_embedding_model, pooling_model], device = self.device)
 
-        # Transform dataset to right format
-        train_dataset = datasets.DenoisingAutoEncoderDataset(self.texts)
+        try:
+            TSDAEModel = torch.load(f'models/tsdea-model_{self.path}')
+            print('Loaded TSDEA model!!!')
+        except:
+            # Define your sentence transformer model using CLS pooling
+            model_name = 'bert-base-uncased'
+            word_embedding_model = models.Transformer(model_name)
+            pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension(), 'cls')
+            TSDAEModel = SentenceTransformer(modules=[word_embedding_model, pooling_model], device = self.device)
 
-        # DataLoader to batch data, use recommended batch size
-        train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=8, shuffle=True)
+            # Transform dataset to right format
+            train_dataset = datasets.DenoisingAutoEncoderDataset(self.texts)
 
-        # Define recommanded loss function
-        train_loss = losses.DenoisingAutoEncoderLoss(TSDAEModel, decoder_name_or_path=model_name,
-                                                     tie_encoder_decoder=True).to(self.device)
+            # DataLoader to batch data, use recommended batch size
+            train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=8, shuffle=True)
 
-        # Call the fit method
-        TSDAEModel.fit(
-            train_objectives=[(train_dataloader, train_loss)],
-            epochs=1,
-            weight_decay=0,
-            scheduler='constantlr',
-            optimizer_params={'lr': 3e-5},
-            show_progress_bar=True
-        )
+            # Define recommanded loss function
+            train_loss = losses.DenoisingAutoEncoderLoss(TSDAEModel, decoder_name_or_path=model_name,
+                                                         tie_encoder_decoder=True).to(self.device)
 
-        #TSDAEModel.save('output/tsdae-model')
+            # Call the fit method
+            TSDAEModel.fit(
+                train_objectives=[(train_dataloader, train_loss)],
+                epochs=1,
+                weight_decay=0,
+                scheduler='constantlr',
+                optimizer_params={'lr': 3e-5},
+                show_progress_bar=True
+            )
+
+            TSDAEModel.save(f'models/tsdae-model_{self.path}')
+            print('Saved TSDEA model!!!')
 
         corpus_embeddings = TSDAEModel.encode(self.texts)
 
@@ -167,26 +173,34 @@ class Embedder:
 
     def _embed_SimCSE_unsupervised(self):
         # Define sentence transformer model using CLS pooling
-        model_name = 'distilroberta-base'  # 'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
-        word_embedding_model = models.Transformer(model_name, max_seq_length=512)
-        pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
-        SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model]).to(self.device)
+        try:
+            SimCSEmodel = torch.load(f'models/simcse-model_{self.path}')
+            print('Loaded SimCSE model!!!')
+        except:
 
-        # Create sentence pairs for training
-        TrainData_paired = [InputExample(texts=[s, s]) for s in self.texts]
+            model_name = 'distilroberta-base'  # 'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
+            word_embedding_model = models.Transformer(model_name, max_seq_length=512)
+            pooling_model = models.Pooling(word_embedding_model.get_word_embedding_dimension())
+            SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model]).to(self.device)
 
-        # DataLoader to batch the data using recommended batchsize
-        TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=32, shuffle=True)
+            # Create sentence pairs for training
+            TrainData_paired = [InputExample(texts=[s, s]) for s in self.texts]
 
-        # Define recommended loss function
-        train_loss = losses.MultipleNegativesRankingLoss(SimCSEmodel).to(self.device)
+            # DataLoader to batch the data using recommended batchsize
+            TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=32, shuffle=True)
 
-        # Call the fit method
-        SimCSEmodel.fit(
-            train_objectives=[(TrainData_batched, train_loss)],
-            epochs=5,
-            show_progress_bar=True
-        )
+            # Define recommended loss function
+            train_loss = losses.MultipleNegativesRankingLoss(SimCSEmodel).to(self.device)
+
+            # Call the fit method
+            SimCSEmodel.fit(
+                train_objectives=[(TrainData_batched, train_loss)],
+                epochs=5,
+                show_progress_bar=True
+            )
+            SimCSEmodel.save(f'models/simcse-model_{self.path}')
+            print('Saved SimCSE model')
+
         corpus_embeddings = SimCSEmodel.encode(self.texts)
 
         return torch.from_numpy(corpus_embeddings)
