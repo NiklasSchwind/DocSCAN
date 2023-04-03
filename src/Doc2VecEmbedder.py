@@ -69,7 +69,7 @@ class Doc2Vec_Embedder:
         data = pd.DataFrame(data, columns = ['text'])
         data = data['text'].apply(self.clean_text)
         data_tagged = [TaggedDocument(self.tokenize_text(doc), [i]) for i, doc in enumerate(data)]
-        embeddings = [self.model.infer_vector(doc.words, steps=20) for doc in data_tagged ]
+        embeddings = [self.model.infer_vector(doc.words) for doc in data_tagged ] #self.model.infer_vector(doc.words, steps=20)
 
         return embeddings
 
