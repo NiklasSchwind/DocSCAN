@@ -105,4 +105,4 @@ def create_embeddings(dataset_folder: str):
     np.save(os.path.join(dataset_folder, f"test-Doc2Vec-embeddings.npy"), embeddings_test)
 
 if __name__ == '__main__':
-    create_embeddings('/vol/fob-vol7/mi19/schwindn/DocSCAN/TREC-6')
+    create_embeddings('/vol/fob-vol7/mi19/schwindn/DocSCAN/ag_news')
