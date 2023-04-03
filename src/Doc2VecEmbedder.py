@@ -54,8 +54,8 @@ class Doc2Vec_Embedder:
 
 
         for epoch in range(30):
-            model_dbow.train(utils.shuffle([x for x in tqdm(train_tagged.values)]),
-                             total_examples=len(train_tagged.values), epochs=1)
+            model_dbow.train(utils.shuffle([x for x in tqdm(train_tagged)]),
+                             total_examples=len(train_tagged), epochs=1)
             model_dbow.alpha -= 0.002
             model_dbow.min_alpha = model_dbow.alpha
 
