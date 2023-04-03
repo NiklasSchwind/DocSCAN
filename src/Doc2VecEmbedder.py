@@ -46,9 +46,9 @@ class Doc2Vec_Embedder:
         return tokens
 
     def TrainDoc2Vec(self):
-        train = self.train['text'].apply(self.clean_text)
 
-        train_tagged = [TaggedDocument(doc, [i]) for i, doc in enumerate(self.train['text'])] #train.apply(lambda r: TaggedDocument(words=self.tokenize_text(r['text']), tags=[1], axis=1))
+
+        train_tagged = [TaggedDocument(self.tokenize_text(doc), [i]) for i, doc in enumerate(self.train['text'])] #train.apply(lambda r: TaggedDocument(words=self.tokenize_text(r['text']), tags=[1], axis=1))
         model_dbow = Doc2Vec(dm=0, vector_size=300, negative=5, hs=0, min_count=2, sample=0, workers= self.cores)
         model_dbow.build_vocab([x for x in tqdm(train_tagged)])
 
@@ -68,8 +68,8 @@ class Doc2Vec_Embedder:
 
         data = pd.DataFrame(data, columns = ['text'])
         data = data['text'].apply(self.clean_text)
-        data_tagged = data.apply(lambda r: TaggedDocument(words=self.tokenize_text(r['text']), axis=1))
-        embeddings = [self.model.infer_vector(doc.words, steps=20) for doc in data_tagged.values ]
+        data_tagged = [TaggedDocument(self.tokenize_text(doc), [i]) for i, doc in enumerate(data['text'])]
+        embeddings = [self.model.infer_vector(doc.words, steps=20) for doc in data_tagged ]
 
         return embeddings
 
