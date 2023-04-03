@@ -134,7 +134,7 @@ class Embedder:
     def _embed_TSDEA(self):
 
         try:
-            TSDAEModel = torch.load(f'models/tsdea-model_{self.path}')
+            TSDAEModel = torch.load(f'models/tsdea-model_{self.path}/modules.json')
             print('Loaded TSDEA model!!!')
         except:
             # Define your sentence transformer model using CLS pooling
