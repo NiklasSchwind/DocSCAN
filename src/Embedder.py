@@ -17,7 +17,7 @@ class Embedder:
     def __init__(self,
                  texts: List[str],
                  path: str,
-                 embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised', 'SimCSEunsupervised','Doc2Vec'],
+                 embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised', 'SimCSEunsupervised','Doc2Vec768'],
                  device: str,
                  mode: Literal['test', 'train'] = 'train',
                  indicative_sentence: str = 'Category: <mask>. ', #I <mask> it! for sentiment, Category: <mask> for topic, Answer:<mask> for question
