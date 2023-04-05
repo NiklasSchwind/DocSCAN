@@ -131,7 +131,6 @@ class DocSCANPipeline():
         return model
 
     def run_main(self):
-        # embedd using SBERT
 
         print("loading data...")
         train_data = os.path.join(self.args.path, "train.jsonl")
@@ -142,7 +141,7 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embeddings_method = 'SimCSEsupervised'
+        embeddings_method = 'SBert'
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
         self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= False)
