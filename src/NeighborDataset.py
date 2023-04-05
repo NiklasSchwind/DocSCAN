@@ -48,13 +48,13 @@ class Neighbor_Dataset:
             all_indices.extend(indices)
         return all_indices
 
-    def create_neighbor_dataset(self, data):
+    def create_neighbor_dataset(self, data, createNewDataset = False):
 
-        if os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv")) and self.num_neighbors == 5:
+        if os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv")) and self.num_neighbors == 5 and not createNewDataset:
             print("loading neighbor dataset")
             neighbor_dataset = pd.read_csv(os.path.join(self.path, "neighbor_dataset.csv"))
 
-        elif os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv")):
+        elif os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv")) and not createNewDataset:
             neighbor_dataset = pd.read_csv(
                 os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv"))
         else:

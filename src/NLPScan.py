@@ -32,46 +32,6 @@ class DocSCANPipeline():
         df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
         return df
 
-    def embedd_sentences(self, sentences):
-        embedder = SentenceTransformer(self.args.embedding_model)
-        embedder.max_seq_length = self.args.max_seq_length
-        corpus_embeddings = embedder.encode(sentences, batch_size=32, show_progress_bar=True)
-        return corpus_embeddings
-
-    def create_neighbor_dataset(self, indices=None):
-        if indices is None:
-            indices = self.memory_bank.mine_nearest_neighbors(self.args.num_neighbors, show_eval=False,
-                                                              calculate_accuracy=False)
-        examples = []
-        for i, index in enumerate(indices):
-            anchor = i
-            neighbors = index
-            for neighbor in neighbors:
-                if neighbor == i:
-                    continue
-                examples.append((anchor, neighbor))
-        df = pd.DataFrame(examples, columns=["anchor", "neighbor"])
-        if self.args.num_neighbors == 5:
-            df.to_csv(os.path.join(self.args.path, "neighbor_dataset.csv"))
-        else:
-            df.to_csv(os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv"))
-        return df
-
-    def retrieve_neighbours_gpu(self, X, batchsize=16384, num_neighbors=5):
-        import faiss
-        res = faiss.StandardGpuResources()  # use a single GPU
-        n, dim = X.shape[0], X.shape[1]
-        index = faiss.IndexFlatIP(dim)  # create CPU index
-        gpu_index_flat = faiss.index_cpu_to_gpu(res, 0, index)  # create GPU index
-        gpu_index_flat.add(X)  # add vectors to the index
-
-        all_indices = []
-        for i in tqdm(range(0, n, batchsize)):
-            features = X[i:i + batchsize]
-            distances, indices = gpu_index_flat.search(features, num_neighbors)
-            all_indices.extend(indices)
-        return all_indices
-
     def get_predictions(self, model, dataloader):
         predictions, probs = [], []
         epoch_iterator = tqdm(dataloader, total=len(dataloader))
@@ -141,38 +101,23 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embeddings_method = 'SBert'
+        embeddings_method = 'IndicativeSentence'
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
-        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= False)
-        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = False)
+        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
+        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = True)
 
         print("retrieving neighbors...")
 
         NeighborDataset = Neighbor_Dataset(num_neighbors= self.args.num_neighbors, num_classes = args.num_classes, device = self.args.device, path= self.args.path, embedding_method = embeddings_method)
 
         self.neighbor_dataset = NeighborDataset.create_neighbor_dataset(self.X)
-        '''
-        if os.path.exists(os.path.join(self.args.path, "neighbor_dataset.csv")) and self.args.num_neighbors == 5:
-            print("loading neighbor dataset")
-            self.neighbor_dataset = pd.read_csv(os.path.join(self.args.path, "neighbor_dataset.csv"))
-        elif os.path.exists(os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv")):
-            self.neighbor_dataset = pd.read_csv(
-                os.path.join(self.args.path, "neighbor_dataset" + str(self.args.num_neighbors) + ".csv"))
-        else:
-            if self.device == "cpu":
-                self.memory_bank = MemoryBank(self.X, "", len(self.X),
-                                              self.X.shape[-1],
-                                              self.args.num_classes)
-                self.neighbor_dataset = self.create_neighbor_dataset()
-            else:
-                indices = self.retrieve_neighbours_gpu(self.X.numpy(), num_neighbors=self.args.num_neighbors)
-                self.neighbor_dataset = self.create_neighbor_dataset(indices=indices)
 
-        '''
         targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 
         for _ in range(10):
+
+
             model = self.train_model()
             # test data
             predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
