@@ -314,9 +314,9 @@ class DocScanDataset(torch.utils.data.Dataset):
 
 
 class DocSCAN_Trainer:
-    def __init__(self, num_classes, device, dropout, batch_size):
+    def __init__(self, num_classes, device, dropout, batch_size, hidden_dim):
 
-        self.model = BertClassifier(number_classes=num_classes).to(device)
+        self.model = DocScanModel(num_labels=num_classes, dropout=dropout, hidden_dim=hidden_dim, device = device)
         self.device = device
         self.num_classes = num_classes
         self.dropout = dropout
