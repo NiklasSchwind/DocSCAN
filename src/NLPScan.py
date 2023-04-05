@@ -98,7 +98,7 @@ class DocSCANPipeline():
         test_data = os.path.join(self.args.path, "test.jsonl")
 
         df_train = self.load_data(train_data)
-        args.num_classes = df_train.label.nunique()
+        self.args.num_classes = df_train.label.nunique()
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
@@ -118,7 +118,7 @@ class DocSCANPipeline():
 
         for _ in range(10):
 
-            Trainer = DocSCAN_Trainer(num_classes= args.num_classes,device = self.device, dropout = self.args.dropout, batch_size= self.args.batch_size, hidden_dim = len(self.X[-1]))
+            Trainer = DocSCAN_Trainer(num_classes= self.args.num_classes,device = self.device, dropout = self.args.dropout, batch_size= self.args.batch_size, hidden_dim = len(self.X[-1]))
             Trainer.train_model(neighbor_dataset = self.neighbor_dataset, train_dataset_embeddings = self.X, num_epochs = self.args.num_epochs)
 
             predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
