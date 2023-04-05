@@ -367,8 +367,7 @@ class DocSCAN_Trainer:
 
     def train_model(self, neighbor_dataset, train_dataset_embeddings, num_epochs):
         train_dataset = DocScanDataset(neighbor_dataset, train_dataset_embeddings, mode="train", device = self.device)
-        model = DocScanModel(self.num_classes, self.dropout).to(self.device)
-        optimizer = torch.optim.Adam(model.parameters())
+        optimizer = torch.optim.Adam(self.model.parameters())
         criterion = SCANLoss()
         criterion.to(self.device)
 
