@@ -64,7 +64,7 @@ class Neighbor_Dataset:
                                               self.num_classes)
                 neighbor_dataset = self._create_neighbor_dataset(memory_bank = memory_bank)
             else:
-                indices = self._retrieve_neighbours_gpu(data.numpy(), num_neighbors=self.num_neighbors)
+                indices = self._retrieve_neighbours_gpu(data.cpu().numpy(), num_neighbors=self.num_neighbors)
                 neighbor_dataset = self._create_neighbor_dataset(indices = indices)
 
         return neighbor_dataset
