@@ -1,6 +1,7 @@
 import sys, os, json, argparse
 import pandas as pd
 from sentence_transformers import SentenceTransformer
+from NeighborDataset import Neighbor_Dataset
 from utils.memory import MemoryBank
 import torch
 from utils.DocSCAN_utils import DocScanDataset, DocScanModel
@@ -9,6 +10,7 @@ from tqdm import tqdm
 from utils.utils import *
 from PrintEvaluation import Evaluation
 from Embedder import Embedder
+
 
 
 
@@ -140,13 +142,18 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embedder = Embedder(  path = self.args.path, embedding_method = 'SimCSEunsupervised', device = self.args.device)
+        embeddings_method = 'SimCSEsupervised'
+        embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
-        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
-        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = True)
+        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= False)
+        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = False)
 
         print("retrieving neighbors...")
 
+        NeighborDataset = Neighbor_Dataset(num_neighbors= self.args.num_neighbors, num_classes = args.num_classes, device = self.args.device, path= self.args.path, embedding_method = embeddings_method)
+
+        self.neighbor_dataset = NeighborDataset.create_neighbor_dataset(self.X)
+        '''
         if os.path.exists(os.path.join(self.args.path, "neighbor_dataset.csv")) and self.args.num_neighbors == 5:
             print("loading neighbor dataset")
             self.neighbor_dataset = pd.read_csv(os.path.join(self.args.path, "neighbor_dataset.csv"))
@@ -163,7 +170,7 @@ class DocSCANPipeline():
                 indices = self.retrieve_neighbours_gpu(self.X.numpy(), num_neighbors=self.args.num_neighbors)
                 self.neighbor_dataset = self.create_neighbor_dataset(indices=indices)
 
-
+        '''
         targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 
         for _ in range(10):
