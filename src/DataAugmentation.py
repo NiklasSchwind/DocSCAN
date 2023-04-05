@@ -1,6 +1,11 @@
 from typing import List
 from transformers import MarianMTModel, MarianTokenizer
 import random
+import torch
+from sentence_transformers import SentenceTransformer
+from utils.EncodeDropout import encode_with_dropout
+
+
 
 class DataAugmentation:
     def __init__(self, device: str, batch_size: int = 128):
@@ -8,7 +13,7 @@ class DataAugmentation:
         self.batch_size = batch_size
 
 
-    def Backtranslation(self, data: List[str], language_order: List[str], original_language : str = 'en'):
+    def backtranslation(self, data: List[str], language_order: List[str], original_language : str = 'en'):
 
         language_before = original_language
         for language in language_order:
@@ -48,9 +53,29 @@ class DataAugmentation:
 
         return translated_texts
 
-    def Random_deletion(self, texts : List[str], ratio : float):
+    def random_deletion(self, texts : List[str], ratio : float):
 
         return [' '.join([word for word in text.split(' ') if random.random() >= ratio]) for text in texts]
+
+    def embed_with_dropout(self, texts: List[str]):
+
+        with torch.no_grad():
+            embedder = SentenceTransformer(self.args.sbert_model)
+            embedder.max_seq_length = self.args.max_seq_length
+            embedder.train()
+            corpus_embeddings = encode_with_dropout(embedder, texts, batch_size=32, show_progress_bar=True,
+                                                    eval=False, device=self.device)
+            embedder.eval()
+
+        return corpus_embeddings
+
+
+
+
+
+
+
+
 
 
 
