@@ -350,7 +350,7 @@ class DocSCAN_Trainer:
             bar_desc = "Epoch %d of %d | num classes %d | Iteration" % (epoch + 1, len(train_iterator), self.num_classes)
             epoch_iterator = tqdm(train_dataloader, desc=bar_desc)
             for step, batch in enumerate(epoch_iterator):
-                anchor, neighbor = batch["anchor"], batch["neighbor"]
+                anchor, neighbor = batch["anchor"].to(self.device), batch["neighbor"].to(self.device)
                 anchors_output, neighbors_output = self.model(anchor), self.model(neighbor)
 
                 total_loss, consistency_loss, entropy_loss = criterion(anchors_output, neighbors_output)
