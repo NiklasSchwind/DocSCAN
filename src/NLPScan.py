@@ -10,6 +10,7 @@ from tqdm import tqdm
 from utils.utils import *
 from PrintEvaluation import Evaluation
 from Embedder import Embedder
+from NLPScanModels import DocSCAN_Trainer
 
 
 
@@ -31,7 +32,7 @@ class DocSCANPipeline():
                 labels.append(line["label"])
         df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
         return df
-
+    '''
     def get_predictions(self, model, dataloader):
         predictions, probs = [], []
         epoch_iterator = tqdm(dataloader, total=len(dataloader))
@@ -89,7 +90,7 @@ class DocSCANPipeline():
         model = self.train(model, optimizer, criterion, train_dataloader, self.args.num_classes)
 
         return model
-
+    '''
     def run_main(self):
 
         print("loading data...")
@@ -101,7 +102,7 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embeddings_method = 'IndicativeSentence'
+        embeddings_method = 'SBert'
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
         self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
@@ -111,13 +112,31 @@ class DocSCANPipeline():
 
         NeighborDataset = Neighbor_Dataset(num_neighbors= self.args.num_neighbors, num_classes = args.num_classes, device = self.args.device, path= self.args.path, embedding_method = embeddings_method)
 
-        self.neighbor_dataset = NeighborDataset.create_neighbor_dataset(self.X)
+        self.neighbor_dataset = NeighborDataset.create_neighbor_dataset(self.X, createNewDataset=True)
 
         targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 
         for _ in range(10):
 
+            Trainer = DocSCAN_Trainer(num_classes= args.num_classes,device = self.device, dropout = self.args.dropout, batch_size= self.args.batch_size)
+            Trainer.train_model()
 
+            predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
+                                             test_embeddings=self.X_test, device=self.device)
+            predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
+                                                             collate_fn=predict_dataset.collate_fn_predict,
+                                                             batch_size=self.args.batch_size)
+
+            predictions, probabilities = Trainer.get_predictions(predict_dataloader)
+            print("docscan trained with n=", self.args.num_classes, "clusters...")
+
+            targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+            targets = [targets_map[i] for i in self.df_test["label"]]
+            evaluation.evaluate(np.array(targets), np.array(predictions))
+            print(len(targets), len(predictions))
+            evaluation.print_statistic_of_latest_experiment()
+
+            '''
             model = self.train_model()
             # test data
             predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
@@ -136,7 +155,7 @@ class DocSCANPipeline():
             evaluation.evaluate(np.array(targets), np.array(predictions))
             print(len(targets), len(predictions))
             evaluation.print_statistic_of_latest_experiment()
-
+            '''
 
         evaluation.print_full_statistics()
 
