@@ -15,11 +15,9 @@ import pandas as pd
 class Embedder:
 
     def __init__(self,
-                 texts: List[str],
                  path: str,
                  embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised', 'SimCSEunsupervised','Doc2Vec768'],
                  device: str,
-                 mode: Literal['test', 'train'] = 'train',
                  indicative_sentence: str = 'Category: <mask>. ', #I <mask> it! for sentiment, Category: <mask> for topic, Answer:<mask> for question
                  indicative_sentence_position: Literal['first', 'last'] = 'first',
                  batch_size: int = 32,
@@ -27,12 +25,11 @@ class Embedder:
                  max_sequence_length: int = 128,
 
                  ):
-        self.texts = [str(text) for text in texts]
+        self.model = None
         self.embeddings = []
         self.max_sequence_length = max_sequence_length
         self.embedding_method = embedding_method
         self.path = path
-        self.mode = mode
         self.device = device
         self.embedding_methods = {'SBert': self._embed_SBert,
                                   'TSDEA': self._embed_TSDEA,
@@ -50,43 +47,48 @@ class Embedder:
             self.batch_size = batch_size
 
 
-    def safe_embeddings(self):
 
-        np.save(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy"), self.embeddings.cpu())
+    def safe_embeddings(self,mode: Literal['test', 'train','embed']):
 
-    def load_embeddings(self):
+        np.save(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy"), self.embeddings.cpu())
 
-        return torch.from_numpy(np.load(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy")))
+    def load_embeddings(self,mode: Literal['test', 'train','embed']):
+
+        return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy")))
 
     def embed(self,
+              texts: List[str],
+              mode: Literal['test', 'train','embed'],
               createNewEmbeddings: bool = False,
               safeEmbeddings: bool = True,
               ):
 
-        if os.path.exists(os.path.join(self.path, f"{self.mode}-{self.embedding_method}-embeddings.npy")) and not createNewEmbeddings:
-            embeddings = self.load_embeddings()
+        texts = [str(text) for text in texts]
+
+        if os.path.exists(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy")) and not createNewEmbeddings and mode != 'embed':
+            embeddings = self.load_embeddings(mode)
             self.embeddings = embeddings
         else:
-            embeddings = self.embedding_methods[self.embedding_method]()
+            embeddings = self.embedding_methods[self.embedding_method](texts)
             self.embeddings = embeddings
             if safeEmbeddings:
-                self.safe_embeddings()
+                self.safe_embeddings(mode)
 
         return embeddings
 
-    def _embed_SBert(self):
+    def _embed_SBert(self, texts: List[str]):
 
         embedder = SentenceTransformer(self.embedding_model_name, device = self.device)
         embedder.max_seq_length = self.max_sequence_length
-        corpus_embeddings = embedder.encode(self.texts, batch_size=32, show_progress_bar=True)
+        corpus_embeddings = embedder.encode(texts, batch_size=32, show_progress_bar=True)
 
         return torch.from_numpy(corpus_embeddings)
 
-    def _embed_IndicativeWordPrediction(self):
+    def _embed_IndicativeWordPrediction(self,texts: List[str]):
 
         embedding_text = []
         model_name = 'roberta-base'
-        for text in self.texts:
+        for text in texts:
             if self.indicative_sentence_position == 'first':
                 embedding_text.append(self.indicative_sentence + text)
             elif self.indicative_sentence_position == 'last':
@@ -96,7 +98,7 @@ class Embedder:
         tokenizer = RobertaTokenizer.from_pretrained(model_name)
         model = RobertaModel.from_pretrained(model_name).to(self.device)
 
-        num_sentences = len(self.texts)
+        num_sentences = len(texts)
         num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
 
         # Initialize a list to store the mask token encodings for all batches
@@ -131,12 +133,12 @@ class Embedder:
 
         return torch.cat(mask_token_encodings,dim=0)
 
-    def _embed_TSDEA(self):
+    def _embed_TSDEA(self,texts: List[str]):
 
-        try:
-            TSDAEModel = SentenceTransformer(f'./models/tsdea-model_{self.path}/')
+        if self.model is not None:
+            TSDAEModel = self.model
             print('Loaded TSDEA model!!!')
-        except:
+        else:
             # Define your sentence transformer model using CLS pooling
             model_name = 'bert-base-uncased'
             word_embedding_model = models.Transformer(model_name)
@@ -144,7 +146,7 @@ class Embedder:
             TSDAEModel = SentenceTransformer(modules=[word_embedding_model, pooling_model], device = self.device)
 
             # Transform dataset to right format
-            train_dataset = datasets.DenoisingAutoEncoderDataset(self.texts)
+            train_dataset = datasets.DenoisingAutoEncoderDataset(texts)
 
             # DataLoader to batch data, use recommended batch size
             train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=8, shuffle=True)
@@ -163,20 +165,22 @@ class Embedder:
                 show_progress_bar=True
             )
 
-            TSDAEModel.save(f'models/tsdae-model_{self.path}')
-            print('Saved TSDEA model!!!')
+            self.model = TSDAEModel
 
-        corpus_embeddings = TSDAEModel.encode(self.texts)
+            print('Created TSDEA model!!!')
+
+
+        corpus_embeddings = TSDAEModel.encode(texts)
 
         return torch.from_numpy(corpus_embeddings)
 
 
-    def _embed_SimCSE_unsupervised(self):
+    def _embed_SimCSE_unsupervised(self, texts: List[str]):
         # Define sentence transformer model using CLS pooling
-        try:
-            SimCSEmodel = SentenceTransformer(f'models/simcse-model_{self.path}/')
+        if self.model is not None:
+            SimCSEmodel = self.model
             print('Loaded SimCSE model!!!')
-        except:
+        else:
 
             model_name = 'distilroberta-base'  # 'sentence-transformers/all-mpnet-base-v2'#'distilroberta-base'
             word_embedding_model = models.Transformer(model_name, max_seq_length=512)
@@ -184,7 +188,7 @@ class Embedder:
             SimCSEmodel = SentenceTransformer(modules=[word_embedding_model, pooling_model]).to(self.device)
 
             # Create sentence pairs for training
-            TrainData_paired = [InputExample(texts=[s, s]) for s in self.texts]
+            TrainData_paired = [InputExample(texts=[s, s]) for s in texts]
 
             # DataLoader to batch the data using recommended batchsize
             TrainData_batched = torch.utils.data.DataLoader(TrainData_paired, batch_size=32, shuffle=True)
@@ -198,18 +202,18 @@ class Embedder:
                 epochs=5,
                 show_progress_bar=True
             )
-            SimCSEmodel.save(f'./models/simcse-model_{self.path}')
+            self.model = SimCSEmodel
             print('Saved SimCSE model')
 
-        corpus_embeddings = SimCSEmodel.encode(self.texts)
+        corpus_embeddings = SimCSEmodel.encode(texts)
 
         return torch.from_numpy(corpus_embeddings)
 
-    def _embed_SimCSE_supervised(self):
+    def _embed_SimCSE_supervised(self, texts: List[str]):
         # Define sentence transformer model using CLS pooling
         tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
         model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large").to(self.device)
-        texts = [i for i in self.texts if i is not None]
+        texts = [i for i in texts if i is not None]
         tokenized_texts = []
         num_sentences = len(texts)
         num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
