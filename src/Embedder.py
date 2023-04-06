@@ -9,6 +9,7 @@ import torch
 import numpy as np
 import os
 import pandas as pd
+from simcse import SimCSE
 
 
 
@@ -212,7 +213,7 @@ class Embedder:
     def _embed_SimCSE_supervised(self, texts: List[str]):
         # Define sentence transformer model using CLS pooling
         #tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
-        model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large").to(self.device)
+        model = SimCSE("princeton-nlp/sup-simcse-bert-base-uncased", device = self.device)
         corpus_embeddings = model.encode(texts, batch_size=64, max_length=512)
         '''
         texts = [i for i in texts if i is not None]
