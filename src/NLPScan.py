@@ -81,12 +81,13 @@ class DocSCANPipeline():
 
             elif mode == 'PrototypeBert':
 
+                #Train DocSCAN model with train dataset to mine Protoypes
                 PrototypeMine_Trainer = DocSCAN_Trainer(num_classes=self.args.num_classes, device=self.device,
                                           dropout=self.args.dropout, batch_size=self.args.batch_size,
                                           hidden_dim=len(self.X[-1]))
                 PrototypeMine_Trainer.train_model(neighbor_dataset=self.neighbor_dataset, train_dataset_embeddings=self.X,
                                     num_epochs=self.args.num_epochs)
-
+                # Predict train dataset to receive class probabilities
                 predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
                                                        test_embeddings=self.X, device=self.device)
                 predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
@@ -103,11 +104,12 @@ class DocSCANPipeline():
                 df_train["label"] = targets_train
                 df_train["clusters"] = docscan_clusters_train["reordered_preds"]
                 df_train["probabilities"] = probabilities_train
-
+                # Mine prototypes from predictions
                 df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= 0.95]
                 df_ExtraModel = df_ExtraModel[['sentence', 'clusters']].rename(
                     {'sentence': 'text', 'clusters': 'cluster'}, axis='columns')
 
+                # Train BERT classifier with prototypes
                 Extra_Model_Trainer = Bert_Trainer(num_classes=self.args.num_classes, device = self.device )
                 Extra_Model_Trainer.finetune_BERT_crossentropy(df_ExtraModel, 1e-6, 7, self.device)
 
