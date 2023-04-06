@@ -247,7 +247,7 @@ class Embedder:
             corpus_embeddings.append(batch_output)
         '''
 
-        return torch.cat(corpus_embeddings,dim=0)
+        return corpus_embeddings
 
 
 
