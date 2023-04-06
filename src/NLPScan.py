@@ -126,10 +126,45 @@ class DocSCANPipeline():
                 evaluation.evaluate(targets, predictions_test)
 
             elif mode == 'DocBert':
-                pass
 
+                model = BertClassifier().to(self.device)
 
-        evaluation.print_full_statistics()
+                finetune_BERT_SemanticClustering(model, self.neighbor_dataset, [text for text in df_train["sentence"]],
+                                                 self.args.batch_size, 1e-6, 5, self.device)
+
+                print("docscan trained with n=", self.args.num_classes, "clusters...")
+
+                targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                targets = [targets_map[i] for i in self.df_test["label"]]
+
+                self.df_test['label'] = targets
+
+                df_ExtraModel_test = self.df_test
+                df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
+                    {'sentence': 'text', 'label': 'cluster'},
+                    axis='columns')
+
+                predictions, probabilities = get_predictions_Bert(model, df_ExtraModel_test, self.device)
+
+                df_ExtraModel_test = df_ExtraModel_test.rename({'cluster': 'label'},
+                                                               axis='columns')
+
+                targets_map = {i: j for j, i in enumerate(np.unique(df_ExtraModel_test["label"]))}
+                targets = [targets_map[i] for i in df_ExtraModel_test["label"]]
+
+                print(len(targets), len(predictions))
+
+                evaluate(np.array(targets), np.array(predictions))
+
+                docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
+
+                df_ExtraModel_test["label"] = targets
+                df_ExtraModel_test["clusters"] = docscan_clusters
+                df_ExtraModel_test["probabilities"] = probabilities
+                acc_test = np.mean(df_ExtraModel_test["label"] == df_ExtraModel_test["clusters"])
+                results.append(acc_test)
+
+    evaluation.print_full_statistics()
 
 
 if __name__ == "__main__":

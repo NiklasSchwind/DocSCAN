@@ -240,9 +240,10 @@ class Embedder:
             # Feed the input tensors to the RoBERTa model
             with torch.no_grad():
                 batch_output = model(input_ids, attention_mask=attention_mask)
-
+                print(batch_output)
             corpus_embeddings.append(batch_output)
-        print(batch_output)
+
+
         return torch.cat(corpus_embeddings,dim=0)
 
 
