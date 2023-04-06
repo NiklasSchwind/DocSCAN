@@ -318,6 +318,50 @@ class DocScanDataset(torch.utils.data.Dataset):
         return {"anchor": out}
 
 
+class DocScanDataset_old(torch.utils.data.Dataset):
+    def __init__(self, neighbor_df, embeddings, test_embeddings="", mode="train", device = 'cpu' ):
+        self.neighbor_df = neighbor_df
+        self.embeddings = embeddings
+        self.mode = mode
+        self.device = device
+        if mode == "train":
+            self.examples = self.load_data()
+        elif mode == "predict":
+            self.examples = test_embeddings
+
+    def load_data(self):
+        examples = []
+        for i,j in zip(self.neighbor_df["anchor"], self.neighbor_df["neighbor"]):
+            examples.append((i,j))
+        random.shuffle(examples)
+        return examples
+
+    def __len__(self):
+        return len(self.examples)
+
+    def __getitem__(self, item):
+        if self.mode == "train":
+            anchor, neighbor = self.examples[item]
+            sample = {"anchor": anchor, "neighbor": neighbor}
+        elif self.mode == "predict":
+            anchor = self.examples[item]
+            sample = {"anchor": anchor}
+        return sample
+    def collate_fn(self, batch):
+        '''
+        WTF?????
+        '''
+        anchors = torch.tensor([i["anchor"] for i in batch])
+        out = self.embeddings[anchors].to(self.device)
+        neighbors = torch.tensor([i["anchor"] for i in batch])
+        out_2 = self.embeddings[neighbors].to(self.device)
+        return {"anchor": out, "neighbor": out_2}
+
+    def collate_fn_predict(self, batch):
+        out = torch.vstack([i["anchor"] for i in batch]).to(self.device)
+        return {"anchor": out}
+
+
 class DocSCAN_Trainer:
     def __init__(self, num_classes, device, dropout, batch_size, hidden_dim):
 

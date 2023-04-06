@@ -40,7 +40,7 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embeddings_method = 'IndicativeSentence'
+        embeddings_method = 'SimCSEsupervised'
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
         self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
