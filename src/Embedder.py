@@ -242,7 +242,7 @@ class Embedder:
                 batch_output = model(input_ids, attention_mask=attention_mask)
 
             corpus_embeddings.append(batch_output)
-
+        print(batch_output)
         return torch.cat(corpus_embeddings,dim=0)
 
 
