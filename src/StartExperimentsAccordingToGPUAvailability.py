@@ -34,7 +34,7 @@ Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup'},
 				{'--embedding_model': 'TSDEA', '--path': 'DBPedia'}]
 
 def start_experiment(experiment, device):
-	outfile = f'Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_method"]}_no3thstep_withNeighbors.txt'
+	outfile = f'NeighborLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_method"]}_no3thstep_withNeighbors.txt'
 	with open(outfile, 'w') as f:
 		f.write('Start')
 	experiment_prompt = 'PYTHONPATH=src python src/NLPScan.py'
