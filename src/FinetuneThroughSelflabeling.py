@@ -60,7 +60,7 @@ class FinetuningThroughSelflabeling:
                                                test_embeddings=self.train_data, device=self.device)
         prototypes = self.mine_prototypes(predict_dataset_train)
 
-        df_augmented = self.augment(df_train, method=augmentation)
+        df_augmented = self.data_augmenter.random_deletion(prototypes['sentence'], ratio = 0.4)
 
         embeddings_augmented = self.embedd_sentences_method(df_augmented['sentence'], method='SBert_dropout')
         embeddings_augmented = torch.from_numpy(embeddings_augmented)
