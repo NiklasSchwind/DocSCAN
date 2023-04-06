@@ -1,57 +1,64 @@
+import pandas as pd
 from DataAugmentation import DataAugmentation
 import torch
 from NLPScanModels import DocScanDataset, DocSCAN_Trainer
 import numpy as np
+from PrintEvaluation import Evaluation
+from Embedder import Embedder
+from scipy.special import softmax
+
 
 
 class FinetuningThroughSelflabeling:
 
-    def __init__(self, device: str, model_trainer: DocSCAN_Trainer, train_data, train_embeddings, neighbor_dataset, batch_size):
+    def __init__(self,
+                 model_trainer: DocSCAN_Trainer,
+                 evaluation: Evaluation,
+                 embedder: Embedder,
+                 train_data: pd.DataFrame,
+                 train_embeddings: torch.tensor,
+                 neighbor_dataset: pd.DataFrame,
+                 batch_size: int,
+                 device: str,
+                 threshold: float
+                 ):
         self.device = device
         self.model_trainer = model_trainer
         self.train_data = train_data
         self.batch_size = batch_size
         self.train_embeddings = train_embeddings
         self.neighbor_dataset = neighbor_dataset
+        self.evaluator = evaluation
+        self.embedder = embedder
+        self.threshold = threshold
+        self.data_augmenter = DataAugmentation(device = self.device, batch_size = self.batch_size)
 
-    def mine_prototypes(self, predict_dataset: DocScanDataset, ):
+    def mine_prototypes(self, predict_dataset: DocScanDataset):
 
         predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
                                                                collate_fn=predict_dataset.collate_fn_predict,
                                                                batch_size=self.batch_size)
 
         predictions_train, probabilities_train = self.model_trainer.get_predictions(predict_dataloader)
-        targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
-        targets_train = [targets_map_train[i] for i in df_train["label"]]
-        print(len(targets_train), len(predictions_train))
-        evaluate(np.array(targets_train), np.array(predictions_train), mode='train')
+        targets_map_train = {i: j for j, i in enumerate(np.unique(self.train_data["label"]))}
+        targets_train = [targets_map_train[i] for i in self.train_data["label"]]
 
-        docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train), mode='train')[
+        docscan_clusters_train = self.evaluator.evaluate(np.array(targets_train), np.array(predictions_train), addToStatistics=False)[
             "reordered_preds"]
-        df_train["label"] = targets_train
-        df_train["clusters"] = docscan_clusters_train
-        df_train["probabilities"] = probabilities_train
+        self.train_data["label"] = targets_train
+        self.train_data["clusters"] = docscan_clusters_train
+        self.train_data["probabilities"] = probabilities_train
 
-    def fine_tune_through_selflabeling(self, df_train, model, augmentation):
+        df_Prototypes = self.train_data[self.train_data["probabilities"].apply(softmax).apply(np.max) >= self.threshold]
+
+        return df_Prototypes
+
+    def fine_tune_through_selflabeling(self):
 
         # train data
-        predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
-                                               test_embeddings=self.X, device=self.device)
-        predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
-                                                               collate_fn=predict_dataset_train.collate_fn_predict,
-                                                               batch_size=self.args.batch_size)
-
-        predictions_train, probabilities_train = self.get_predictions(model, predict_dataloader_train)
-        targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
-        targets_train = [targets_map_train[i] for i in df_train["label"]]
-        print(len(targets_train), len(predictions_train))
-        evaluate(np.array(targets_train), np.array(predictions_train), mode='train')
-
-        docscan_clusters_train = evaluate(np.array(targets_train), np.array(predictions_train), mode='train')[
-            "reordered_preds"]
-        df_train["label"] = targets_train
-        df_train["clusters"] = docscan_clusters_train
-        df_train["probabilities"] = probabilities_train
+        predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.train_data, mode="predict",
+                                               test_embeddings=self.train_data, device=self.device)
+        prototypes = self.mine_prototypes(predict_dataset_train)
 
         df_augmented = self.augment(df_train, method=augmentation)
 
