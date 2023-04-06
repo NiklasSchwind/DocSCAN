@@ -115,12 +115,13 @@ class Evaluation:
                 "classification_report": classification_report, "confusion matrix": cm,
                 "reordered_preds": reordered_preds}
 
-    def evaluate(self,targets, predictions):
+    def evaluate(self,targets, predictions, addToStatistics: bool = True):
 
         targets = np.array(targets)
         predictions = np.array(predictions)
         hungarian_match_metrics = self.hungarian_evaluate(targets, predictions)
-        self.add_evaluation(hungarian_match_metrics['full_statistics'])
+        if addToStatistics:
+            self.add_evaluation(hungarian_match_metrics['full_statistics'])
 
         return hungarian_match_metrics
 

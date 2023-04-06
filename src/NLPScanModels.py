@@ -217,7 +217,7 @@ class Bert_Trainer:
         optimizer.zero_grad()
         self.model.zero_grad()
 
-    def get_predictions_Bert(self,model, test_data):
+    def get_predictions(self, test_data):
         test = Dataset_Bert(test_data)
 
         test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
@@ -237,7 +237,7 @@ class Bert_Trainer:
                 mask = test_input['attention_mask'].to(self.device)
                 input_id = test_input['input_ids'].squeeze(1).to(self.device)
 
-                output = model(input_id, mask)
+                output = self.model(input_id, mask)
 
                 if i <= 10:
                     print(output)
