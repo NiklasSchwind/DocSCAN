@@ -213,7 +213,7 @@ class Embedder:
     def _embed_SimCSE_supervised(self, texts: List[str]):
 
 
-        model = SimCSE("princeton-nlp/sup-simcse-bert-base-uncased", device = self.device)
+        model = SimCSE("princeton-nlp/sup-simcse-roberta-large", device = self.device)
         corpus_embeddings = model.encode(texts, batch_size=64, max_length=512)
 
 
