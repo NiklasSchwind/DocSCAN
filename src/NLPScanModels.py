@@ -309,7 +309,7 @@ class DocScanDataset(torch.utils.data.Dataset):
         '''
         anchors = torch.tensor([i["anchor"] for i in batch])
         out = self.embeddings[anchors].to(self.device)
-        neighbors = torch.tensor([i["anchor"] for i in batch])
+        neighbors = torch.tensor([i["neighbor"] for i in batch])
         out_2 = self.embeddings[neighbors].to(self.device)
         return {"anchor": out, "neighbor": out_2}
 
