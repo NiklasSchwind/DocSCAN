@@ -309,7 +309,7 @@ class DocScanDataset(torch.utils.data.Dataset):
         '''
         anchors = torch.tensor([i["anchor"] for i in batch])
         out = self.embeddings[anchors].to(self.device)
-        neighbors = torch.tensor([i["neighbor"] for i in batch])
+        neighbors = torch.tensor([i["anchor"] for i in batch])
         out_2 = self.embeddings[neighbors].to(self.device)
         return {"anchor": out, "neighbor": out_2}
 
@@ -400,6 +400,8 @@ class DocSCAN_Trainer:
             epoch_iterator = tqdm(train_dataloader, desc=bar_desc)
             for step, batch in enumerate(epoch_iterator):
                 anchor, neighbor = batch["anchor"], batch["neighbor"]
+                print(torch.eq(anchor,neighbor))
+
                 anchors_output, neighbors_output = self.model(anchor), self.model(neighbor)
 
                 total_loss, consistency_loss, entropy_loss = criterion(anchors_output, neighbors_output)
