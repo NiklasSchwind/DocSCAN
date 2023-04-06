@@ -40,7 +40,7 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embeddings_method = 'SimCSEunsupervised'
+        embeddings_method = 'SBert'
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
         self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
@@ -54,7 +54,7 @@ class DocSCANPipeline():
 
         targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 
-        mode = 'SBert'    #DocSCAN --> Trains linear classifier on top of embeddings with SCANLoss
+        mode = 'DocSCAN'    #DocSCAN --> Trains linear classifier on top of embeddings with SCANLoss
                             #PrototypeBert --> Trains linear classifier on top of embeddings with SCANLoss, mines Prototypes in training data and trains BERT classifier with them
                             #DocBERT --> Trains Full Bert Classifier with SCAN loss
 
