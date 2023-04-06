@@ -124,7 +124,7 @@ class DocSCANPipeline():
                 targets = [targets_map[i] for i in self.df_test["label"]]
 
                 evaluation.evaluate(targets, predictions_test)
-
+            '''
             elif mode == 'DocBert':
 
                 model = BertClassifier().to(self.device)
@@ -163,8 +163,8 @@ class DocSCANPipeline():
                 df_ExtraModel_test["probabilities"] = probabilities
                 acc_test = np.mean(df_ExtraModel_test["label"] == df_ExtraModel_test["clusters"])
                 results.append(acc_test)
-
-    evaluation.print_full_statistics()
+                '''
+        evaluation.print_full_statistics()
 
 
 if __name__ == "__main__":
