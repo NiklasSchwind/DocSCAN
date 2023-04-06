@@ -40,7 +40,7 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
-        embeddings_method = 'SimCSEsupervised'
+        embeddings_method = 'TSDEA'
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
         self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
@@ -127,8 +127,10 @@ class DocSCANPipeline():
 
             elif mode == 'DocBert':
 
+                #Get full Bert classifier with own embeddings
                 BERT_trainer = Bert_Trainer(num_classes=self.args.num_classes, device = self.device )
 
+                #Fine Tune full classifier with neighbor dataset and SCAN loss
                 BERT_trainer.finetune_BERT_SemanticClustering(self.neighbor_dataset, [text for text in df_train["sentence"]],  self.args.batch_size, 1e-6, self.args.num_epochs)
 
                 print("docscan trained with n=", self.args.num_classes, "clusters...")
@@ -143,7 +145,7 @@ class DocSCANPipeline():
                     {'sentence': 'text', 'label': 'cluster'},
                     axis='columns')
 
-                predictions, probabilities = get_predictions_Bert(model, df_ExtraModel_test, self.device)
+                predictions, probabilities = BERT_trainer.get_predictions(df_ExtraModel_test)
 
                 df_ExtraModel_test = df_ExtraModel_test.rename({'cluster': 'label'},
                                                                axis='columns')
@@ -153,15 +155,9 @@ class DocSCANPipeline():
 
                 print(len(targets), len(predictions))
 
-                evaluate(np.array(targets), np.array(predictions))
+                evaluation.evaluate(np.array(targets), np.array(predictions))
 
-                docscan_clusters = evaluate(np.array(targets), np.array(predictions))["reordered_preds"]
 
-                df_ExtraModel_test["label"] = targets
-                df_ExtraModel_test["clusters"] = docscan_clusters
-                df_ExtraModel_test["probabilities"] = probabilities
-                acc_test = np.mean(df_ExtraModel_test["label"] == df_ExtraModel_test["clusters"])
-                results.append(acc_test)
 
         evaluation.print_full_statistics()
 

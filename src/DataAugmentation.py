@@ -57,7 +57,7 @@ class DataAugmentation:
 
         return [' '.join([word for word in text.split(' ') if random.random() >= ratio]) for text in texts]
 
-    def embed_with_dropout(self, texts: List[str]):
+    def SBert_embed_with_dropout(self, texts: List[str]):
 
         with torch.no_grad():
             embedder = SentenceTransformer(self.args.sbert_model)

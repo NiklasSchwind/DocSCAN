@@ -1,3 +1,4 @@
+import pandas as pd
 from tqdm import tqdm
 import torch
 from transformers import BertModel, BertTokenizer
@@ -218,7 +219,7 @@ class Bert_Trainer:
         optimizer.zero_grad()
         self.model.zero_grad()
 
-    def get_predictions(self, test_data):
+    def get_predictions(self, test_data: pd.DataFrame):
         test = Dataset_Bert(test_data)
 
         test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)

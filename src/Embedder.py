@@ -211,41 +211,12 @@ class Embedder:
         return torch.from_numpy(corpus_embeddings)
 
     def _embed_SimCSE_supervised(self, texts: List[str]):
-        # Define sentence transformer model using CLS pooling
-        #tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
+
+
         model = SimCSE("princeton-nlp/sup-simcse-bert-base-uncased", device = self.device)
         corpus_embeddings = model.encode(texts, batch_size=64, max_length=512)
-        '''
-        texts = [i for i in texts if i is not None]
-        tokenized_texts = []
-        num_sentences = len(texts)
-        num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
-        corpus_embeddings = []
-        # Initialize a list to store the mask token encodings for all batches
-        mask_token_encodings = []
-
-        # Process each batch of input sentences
-        for i in range(num_batches):
-            start = i * self.batch_size
-            end = min((i + 1) * self.batch_size, num_sentences)
-            # Extract the input tensors for the current batch
-            input_ids = []
-            attention_mask = []
-            for text in texts[start:end]:
-                encoded_inputs = tokenizer.encode_plus(text, padding='max_length', return_tensors='pt').to(
-                    self.device)
-                input_ids.append(encoded_inputs['input_ids'][0, :512])
-                attention_mask.append(encoded_inputs['attention_mask'][0,:512])
 
 
-            input_ids = torch.cat(input_ids, dim=0).reshape((end - start, 512))
-            attention_mask = torch.cat(attention_mask, dim=0).reshape((end - start, 512))
-            # Feed the input tensors to the RoBERTa model
-            with torch.no_grad():
-                batch_output = model(input_ids, attention_mask=attention_mask)
-                print(batch_output)
-            corpus_embeddings.append(batch_output)
-        '''
 
         return corpus_embeddings
 
