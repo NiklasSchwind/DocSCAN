@@ -7,13 +7,42 @@ import os
 
 
 
-Experiments = ['PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python src/test.py']
+#Experiments = ['PYTHONPATH=src python src/NLPScan.py --path 20newsgroup --embeddings_', 'PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python src/test.py']
+Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup'},
+				{'--embedding_model': 'SBert', '--path': 'IMDB'},
+				{'--embedding_model': 'SBert', '--path': 'ag_news'},
+				{'--embedding_model': 'SBert', '--path': 'TREC-6'},
+				{'--embedding_model': 'SBert', '--path': 'TREC-50'},
+				{'--embedding_model': 'SBert', '--path': 'DBPedia'},
+				{'--embedding_model': 'SimCSEsupervised', '--path': '20newsgroup'},
+				{'--embedding_model': 'SimCSEsupervised', '--path': 'IMDB'},
+				{'--embedding_model': 'SimCSEsupervised', '--path': 'ag_news'},
+				{'--embedding_model': 'SimCSEsupervised', '--path': 'TREC-6'},
+				{'--embedding_model': 'SimCSEsupervised', '--path': 'TREC-50'},
+				{'--embedding_model': 'SimCSEsupervised', '--path': 'DBPedia'},
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia'},
+				{'--embedding_model': 'TSDEA', '--path': '20newsgroup'},
+				{'--embedding_model': 'TSDEA', '--path': 'IMDB'},
+				{'--embedding_model': 'TSDEA', '--path': 'ag_news'},
+				{'--embedding_model': 'TSDEA', '--path': 'TREC-6'},
+				{'--embedding_model': 'TSDEA', '--path': 'TREC-50'},
+				{'--embedding_model': 'TSDEA', '--path': 'DBPedia'}]
 
 def start_experiment(experiment, device, outfile):
 	with open(outfile, 'w') as f:
 		f.write('Start')
-	print(f'{experiment} --device {device} --outfile {outfile}')
-	os.system(f'{experiment} --device {device} --outfile {outfile}')
+	experiment_prompt = 'PYTHONPATH=src python src/NLPScan.py'
+	for key in experiment.keys():
+		experiment_prompt = f'{experiment_prompt} {key} {experiment[key]}'
+
+	outfile = f'Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_method"]}_no3thstep_withNeighbors.txt'
+	print(f'Started {experiment_prompt} --device {device} --outfile {outfile}')
+	os.system(f'{experiment_prompt} --device {device} --outfile {outfile}')
 	print("Comment finished")
 
 
@@ -44,7 +73,7 @@ while count < len(Experiments):
 		info = nvmlDeviceGetMemoryInfo(CUDA[i])
 		util_rate = nvmlDeviceGetUtilizationRates(CUDA[i]).memory
 		gpu_cores = nvmlDeviceGetUtilizationRates(CUDA[i]).gpu
-		if util_rate == 0 and gpu_cores == 0:
+		if util_rate <= 30:# and gpu_cores == 0:
 			freeCUDA[i] = True
 
 	#If yes, relocate an experiment to CUDA and block cuda
@@ -54,8 +83,8 @@ while count < len(Experiments):
 			now = datetime.now()
 			current_time = now.strftime("%H:%M:%S")
 			print(count)
-			outfile = f"Logs/{Experiments[count].replace(' ','_').replace('.','_').replace('/','_')}_started_{current_time}.txt"
-			processes[count] = mp.Process(target=start_experiment,args=(Experiments[count], device, outfile))
+			#outfile = f"LogsCorrect/{Experiments[count].replace(' ','_').replace('.','_').replace('/','_')}_started_{current_time}.txt"
+			processes[count] = mp.Process(target=start_experiment,args=(Experiments[count], device))
 			processes[count].start()
 			freeCUDA[i] = False
 			possible_devices.remove(i)
