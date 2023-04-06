@@ -124,13 +124,12 @@ class DocSCANPipeline():
                 targets = [targets_map[i] for i in self.df_test["label"]]
 
                 evaluation.evaluate(targets, predictions_test)
-            '''
+
             elif mode == 'DocBert':
 
-                model = BertClassifier().to(self.device)
+                BERT_trainer = Bert_Trainer(num_classes=self.args.num_classes, device = self.device )
 
-                finetune_BERT_SemanticClustering(model, self.neighbor_dataset, [text for text in df_train["sentence"]],
-                                                 self.args.batch_size, 1e-6, 5, self.device)
+                BERT_trainer.finetune_BERT_SemanticClustering(self.neighbor_dataset, [text for text in df_train["sentence"]],  self.args.batch_size, 1e-6, self.args.num_epochs)
 
                 print("docscan trained with n=", self.args.num_classes, "clusters...")
 
@@ -163,7 +162,7 @@ class DocSCANPipeline():
                 df_ExtraModel_test["probabilities"] = probabilities
                 acc_test = np.mean(df_ExtraModel_test["label"] == df_ExtraModel_test["clusters"])
                 results.append(acc_test)
-                '''
+
         evaluation.print_full_statistics()
 
 

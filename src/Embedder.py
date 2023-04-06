@@ -211,8 +211,10 @@ class Embedder:
 
     def _embed_SimCSE_supervised(self, texts: List[str]):
         # Define sentence transformer model using CLS pooling
-        tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
+        #tokenizer = AutoTokenizer.from_pretrained("princeton-nlp/sup-simcse-roberta-large")
         model = AutoModel.from_pretrained("princeton-nlp/sup-simcse-roberta-large").to(self.device)
+        corpus_embeddings = model.encode(texts, batch_size=64, max_length=512)
+        '''
         texts = [i for i in texts if i is not None]
         tokenized_texts = []
         num_sentences = len(texts)
@@ -242,7 +244,7 @@ class Embedder:
                 batch_output = model(input_ids, attention_mask=attention_mask)
                 print(batch_output)
             corpus_embeddings.append(batch_output)
-
+        '''
 
         return torch.cat(corpus_embeddings,dim=0)
 

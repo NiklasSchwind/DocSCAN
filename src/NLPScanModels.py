@@ -162,6 +162,7 @@ class Bert_Trainer:
         return e_x / e_x.sum(axis=0)  # only difference
 
     def finetune_BERT_SemanticClustering(self, neighbors, texts, batch_size, learning_rate, epochs):
+
         train = DocScanDataset_Bert(neighbors, texts, self.device)
 
         train_dataloader = torch.utils.data.DataLoader(train, shuffle=True,
