@@ -67,12 +67,13 @@ class Dataset_Bert(torch.utils.data.Dataset):
 
 class DocScanDataset_Bert(torch.utils.data.Dataset):
 
-    def __init__(self, neighbor_df, texts, test_embeddings="", mode="train", device = 'cpu'):
+    def __init__(self, neighbor_df, texts, test_embeddings="", mode="train", device = 'cpu', method = 'SCANLoss'):
         tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
         self.neighbor_df = neighbor_df
         self.texts = [tokenizer(text, padding='max_length', max_length=512, truncation=True, return_tensors="pt") for text in texts]
         self.mode = mode
         self.device = device
+        self.method = method
         if mode == "train":
             self.examples = self.load_data()
         elif mode == "predict":
@@ -101,7 +102,10 @@ class DocScanDataset_Bert(torch.utils.data.Dataset):
         #lol
         anchors = torch.tensor([i["anchor"] for i in batch]).to(torch.int)
         out = [self.texts[anchor] for anchor in anchors]
-        neighbors = torch.tensor([i["anchor"] for i in batch]).to(torch.int)
+        if self.method == 'SCANLoss':
+            neighbors = torch.tensor([i["neighbor"] for i in batch]).to(torch.int)
+        elif self.method == 'EntropyLoss':
+            neighbors = torch.tensor([i["anchor"] for i in batch]).to(torch.int)
         out_2 = [self.texts[neighbor] for neighbor in neighbors]
         return {"anchor": out, "neighbor": out_2}
 
@@ -162,9 +166,9 @@ class Bert_Trainer:
         e_x = np.exp(x - np.max(x))
         return e_x / e_x.sum(axis=0)  # only difference
 
-    def finetune_BERT_SemanticClustering(self, neighbors, texts, batch_size, learning_rate, epochs):
+    def finetune_BERT_SemanticClustering(self, neighbors, texts, batch_size, learning_rate, epochs, method):
 
-        train = DocScanDataset_Bert(neighbors, texts, self.device)
+        train = DocScanDataset_Bert(neighbors, texts, self.device, method = method)
 
         train_dataloader = torch.utils.data.DataLoader(train, shuffle=True,
                                                        collate_fn=train.collate_fn,
