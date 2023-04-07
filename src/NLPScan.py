@@ -108,18 +108,20 @@ class DocSCANPipeline():
                 df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= 0.95]
                 df_ExtraModel = df_ExtraModel[['sentence', 'clusters']].rename(
                     {'sentence': 'text', 'clusters': 'cluster'}, axis='columns')
-                print(df_ExtraModel)
+
                 # Train BERT classifier with prototypes
                 Extra_Model_Trainer = Bert_Trainer(num_classes=self.args.num_classes, device = self.device )
                 Extra_Model_Trainer.finetune_BERT_crossentropy(train_data=df_ExtraModel, learning_rate=1e-6,epochs= 1,batch_size= 32)
 
-                df_ExtraModel_test = self.df_test
+                targets_map_test = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                targets_test = [targets_map_test[i] for i in df_train["label"]]
 
-                df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
-                    {'sentence': 'text', 'label': 'cluster'},
+                df_ExtraModel_test = self.df_test
+                df_ExtraModel_test['targets'] = targets_test
+                df_ExtraModel_test = df_ExtraModel_test[['sentence', 'targets']].rename(
+                    {'sentence': 'text', 'targets': 'cluster'},
                     axis='columns')
 
-                print(df_ExtraModel_test)
 
                 predictions_test, probabilities_test = Extra_Model_Trainer.get_predictions(df_ExtraModel_test)
 

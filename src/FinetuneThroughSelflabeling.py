@@ -62,11 +62,12 @@ class FinetuningThroughSelflabeling:
                                                test_embeddings=self.train_data, device=self.device,method = self.clustering_method)
         prototypes = self.mine_prototypes(predict_dataset_train)
 
-        df_augmented = self.data_augmenter.random_deletion(prototypes['sentence'], ratio = 0.4)
+        df_augmented = pd.DataFrame
+        df_augmented['sentence'] = self.data_augmenter.random_deletion(prototypes['sentence'], ratio = 0.4)
 
 
-        embeddings_augmented = self.embedd_sentences_method(df_augmented['sentence'], method='SBert_dropout')
-        embeddings_augmented = torch.from_numpy(embeddings_augmented)
+        embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings=True)
+
         # augmented data
         predict_dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
                                                    test_embeddings=embeddings_augmented, device=self.device,method = self.clustering_method)
