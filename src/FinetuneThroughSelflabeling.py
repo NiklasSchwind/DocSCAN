@@ -69,12 +69,12 @@ class FinetuningThroughSelflabeling:
         embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings=True)
 
         # augmented data
-        predict_dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
+        dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
                                                    test_embeddings=embeddings_augmented, device=self.device,method = self.clustering_method)
 
-        predict_dataloader_augmented = torch.utils.data.DataLoader(predict_dataset_augmented, shuffle=False,
+        dataloader_augmented = torch.utils.data.DataLoader(predict_dataset_augmented, shuffle=False,
                                                                    collate_fn=predict_dataset_augmented.collate_fn_predict,
-                                                                   batch_size=self.args.batch_size)
+                                                                   batch_size=self.batch_size)
 
         predictions_augmented, probabilities_augmented = self.get_predictions(model, predict_dataloader_augmented)
         targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}

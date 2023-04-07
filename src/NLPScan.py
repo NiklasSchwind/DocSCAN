@@ -114,7 +114,7 @@ class DocSCANPipeline():
                 Extra_Model_Trainer.finetune_BERT_crossentropy(train_data=df_ExtraModel, learning_rate=1e-6,epochs= 1,batch_size= 32)
 
                 targets_map_test = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
-                targets_test = [targets_map_test[i] for i in df_train["label"]]
+                targets_test = [targets_map_test[i] for i in self.df_test["label"]]
 
                 df_ExtraModel_test = self.df_test
                 df_ExtraModel_test['targets'] = targets_test
