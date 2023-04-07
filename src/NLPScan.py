@@ -111,7 +111,7 @@ class DocSCANPipeline():
 
                 # Train BERT classifier with prototypes
                 Extra_Model_Trainer = Bert_Trainer(num_classes=self.args.num_classes, device = self.device )
-                Extra_Model_Trainer.finetune_BERT_crossentropy(df_ExtraModel, 1e-6, 7, self.device)
+                Extra_Model_Trainer.finetune_BERT_crossentropy(train_data=df_ExtraModel, learning_rate=1e-6,epochs= 5,batch_size= self.args.batch_size)
 
                 df_ExtraModel_test = self.df_test
                 df_ExtraModel_test = df_ExtraModel_test[['sentence', 'label']].rename(
