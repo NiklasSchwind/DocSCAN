@@ -4,13 +4,13 @@ from sentence_transformers import SentenceTransformer
 from NeighborDataset import Neighbor_Dataset
 from utils.memory import MemoryBank
 import torch
-from utils.DocSCAN_utils import DocScanDataset, DocScanModel
+from utils.DocSCAN_utils import DocScanModel
 from utils.losses import SCANLoss
 from tqdm import tqdm
 from utils.utils import *
 from PrintEvaluation import Evaluation
 from Embedder import Embedder
-from NLPScanModels import DocSCAN_Trainer, Bert_Trainer
+from NLPScanModels import DocSCAN_Trainer, Bert_Trainer, DocScanDataset
 from scipy.special import softmax
 
 class DocSCANPipeline():
@@ -64,12 +64,12 @@ class DocSCANPipeline():
             if mode == 'DocSCAN':
 
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
-                                                 test_embeddings=self.X_test, device=self.device)
+                                                 test_embeddings=self.X_test, device=self.device, method = self.args.clustering_method)
                 predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
                                                                  collate_fn=predict_dataset.collate_fn_predict,
                                                                  batch_size=self.args.batch_size)
 
-                Trainer = DocSCAN_Trainer(num_classes= self.args.num_classes,device = self.device, dropout = self.args.dropout, batch_size= self.args.batch_size, hidden_dim = len(self.X[-1]))
+                Trainer = DocSCAN_Trainer(num_classes= self.args.num_classes,device = self.device, dropout = self.args.dropout, batch_size= self.args.batch_size, hidden_dim = len(self.X[-1]), method = self.args.clustering_method)
                 Trainer.train_model(neighbor_dataset = self.neighbor_dataset, train_dataset_embeddings = self.X, num_epochs = self.args.num_epochs)
                 predictions, probabilities = Trainer.get_predictions(predict_dataloader)
                 print("docscan trained with n=", self.args.num_classes, "clusters...")
@@ -84,12 +84,12 @@ class DocSCANPipeline():
                 #Train DocSCAN model with train dataset to mine Protoypes
                 PrototypeMine_Trainer = DocSCAN_Trainer(num_classes=self.args.num_classes, device=self.device,
                                           dropout=self.args.dropout, batch_size=self.args.batch_size,
-                                          hidden_dim=len(self.X[-1]))
+                                          hidden_dim=len(self.X[-1]), method = self.args.clustering_method)
                 PrototypeMine_Trainer.train_model(neighbor_dataset=self.neighbor_dataset, train_dataset_embeddings=self.X,
                                     num_epochs=self.args.num_epochs)
                 # Predict train dataset to receive class probabilities
                 predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
-                                                       test_embeddings=self.X, device=self.device)
+                                                       test_embeddings=self.X, device=self.device, method = self.args.clustering_method)
                 predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
                                                                        collate_fn=predict_dataset_train.collate_fn_predict,
                                                                        batch_size=self.args.batch_size)
@@ -177,6 +177,7 @@ if __name__ == "__main__":
     parser.add_argument("--num_neighbors", default=5, type=int, help="number of epochs to train DocSCAN model")
     parser.add_argument("--device", default='cpu', type=str, help="device the code should be run on")
     parser.add_argument("--outfile", default='NO', type=str, help="file to print outputs to")
+    parser.add_argument("--clustering_method", default='SCANLoss', type=str, help="Choose between SCANLoss and EntropyLoss")
     args = parser.parse_args()
 
     if args.dropout == 0:

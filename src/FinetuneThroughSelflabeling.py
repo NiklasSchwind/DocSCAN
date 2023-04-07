@@ -20,7 +20,8 @@ class FinetuningThroughSelflabeling:
                  neighbor_dataset: pd.DataFrame,
                  batch_size: int,
                  device: str,
-                 threshold: float
+                 threshold: float,
+                 clustering_method: str,
                  ):
         self.device = device
         self.model_trainer = model_trainer
@@ -31,6 +32,7 @@ class FinetuningThroughSelflabeling:
         self.evaluator = evaluation
         self.embedder = embedder
         self.threshold = threshold
+        self.clustering_method = clustering_method
         self.data_augmenter = DataAugmentation(device = self.device, batch_size = self.batch_size)
 
     def mine_prototypes(self, predict_dataset: DocScanDataset):
@@ -57,7 +59,7 @@ class FinetuningThroughSelflabeling:
 
         # train data
         predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.train_data, mode="predict",
-                                               test_embeddings=self.train_data, device=self.device)
+                                               test_embeddings=self.train_data, device=self.device,method = self.clustering_method)
         prototypes = self.mine_prototypes(predict_dataset_train)
 
         df_augmented = self.data_augmenter.random_deletion(prototypes['sentence'], ratio = 0.4)
@@ -66,7 +68,7 @@ class FinetuningThroughSelflabeling:
         embeddings_augmented = torch.from_numpy(embeddings_augmented)
         # augmented data
         predict_dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
-                                                   test_embeddings=embeddings_augmented, device=self.device)
+                                                   test_embeddings=embeddings_augmented, device=self.device,method = self.clustering_method)
 
         predict_dataloader_augmented = torch.utils.data.DataLoader(predict_dataset_augmented, shuffle=False,
                                                                    collate_fn=predict_dataset_augmented.collate_fn_predict,

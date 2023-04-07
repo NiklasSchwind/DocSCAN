@@ -275,11 +275,12 @@ class DocScanModel(torch.nn.Module):
         return output
 
 class DocScanDataset(torch.utils.data.Dataset):
-    def __init__(self, neighbor_df, embeddings, test_embeddings="", mode="train", device = 'cpu' ):
+    def __init__(self, neighbor_df, embeddings, test_embeddings="", mode="train", device = 'cpu', method = 'SCANLoss' ):
         self.neighbor_df = neighbor_df
         self.embeddings = embeddings
         self.mode = mode
         self.device = device
+        self.method = method
         if mode == "train":
             self.examples = self.load_data()
         elif mode == "predict":
@@ -309,7 +310,10 @@ class DocScanDataset(torch.utils.data.Dataset):
         '''
         anchors = torch.tensor([i["anchor"] for i in batch])
         out = self.embeddings[anchors].to(self.device)
-        neighbors = torch.tensor([i["anchor"] for i in batch])
+        if self.method == 'SCANLoss':
+            neighbors = torch.tensor([i["neighbor"] for i in batch])
+        elif self.method == 'EntropyLoss':
+            neighbors = torch.tensor([i["anchor"] for i in batch])
         out_2 = self.embeddings[neighbors].to(self.device)
         return {"anchor": out, "neighbor": out_2}
 
@@ -363,13 +367,14 @@ class DocScanDataset_old(torch.utils.data.Dataset):
 
 
 class DocSCAN_Trainer:
-    def __init__(self, num_classes, device, dropout, batch_size, hidden_dim):
+    def __init__(self, num_classes, device, dropout, batch_size, hidden_dim, method):
 
         self.model = DocScanModel(num_labels=num_classes, dropout=dropout, hidden_dim=hidden_dim, device = device).to(device)
         self.device = device
         self.num_classes = num_classes
         self.dropout = dropout
         self.batch_size = batch_size
+        self.method = method
 
     def get_predictions(self, dataloader):
         predictions, probs = [], []
@@ -416,7 +421,7 @@ class DocSCAN_Trainer:
 
 
     def train_model(self, neighbor_dataset, train_dataset_embeddings, num_epochs):
-        train_dataset = DocScanDataset(neighbor_dataset, train_dataset_embeddings, mode="train", device = self.device)
+        train_dataset = DocScanDataset(neighbor_dataset, train_dataset_embeddings, mode="train", device = self.device, method = self.method)
         optimizer = torch.optim.Adam(self.model.parameters())
         criterion = SCANLoss()
         criterion.to(self.device)
