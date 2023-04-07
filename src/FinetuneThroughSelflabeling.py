@@ -58,8 +58,8 @@ class FinetuningThroughSelflabeling:
     def fine_tune_through_selflabeling(self, augmentation_method):
 
         # train data
-        predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.train_data, mode="predict",
-                                               test_embeddings=self.train_data, device=self.device,method = self.clustering_method)
+        predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.train_embeddings, mode="predict",
+                                               test_embeddings=self.train_embeddings, device=self.device,method = self.clustering_method)
 
         prototypes = self.mine_prototypes(predict_dataset_train)
 
@@ -91,6 +91,6 @@ class FinetuningThroughSelflabeling:
         df_augmented["clusters"] = docscan_clusters_augmented
         df_augmented["probabilities"] = probabilities_augmented
 
-        self.model_trainer.train_selflabeling(prototype_embeddings, augmented_prototype_embeddings, threshold = 0.99, num_epochs = 5)
+        self.model_trainer.train_selflabeling(prototypes['sentence'], augmented_prototype_embeddings, threshold = 0.99, num_epochs = 5)
         predictions, probabilities = self.get_predictions(model, predict_dataloader_train)
         self.evaluator.evaluate(np.array(targets_train), np.array(predictions), verbose=0)
