@@ -94,7 +94,7 @@ class DocSCANPipeline():
                                                                        collate_fn=predict_dataset_train.collate_fn_predict,
                                                                        batch_size=self.args.batch_size)
 
-                predictions_train, probabilities_train = Trainer.get_predictions(predict_dataloader_train)
+                predictions_train, probabilities_train = PrototypeMine_Trainer.get_predictions(predict_dataloader_train)
 
                 targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
                 targets_train = [targets_map_train[i] for i in df_train["label"]]
