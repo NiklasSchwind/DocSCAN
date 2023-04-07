@@ -54,7 +54,7 @@ class DocSCANPipeline():
 
         targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
 
-        mode = 'PrototypeBert'    #DocSCAN --> Trains linear classifier on top of embeddings with SCANLoss
+        mode = self.args.model_method    #DocSCAN --> Trains linear classifier on top of embeddings with SCANLoss
                             #PrototypeBert --> Trains linear classifier on top of embeddings with SCANLoss, mines Prototypes in training data and trains BERT classifier with them
                             #DocBERT --> Trains Full Bert Classifier with SCAN loss
 
@@ -178,6 +178,8 @@ if __name__ == "__main__":
     parser.add_argument("--device", default='cpu', type=str, help="device the code should be run on")
     parser.add_argument("--outfile", default='NO', type=str, help="file to print outputs to")
     parser.add_argument("--clustering_method", default='SCANLoss', type=str, help="Choose between SCANLoss and EntropyLoss")
+    parser.add_argument("--model_method", default='DocSCAN', type=str,
+                        help="Choose between DocSCAN, DocBert and PrototypeBert")
     args = parser.parse_args()
 
     if args.dropout == 0:
@@ -187,5 +189,6 @@ if __name__ == "__main__":
 
 
     docscan = DocSCANPipeline(args)
+
     evaluation = Evaluation(name_dataset = args.path, name_embeddings = args.embedding_model)
     docscan.run_main()
