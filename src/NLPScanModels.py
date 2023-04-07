@@ -228,14 +228,11 @@ class Bert_Trainer:
 
         test_dataloader = torch.utils.data.DataLoader(test, batch_size=2)
 
-        # use_cuda = torch.cuda.is_available()
-        # device = torch.device("cuda" if use_cuda else "cpu")
-
         self.model.to(self.device)
 
         predictions_test = []
         probabilities_test = []
-        i = 0
+
         with torch.no_grad():
 
             for test_input, test_label in test_dataloader:
@@ -245,12 +242,7 @@ class Bert_Trainer:
 
                 output = self.model(input_id, mask)
 
-                if i <= 10:
-                    print(output)
-                    print(output.argmax(dim=1))
-                    print(output.tolist())
-                    print(output.argmax(dim=1).tolist())
-                    i += 1
+
                 output_list = output.tolist()
                 predictions = output.argmax(dim=1).tolist()
                 probabilities_test.append(output_list[0])
