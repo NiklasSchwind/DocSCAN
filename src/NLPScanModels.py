@@ -2,7 +2,7 @@ import pandas as pd
 from tqdm import tqdm
 import torch
 from transformers import BertModel, BertTokenizer
-from utils.losses import SCANLoss
+from utils.losses import SCANLoss, ConfidenceBasedCE
 import numpy as np
 from torch import nn
 from torch.optim import Adam
@@ -430,6 +430,40 @@ class DocSCAN_Trainer:
     def give_model(self):
 
         return self.model
+
+    def train_selflabeling(self, prototype_embeddings, augmented_prototype_embeddings, threshold = 0.99, num_epochs = 5 ):
+
+        optimizer = torch.optim.Adam(self.model.parameters())
+        criterion = ConfidenceBasedCE(threshold=threshold, apply_class_balancing=True)
+        criterion.to(self.device)
+
+        dataset = list(zip(prototype_embeddings, augmented_prototype_embeddings))
+
+        dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=self.batch_size)
+
+        train_iterator = range(int(num_epochs))
+
+        for epoch in train_iterator:
+            bar_desc = "Epoch %d of %d | num classes %d | Iteration" % (
+                epoch + 1, len(train_iterator), self.num_classes)
+            epoch_iterator = tqdm(dataloader, desc=bar_desc)
+            for step, batch in enumerate(epoch_iterator):
+                try:
+                    anchor_weak, anchor_strong = batch[0], batch[1]
+                    original_output, augmented_output = self.model(anchor_weak), self.model(anchor_strong)
+                    total_loss = criterion(original_output, augmented_output)
+                    total_loss.backward()
+                    optimizer.step()
+                    optimizer.zero_grad()
+                    self.model.zero_grad()
+                except ValueError:
+                    print(f'Recieved Value Error in step {step}')
+        optimizer.zero_grad()
+        self.model.zero_grad()
+
+
+
+
 
 
 

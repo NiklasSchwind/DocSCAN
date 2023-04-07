@@ -8,33 +8,33 @@ import os
 
 
 #Experiments = ['PYTHONPATH=src python src/NLPScan.py --path 20newsgroup --embeddings_', 'PYTHONPATH=src python src/test.py', 'PYTHONPATH=src python src/test.py']
-Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup'},
-				{'--embedding_model': 'SBert', '--path': 'IMDB'},
-				{'--embedding_model': 'SBert', '--path': 'ag_news'},
-				{'--embedding_model': 'SBert', '--path': 'TREC-6'},
-				{'--embedding_model': 'SBert', '--path': 'TREC-50'},
-				{'--embedding_model': 'SBert', '--path': 'DBPedia'},
-				{'--embedding_model': 'SimCSEsupervised', '--path': '20newsgroup'},
-				{'--embedding_model': 'SimCSEsupervised', '--path': 'IMDB'},
-				{'--embedding_model': 'SimCSEsupervised', '--path': 'ag_news'},
-				{'--embedding_model': 'SimCSEsupervised', '--path': 'TREC-6'},
-				{'--embedding_model': 'SimCSEsupervised', '--path': 'TREC-50'},
-				{'--embedding_model': 'SimCSEsupervised', '--path': 'DBPedia'},
-				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup'},
-				{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB'},
-				{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news'},
-				{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6'},
-				{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50'},
-				{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia'},
-				{'--embedding_model': 'TSDEA', '--path': '20newsgroup'},
-				{'--embedding_model': 'TSDEA', '--path': 'IMDB'},
-				{'--embedding_model': 'TSDEA', '--path': 'ag_news'},
-				{'--embedding_model': 'TSDEA', '--path': 'TREC-6'},
-				{'--embedding_model': 'TSDEA', '--path': 'TREC-50'},
-				{'--embedding_model': 'TSDEA', '--path': 'DBPedia'}]
+Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert' },
+				{'--embedding_model': 'SBert', '--path': 'IMDB','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'ag_news','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'TREC-6','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'TREC-50','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'DBPedia','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': '20newsgroup','--clustering_method': 'EntropyLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'IMDB','--clustering_method': 'EntropyLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'ag_news','--clustering_method': 'EntropyLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'TREC-6','--clustering_method': 'EntropyLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'TREC-50','--clustering_method': 'EntropyLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'SBert', '--path': 'DBPedia','--clustering_method': 'EntropyLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'TSDEA', '--path': '20newsgroup','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'TSDEA', '--path': 'IMDB','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'TSDEA', '--path': 'ag_news','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'TSDEA', '--path': 'TREC-6','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'TSDEA', '--path': 'TREC-50','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'},
+				{'--embedding_model': 'TSDEA', '--path': 'DBPedia','--clustering_method': 'SCANLoss', '--model_method': 'PrototypeBert'}]
 
 def start_experiment(experiment, device):
-	outfile = f'NeighborLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_no3thstep_withNeighbors.txt'
+	outfile = f'NeighborLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_no3thstep_withNeighbors.txt'
 	with open(outfile, 'w') as f:
 		f.write('Start')
 	experiment_prompt = 'PYTHONPATH=src python src/NLPScan.py'

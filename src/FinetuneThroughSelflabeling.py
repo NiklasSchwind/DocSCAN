@@ -60,9 +60,11 @@ class FinetuningThroughSelflabeling:
         # train data
         predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.train_data, mode="predict",
                                                test_embeddings=self.train_data, device=self.device,method = self.clustering_method)
+
         prototypes = self.mine_prototypes(predict_dataset_train)
 
-        df_augmented = pd.DataFrame
+        df_augmented = prototypes
+
         df_augmented['sentence'] = self.data_augmenter.random_deletion(prototypes['sentence'], ratio = 0.4)
 
 
@@ -72,54 +74,23 @@ class FinetuningThroughSelflabeling:
         dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
                                                    test_embeddings=embeddings_augmented, device=self.device,method = self.clustering_method)
 
-        dataloader_augmented = torch.utils.data.DataLoader(predict_dataset_augmented, shuffle=False,
-                                                                   collate_fn=predict_dataset_augmented.collate_fn_predict,
+        dataloader_augmented = torch.utils.data.DataLoader(dataset_augmented, shuffle=False,
+                                                                   collate_fn=dataset_augmented.collate_fn_predict,
                                                                    batch_size=self.batch_size)
 
-        predictions_augmented, probabilities_augmented = self.get_predictions(model, predict_dataloader_augmented)
+        predictions_augmented, probabilities_augmented = self.model_trainer.get_predictions(dataloader_augmented)
+
         targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
         targets_augmented = [targets_map_augmented[i] for i in df_augmented["label"]]
-        print(len(targets_augmented), len(predictions_augmented))
-        evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode='augmented')
 
-        docscan_clusters_augmented = \
-        evaluate(np.array(targets_augmented), np.array(predictions_augmented), mode='augmented')["reordered_preds"]
+
+        self.evaluator.evaluate(np.array(targets_augmented), np.array(predictions_augmented), addToStatistics=False )
+
+        docscan_clusters_augmented = self.evaluator.evaluate(np.array(targets_augmented), np.array(predictions_augmented), addToStatistics=False)["reordered_preds"]
         df_augmented["label"] = targets_augmented
         df_augmented["clusters"] = docscan_clusters_augmented
         df_augmented["probabilities"] = probabilities_augmented
 
-        optimizer = torch.optim.Adam(model.parameters())
-        criterion = ConfidenceBasedCE(threshold=0.99, apply_class_balancing=True)
-        criterion.to(self.device)
-
-        batch_size = self.args.batch_size
-
-        dataset = list(zip(self.X, embeddings_augmented))
-        dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=self.args.batch_size)
-
-        train_iterator = range(int(self.args.num_epochs))
-
-        targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
-        targets_augmented = [targets_map_augmented[i] for i in df_augmented["label"]]
-
-        for epoch in train_iterator:
-            bar_desc = "Epoch %d of %d | num classes %d | Iteration" % (
-            epoch + 1, len(train_iterator), self.args.num_classes)
-            epoch_iterator = tqdm(dataloader, desc=bar_desc)
-            for step, batch in enumerate(epoch_iterator):
-                try:
-                    anchor_weak, anchor_strong = batch[0], batch[1]
-                    original_output, augmented_output = model(anchor_weak), model(anchor_strong)
-                    total_loss = criterion(original_output, augmented_output)
-                    total_loss.backward()
-                    optimizer.step()
-                    optimizer.zero_grad()
-                    model.zero_grad()
-                except ValueError:
-                    print(f'Recieved Value Error in step {step}')
-
+        self.model_trainer.train_selflabeling(prototype_embeddings, augmented_prototype_embeddings, threshold = 0.99, num_epochs = 5)
         predictions, probabilities = self.get_predictions(model, predict_dataloader_train)
-        evaluate(np.array(targets_train), np.array(predictions), verbose=0)
-        optimizer.zero_grad()
-        model.zero_grad()
-        return model
+        self.evaluator.evaluate(np.array(targets_train), np.array(predictions), verbose=0)
