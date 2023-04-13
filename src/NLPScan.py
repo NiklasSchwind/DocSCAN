@@ -238,7 +238,7 @@ class DocSCANPipeline():
                 df_train["probabilities"] = probabilities_train
                 # Mine prototypes from predictions
                 df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= self.args.threshold]
-                df_ExtraModel = df_ExtraModel[['sentence', 'clusters']].rename(
+                df_ExtraModel = df_ExtraModel[['sentence', 'clusters','label']].rename(
                     {'sentence': 'text', 'clusters': 'cluster'}, axis='columns')
 
                 evaluation_afterSL.evaluate(df_ExtraModel["label"], df_ExtraModel["cluster"])
