@@ -104,7 +104,7 @@ Experiments = [
 				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5}]
 
 for experiment in Experiments:
-	experiment['--embedding_model'] = 'IndicativeSentences'
+	experiment['--embedding_model'] = 'IndicativeSentence'
 
 def start_experiment(experiment, device):
 	outfile = f'PrototypeExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_no3thstep_withNeighbors.txt'
