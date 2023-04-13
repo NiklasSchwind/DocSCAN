@@ -218,7 +218,7 @@ class DocSCANPipeline():
                 targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
                 targets = [targets_map[i] for i in self.df_test["label"]]
                 evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
-                evaluation.print_statistic_of_latest_experiment()
+                evaluation_beforeSL.print_statistic_of_latest_experiment()
 
                 predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
                                                        test_embeddings=self.X, device=self.device, method = self.args.clustering_method)
