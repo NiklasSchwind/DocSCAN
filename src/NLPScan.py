@@ -240,10 +240,11 @@ class DocSCANPipeline():
                 df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= self.args.threshold]
                 df_ExtraModel = df_ExtraModel[['sentence', 'clusters','label']].rename(
                     {'sentence': 'text', 'clusters': 'cluster'}, axis='columns')
-
-                evaluation_afterSL.evaluate(df_ExtraModel["label"], df_ExtraModel["cluster"])
-                evaluation_afterSL.print_statistic_of_latest_experiment()
-
+                if len(df_ExtraModel["label"]) != 0:
+                    evaluation_afterSL.evaluate(df_ExtraModel["label"], df_ExtraModel["cluster"])
+                    evaluation_afterSL.print_statistic_of_latest_experiment()
+                else:
+                    print(f'############!!!!!!!!!!NO PROTOTYPES found in Experiment {_}!!!!!!!!################')
 
         if self.args.model_method == 'DocSCAN_finetuning' or 'PrototypeAccuracy':
             evaluation_beforeSL.print_full_statistics()

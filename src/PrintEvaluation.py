@@ -64,6 +64,8 @@ class Evaluation:
         full_statistics['relative_score'] = {}
         full_statistics['number_classes'] = num_classes
 
+
+
         for target in np.unique(targets):
             full_statistics['score'][target] = list(targets).count(target)
             full_statistics['number_predictions'][target] = list(reordered_preds).count(target)
