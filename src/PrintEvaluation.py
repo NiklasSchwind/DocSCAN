@@ -170,9 +170,13 @@ class Evaluation:
     # Returns mean and standartdeviation of a result indicator calculated from all experiments if the indicator depends on the class
     def return_median_and_std_classwise(self, experiments, variable, target):
 
-        values = np.array([experiments[i][variable][target] for i in self.experiment_list])
 
-        return f'{np.mean(values).round(3)} ({np.std(values).round(3)})'
+        values = np.array([experiments[i][variable][target] for i in self.experiment_list if target in experiments[i][variable].keys()])
+
+        try:
+            return f'{np.mean(values).round(3)} ({np.std(values).round(3)})'
+        except:
+            return '0.000 (0.000)'
 
     def print_full_statistics(self):
 
