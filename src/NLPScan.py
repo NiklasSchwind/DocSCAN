@@ -60,7 +60,7 @@ class DocSCANPipeline():
                             #DocBERT --> Trains Full Bert Classifier with SCAN loss
 
 
-        for _ in range(10):
+        for _ in range(3):
 
             if mode == 'DocSCAN':
 
