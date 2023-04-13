@@ -176,7 +176,12 @@ class Evaluation:
 
     def print_full_statistics(self):
 
+
        experiments = self.experiment_statistics
+
+       if len(self.experiment_list):
+           print('ERROR PRINTING FULL STATISTICS! NO EXPERIMENT EXECUTED')
+           return None
 
        print(
            f'Average outcomes of DocSCAN Experiment with {self.name_dataset} using {self.name_embeddings} evaluating {int(self.experiment_counter) + 1} Experiments:')
