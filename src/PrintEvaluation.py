@@ -50,7 +50,10 @@ class Evaluation:
             reordered_preds[predictions == int(pred_i)] = int(target_i)
 
         # Gather performance metrics
-        acc = int((reordered_preds == targets).sum()) / float(num_elems)
+        if num_elems != 0:
+            acc = int((reordered_preds == targets).sum()) / float(num_elems)
+        else:
+            acc = 0
 
         full_statistics = {}
         full_statistics['class_recall'] = {}

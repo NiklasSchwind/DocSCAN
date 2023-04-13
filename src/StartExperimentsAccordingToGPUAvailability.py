@@ -155,7 +155,7 @@ Experiments = [{'--embedding_model': 'SBert', '--path': '20newsgroup', '--cluste
 
 
 def start_experiment(experiment, device):
-	outfile = f'ModelExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_no3thstep_withNeighbors.txt'
+	outfile = f'PrototypeExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_no3thstep_withNeighbors.txt'
 	with open(outfile, 'w') as f:
 		f.write('Start')
 	experiment_prompt = 'PYTHONPATH=src python src/NLPScan.py'
