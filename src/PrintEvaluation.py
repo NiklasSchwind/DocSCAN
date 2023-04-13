@@ -179,7 +179,7 @@ class Evaluation:
 
        experiments = self.experiment_statistics
 
-       if len(self.experiment_list):
+       if len(self.experiment_list) == 0:
            print('ERROR PRINTING FULL STATISTICS! NO EXPERIMENT EXECUTED')
            return None
 
