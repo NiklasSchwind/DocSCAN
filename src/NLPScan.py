@@ -199,8 +199,53 @@ class DocSCANPipeline():
                 evaluation.evaluate(np.array(targets), np.array(predictions))
                 evaluation.print_statistic_of_latest_experiment()
 
+            elif mode == 'PrototypeAccuracy':
 
-        if self.args.model_method == 'DocSCAN_finetuning':
+                predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
+                                                 test_embeddings=self.X_test, device=self.device,
+                                                 method=self.args.clustering_method)
+                predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
+                                                                 collate_fn=predict_dataset.collate_fn_predict,
+                                                                 batch_size=self.args.batch_size)
+
+                PrototypeMine_Trainer = DocSCAN_Trainer(num_classes=self.args.num_classes, device=self.device,
+                                          dropout=self.args.dropout, batch_size=self.args.batch_size,
+                                          hidden_dim=len(self.X[-1]), method = self.args.clustering_method)
+                PrototypeMine_Trainer.train_model(neighbor_dataset=self.neighbor_dataset, train_dataset_embeddings=self.X,
+                                    num_epochs=self.args.num_epochs)
+                predictions, probabilities = PrototypeMine_Trainer.get_predictions(predict_dataloader)
+                print("docscan trained with n=", self.args.num_classes, "clusters...")
+                targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                targets = [targets_map[i] for i in self.df_test["label"]]
+                evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
+                evaluation.print_statistic_of_latest_experiment()
+
+                predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
+                                                       test_embeddings=self.X, device=self.device, method = self.args.clustering_method)
+                predict_dataloader_train = torch.utils.data.DataLoader(predict_dataset_train, shuffle=False,
+                                                                       collate_fn=predict_dataset_train.collate_fn_predict,
+                                                                       batch_size=self.args.batch_size)
+
+                predictions_train, probabilities_train = PrototypeMine_Trainer.get_predictions(predict_dataloader_train)
+
+                targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
+                targets_train = [targets_map_train[i] for i in df_train["label"]]
+
+                docscan_clusters_train = evaluation.evaluate(np.array(targets_train), np.array(predictions_train), addToStatistics=False)
+
+                df_train["label"] = targets_train
+                df_train["clusters"] = docscan_clusters_train["reordered_preds"]
+                df_train["probabilities"] = probabilities_train
+                # Mine prototypes from predictions
+                df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= self.args.threshold]
+                df_ExtraModel = df_ExtraModel[['sentence', 'clusters']].rename(
+                    {'sentence': 'text', 'clusters': 'cluster'}, axis='columns')
+
+                evaluation_afterSL.evaluate(df_ExtraModel["label"], df_ExtraModel["cluster"])
+                evaluation_afterSL.print_statistic_of_latest_experiment()
+
+
+        if self.args.model_method == 'DocSCAN_finetuning' or 'PrototypeAccuracy':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
         else:
@@ -236,7 +281,7 @@ if __name__ == "__main__":
 
 
     docscan = DocSCANPipeline(args)
-    if args.model_method == 'DocSCAN_finetuning':
+    if args.model_method == 'DocSCAN_finetuning' or 'PrototypeAccuracy':
         evaluation_beforeSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
         evaluation_afterSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
 
