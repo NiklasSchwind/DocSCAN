@@ -55,56 +55,7 @@ Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup','--cluste
 				   ]
 '''
 
-Experiments = [{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
+Experiments = [
 			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
 {'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
@@ -152,7 +103,8 @@ Experiments = [{'--embedding_model': 'SBert', '--path': '20newsgroup', '--cluste
 			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5}]
 
-
+for experiment in Experiments:
+	experiment['--embedding_model'] = 'IndicativeSentences'
 
 def start_experiment(experiment, device):
 	outfile = f'PrototypeExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_no3thstep_withNeighbors.txt'
