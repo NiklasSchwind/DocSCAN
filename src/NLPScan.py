@@ -231,7 +231,7 @@ class DocSCANPipeline():
                 targets_map_train = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
                 targets_train = [targets_map_train[i] for i in df_train["label"]]
 
-                docscan_clusters_train = evaluation.evaluate(np.array(targets_train), np.array(predictions_train), addToStatistics=False)
+                docscan_clusters_train = evaluation_beforeSL.evaluate(np.array(targets_train), np.array(predictions_train), addToStatistics=False)
 
                 df_train["label"] = targets_train
                 df_train["clusters"] = docscan_clusters_train["reordered_preds"]
