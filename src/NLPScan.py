@@ -98,15 +98,22 @@ class DocSCANPipeline():
                 print(len(targets), len(predictions))
                 print('#############Before SelfLabeling: ################################')
                 evaluation_beforeSL.print_statistic_of_latest_experiment()
-                '''
+
                 SelfLabeling = FinetuningThroughSelflabeling(model_trainer=Trainer, evaluation = evaluation_afterSL,
                  embedder = embedder, train_data = df_train, train_embeddings = self.X,
-                 neighbor_dataset: pd.DataFrame,
-                 batch_size: int,
-                 device: str,
-                 threshold: float,
-                 clustering_method: str,)
-                '''
+                 neighbor_dataset = self.neighbor_dataset,
+                 batch_size = self.args.batch_size, device = self.device, threshold = self.args.threshold, clustering_method = self.args.clustering_method)
+
+                SelfLabeling.fine_tune_through_selflabeling()
+
+                predictions, probabilities = SelfLabeling.get_predictions(predict_dataloader)
+
+                targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                targets = [targets_map[i] for i in self.df_test["label"]]
+
+                evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
+                evaluation_afterSL.print_full_statistics()
+
             elif mode == 'PrototypeBert':
 
                 #Train DocSCAN model with train dataset to mine Protoypes
@@ -133,7 +140,7 @@ class DocSCANPipeline():
                 df_train["clusters"] = docscan_clusters_train["reordered_preds"]
                 df_train["probabilities"] = probabilities_train
                 # Mine prototypes from predictions
-                df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= 0.95]
+                df_ExtraModel = df_train[df_train["probabilities"].apply(softmax).apply(np.max) >= self.args.threshold]
                 df_ExtraModel = df_ExtraModel[['sentence', 'clusters']].rename(
                     {'sentence': 'text', 'clusters': 'cluster'}, axis='columns')
 
@@ -193,8 +200,11 @@ class DocSCANPipeline():
                 evaluation.print_statistic_of_latest_experiment()
 
 
-
-        evaluation.print_full_statistics()
+        if self.args.model_method == 'DocSCAN_finetuning':
+            evaluation_beforeSL.print_full_statistics()
+            evaluation_afterSL.print_full_statistics()
+        else:
+            evaluation.print_full_statistics()
 
 
 if __name__ == "__main__":
@@ -215,6 +225,8 @@ if __name__ == "__main__":
     parser.add_argument("--clustering_method", default='SCANLoss', type=str, help="Choose between SCANLoss and EntropyLoss")
     parser.add_argument("--model_method", default='DocSCAN', type=str,
                         help="Choose between DocSCAN, DocBert and PrototypeBert")
+    parser.add_argument("--threshold", default=0.95, type=float,
+                        help="threshold for selvlabeling step")
     args = parser.parse_args()
 
     if args.dropout == 0:
