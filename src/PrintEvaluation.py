@@ -133,8 +133,8 @@ class Evaluation:
     def add_evaluation(self,full_statistics):
 
         self.experiment_counter += 1
-        self.experiment_statistics[self.experiment_counter] = full_statistics
-        self.experiment_list.append(self.experiment_counter)
+        self.experiment_statistics[int(self.experiment_counter)] = full_statistics
+        self.experiment_list.append(int(self.experiment_counter))
 
     def print_statistic_of_latest_experiment(self):
 
