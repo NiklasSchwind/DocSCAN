@@ -202,6 +202,7 @@ class Embedder:
                 train_objectives=[(TrainData_batched, train_loss)],
                 epochs=5,
                 show_progress_bar=True
+
             )
             self.model = SimCSEmodel
             print('Saved SimCSE model')

@@ -44,8 +44,8 @@ class DocSCANPipeline():
         embeddings_method = self.args.embedding_model
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
-        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= False)
-        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = False)
+        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
+        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = True)
 
         print("retrieving neighbors...")
 
@@ -60,7 +60,7 @@ class DocSCANPipeline():
                             #DocBERT --> Trains Full Bert Classifier with SCAN loss
 
 
-        for _ in range(13):
+        for _ in range(10):
 
             if mode == 'DocSCAN':
 
@@ -282,7 +282,7 @@ if __name__ == "__main__":
 
 
     docscan = DocSCANPipeline(args)
-    if args.model_method == 'DocSCAN_finetuning' or 'PrototypeAccuracy':
+    if args.model_method == 'DocSCAN_finetuning' or args.model_method == 'PrototypeAccuracy':
         evaluation_beforeSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
         evaluation_afterSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
 
