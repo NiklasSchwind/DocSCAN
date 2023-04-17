@@ -44,8 +44,8 @@ class DocSCANPipeline():
         embeddings_method = self.args.embedding_model
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
-        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= True)
-        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = True)
+        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= self.args.new_embeddings)
+        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = self.args.new_embeddings)
 
         print("retrieving neighbors...")
 
@@ -60,7 +60,7 @@ class DocSCANPipeline():
                             #DocBERT --> Trains Full Bert Classifier with SCAN loss
 
 
-        for _ in range(10):
+        for _ in range(3):
 
             if mode == 'DocSCAN':
 
@@ -273,6 +273,8 @@ if __name__ == "__main__":
                         help="Choose between DocSCAN, DocBert and PrototypeBert")
     parser.add_argument("--threshold", default=0.95, type=float,
                         help="threshold for selvlabeling step")
+    parser.add_argument("--new_embeddings", default=False, type=bool,
+                        help="should the embeddings be calculated again")
     args = parser.parse_args()
 
     if args.dropout == 0:
