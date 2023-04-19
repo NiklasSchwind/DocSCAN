@@ -441,7 +441,7 @@ class DocSCAN_Trainer:
         dataset = list(zip(prototype_embeddings, augmented_prototype_embeddings))
 
         dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=self.batch_size, device = self.device )
-
+        dataloader.to(self.device)
         train_iterator = range(int(num_epochs))
 
         for epoch in train_iterator:
@@ -450,7 +450,7 @@ class DocSCAN_Trainer:
             epoch_iterator = tqdm(dataloader, desc=bar_desc)
             for step, batch in enumerate(epoch_iterator):
                 try:
-                    anchor_weak, anchor_strong = batch[0], batch[1]
+                    anchor_weak, anchor_strong = batch[0].to(self.device), batch[1].to(self.device)
                     original_output, augmented_output = self.model(anchor_weak), self.model(anchor_strong)
                     total_loss = criterion(original_output, augmented_output)
                     total_loss.backward()
