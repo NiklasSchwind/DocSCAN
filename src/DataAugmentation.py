@@ -8,7 +8,7 @@ from utils.EncodeDropout import encode_with_dropout
 
 
 class DataAugmentation:
-    def __init__(self, device: str, batch_size: int = 128):
+    def __init__(self, device: str, batch_size: int = 64):
         self.device = device
         self.batch_size = batch_size
 
