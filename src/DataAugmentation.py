@@ -18,8 +18,7 @@ class DataAugmentation:
         language_before = original_language
         for language in language_order:
             augmented_data = []
-            tokenizer = MarianTokenizer.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}').to(
-                self.device)
+            tokenizer = MarianTokenizer.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}')
             model = MarianMTModel.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}').to(self.device)
             for batch in self._divide_chunks(data, self.batch_size):
                 batch.to(self.device)
