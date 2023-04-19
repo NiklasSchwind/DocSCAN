@@ -65,7 +65,7 @@ class FinetuningThroughSelflabeling:
 
         df_augmented = df_prototypes
 
-        df_augmented['sentence'] = self.data_augmenter.random_deletion(df_prototypes['sentence'], ratio = 0.2)
+        df_augmented['sentence'] = self.data_augmenter.random_deletion(df_prototypes['sentence'], ratio = 0.1)
 
         embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True)
         embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings=True)
