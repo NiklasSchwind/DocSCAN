@@ -132,7 +132,7 @@ class Embedder:
             # Add the mask token encodings for the current batch to the list
             mask_token_encodings.append(batch_mask_token_encodings)
 
-        return torch.cat(mask_token_encodings,dim=0)
+        return torch.cat(mask_token_encodings,dim=0).to(self.device)
 
     def _embed_TSDEA(self,texts: List[str]):
 
