@@ -60,7 +60,7 @@ class DocSCANPipeline():
                             #DocBERT --> Trains Full Bert Classifier with SCAN loss
 
 
-        for _ in range(3):
+        for _ in range(10):
 
             if mode == 'DocSCAN':
 
@@ -104,7 +104,7 @@ class DocSCANPipeline():
                  neighbor_dataset = self.neighbor_dataset,
                  batch_size = self.args.batch_size, device = self.device, threshold = self.args.threshold, clustering_method = self.args.clustering_method)
 
-                SelfLabeling.fine_tune_through_selflabeling()
+                SelfLabeling.fine_tune_through_selflabeling(augmentation_method = self.args.augmentation_method)
 
                 predictions, probabilities = SelfLabeling.get_predictions(predict_dataloader)
 
@@ -275,6 +275,8 @@ if __name__ == "__main__":
                         help="threshold for selvlabeling step")
     parser.add_argument("--new_embeddings", default=False, type=bool,
                         help="should the embeddings be calculated again")
+    parser.add_argument("--augmentation_method", default='Backtranslation_fr_en', type=str,
+                        help="can be 'Cropping' or 'Backtranslation_fr_en' for now")
     args = parser.parse_args()
 
     if args.dropout == 0:

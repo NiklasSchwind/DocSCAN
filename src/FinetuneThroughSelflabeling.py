@@ -65,35 +65,14 @@ class FinetuningThroughSelflabeling:
 
         df_augmented = df_prototypes
 
-        #df_augmented['sentence'] = self.data_augmenter.random_deletion(df_prototypes['sentence'], ratio = 0.2)
-        df_augmented['sentence'] = self.data_augmenter.backtranslation(df_prototypes['sentence'], language_order = ['fr','en'])
-        df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = 0.2)
+        if augmentation_method == 'Backtranslation_fr_en':
+            df_augmented['sentence'] = self.data_augmenter.backtranslation(df_prototypes['sentence'], language_order = ['fr','en'])
+        elif augmentation_method == 'Cropping':
+            df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = 0.2)
 
         embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True)
         embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings=True)
 
-        '''
-        # augmented data
-        dataset_augmented = DocScanDataset(self.neighbor_dataset, embeddings_augmented, mode="predict",
-                                                   test_embeddings=embeddings_augmented, device=self.device,method = self.clustering_method)
-
-        dataloader_augmented = torch.utils.data.DataLoader(dataset_augmented, shuffle=False,
-                                                                   collate_fn=dataset_augmented.collate_fn_predict,
-                                                                   batch_size=self.batch_size)
-
-        predictions_augmented, probabilities_augmented = self.model_trainer.get_predictions(dataloader_augmented)
-
-        targets_map_augmented = {i: j for j, i in enumerate(np.unique(df_augmented["label"]))}
-        targets_augmented = [targets_map_augmented[i] for i in df_augmented["label"]]
-        
-
-        self.evaluator.evaluate(np.array(targets_augmented), np.array(predictions_augmented), addToStatistics=False )
-        
-        docscan_clusters_augmented = self.evaluator.evaluate(np.array(targets_augmented), np.array(predictions_augmented), addToStatistics=False)["reordered_preds"]
-        df_augmented["label"] = targets_augmented
-        df_augmented["clusters"] = docscan_clusters_augmented
-        df_augmented["probabilities"] = probabilities_augmented
-        '''
         self.model_trainer.train_selflabeling(embeddings_prototypes, embeddings_augmented, threshold = self.threshold, num_epochs = 5)
 
 

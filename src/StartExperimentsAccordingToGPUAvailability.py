@@ -56,28 +56,30 @@ Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup','--cluste
 '''
 
 Experiments = [
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 2},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
 			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
 {'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
 			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
 {'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
 			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 2},
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
+{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
+			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
+{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
+			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
 			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
@@ -129,10 +131,11 @@ Experiments = [
 ]
 
 for experiment in Experiments:
-	experiment['--num_epochs'] = 10
+	experiment['--augmentation_method'] = 'Backtranslation_fr_en'
+
 
 def start_experiment(experiment, device):
-	outfile = f'PrototypeExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_no3thstep_withNeighbors.txt'
+	outfile = f'LogsSelflabeling/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}.txt'
 	with open(outfile, 'w') as f:
 		f.write('Start')
 	experiment_prompt = 'PYTHONPATH=src python src/NLPScan.py'
