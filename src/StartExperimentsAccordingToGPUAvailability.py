@@ -3,7 +3,7 @@ from pynvml import nvmlInit, nvmlDeviceGetHandleByIndex, nvmlDeviceGetMemoryInfo
 import time
 from datetime import datetime
 import os
-
+import copy
 
 
 
@@ -130,11 +130,14 @@ Experiments = [
 	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5}
 ]
 
-Experiments2 = Experiments
+Experiments2 = []
+
 for experiment in Experiments:
 	experiment['--model_method'] = 'DocSCAN_finetuning'
-	experiment2 = experiment
 	experiment['--augmentation_method'] = 'Backtranslation_fr_en'
+
+for experiment in Experiments:
+	experiment2 = copy.deepcopy(experiment)
 	experiment2['--augmentation_method'] = 'Cropping'
 	Experiments2.append(experiment2)
 
