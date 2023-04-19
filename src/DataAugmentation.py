@@ -45,7 +45,7 @@ class DataAugmentation:
         formated_batch_texts = self._format_batch_texts(language, texts)
 
         # Generate translation using model
-        translated = model.generate(**tokenizer(formated_batch_texts, return_tensors="pt", padding=True))
+        translated = model.generate(**tokenizer(formated_batch_texts, return_tensors="pt", padding=True).to(self.device))
 
         # Convert the generated tokens indices back into text
         translated_texts = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
