@@ -131,6 +131,7 @@ Experiments = [
 ]
 
 for experiment in Experiments:
+	experiment['--model_method'] = 'DocSCAN_finetuning'
 	experiment2 = experiment
 	experiment['--augmentation_method'] = 'Backtranslation_fr_en'
 	experiment2['--augmentation_method'] = 'Cropping'
