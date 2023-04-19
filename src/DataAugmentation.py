@@ -58,7 +58,7 @@ class DataAugmentation:
 
         # Convert the generated tokens indices back into text
         translated_texts = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
-
+        print(translated_texts)
         return translated_texts
 
     def random_deletion(self, texts : List[str], ratio : float):
