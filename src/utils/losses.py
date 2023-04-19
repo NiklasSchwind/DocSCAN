@@ -80,12 +80,14 @@ class MaskedCrossEntropyLoss(nn.Module):
 
 
 class ConfidenceBasedCE(nn.Module):
-    def __init__(self, threshold, apply_class_balancing):
+    def __init__(self, device, threshold, apply_class_balancing):
         super(ConfidenceBasedCE, self).__init__()
         self.loss = MaskedCrossEntropyLoss()
         self.softmax = nn.Softmax(dim=1)
         self.threshold = threshold
         self.apply_class_balancing = apply_class_balancing
+        self.device = device
+        self.to(self.device)
 
     def forward(self, anchors_weak, anchors_strong):
         """
@@ -108,10 +110,9 @@ class ConfidenceBasedCE(nn.Module):
         if self.apply_class_balancing:
             idx, counts = torch.unique(target_masked, return_counts=True)
             freq = 1 / (counts.float() / n)
-            if torch.cuda.is_available():
-                weight = torch.ones(c).cuda()
-            else:
-                weight = torch.ones(c)
+
+            weight = torch.ones(c).to(self.device)
+
             weight[idx] = freq
 
         else:

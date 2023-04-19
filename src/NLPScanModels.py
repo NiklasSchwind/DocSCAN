@@ -435,7 +435,7 @@ class DocSCAN_Trainer:
 
         self.model.to(self.device)
         optimizer = torch.optim.Adam(self.model.parameters())
-        criterion = ConfidenceBasedCE(threshold=threshold, apply_class_balancing=True).to(self.device)
+        criterion = ConfidenceBasedCE(device = self.device,threshold=threshold, apply_class_balancing=True).to(self.device)
 
 
         dataset = list(zip(prototype_embeddings, augmented_prototype_embeddings))
