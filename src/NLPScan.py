@@ -112,7 +112,7 @@ class DocSCANPipeline():
                 targets = [targets_map[i] for i in self.df_test["label"]]
 
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
-                evaluation_afterSL.print_full_statistics()
+                evaluation_afterSL.print_statistic_of_latest_experiment()
 
             elif mode == 'PrototypeBert':
 
