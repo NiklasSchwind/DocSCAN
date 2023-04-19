@@ -22,7 +22,7 @@ class DataAugmentation:
             model = MarianMTModel.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}').to(self.device)
             for batch in self._divide_chunks(data, self.batch_size):
 
-                augmented_data.append(self._translate_texts(tokenizer,model,language_before, batch))
+                augmented_data+= self._translate_texts(tokenizer,model,language_before, batch)
             data = augmented_data
             language_before = language
 
