@@ -73,7 +73,7 @@ class FinetuningThroughSelflabeling:
         embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,safeEmbeddings=False)
         embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings=True,safeEmbeddings=False)
 
-        self.model_trainer.train_selflabeling(embeddings_prototypes, embeddings_augmented, threshold = self.threshold, num_epochs = 5)
+        self.model_trainer.train_selflabeling(embeddings_prototypes.to(), embeddings_augmented, threshold = self.threshold, num_epochs = 5)
 
 
     def get_predictions(self, test_data):

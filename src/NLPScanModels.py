@@ -452,6 +452,9 @@ class DocSCAN_Trainer:
                 try:
                     anchor_weak, anchor_strong = batch[0].to(self.device), batch[1].to(self.device)
                     original_output, augmented_output = self.model(anchor_weak), self.model(anchor_strong)
+                    print(original_output)
+                    print(augmented_output)
+                    criterion.to(self.device)
                     total_loss = criterion(original_output.to(self.device), augmented_output.to(self.device))
                     total_loss.backward()
                     optimizer.step()
