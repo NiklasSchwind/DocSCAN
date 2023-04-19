@@ -31,7 +31,10 @@ class DataAugmentation:
     def _divide_chunks(self, list, number):
         # looping till length l
         for i in range(0, len(list), number):
-            yield list[i:i + number]
+            if i+number <=len(list):
+                yield list[i:i + number]
+            else:
+                yield list[i:len(list)]
 
     def _format_batch_texts(self, language:str, batch_texts:List[str]):
 
@@ -46,7 +49,7 @@ class DataAugmentation:
 
         tokenized_texts = tokenizer(formated_batch_texts, return_tensors="pt",  padding=True ).to(self.device)
 
-        print(tokenized_texts)
+        #print(tokenized_texts)
 
         # Generate translation using model
         translated = model.generate(**tokenized_texts)
