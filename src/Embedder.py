@@ -19,7 +19,7 @@ class Embedder:
                  path: str,
                  embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised', 'SimCSEunsupervised','Doc2Vec768'],
                  device: str,
-                 indicative_sentence: str = 'Category: <mask>.', #I <mask> it! for sentiment, Category: <mask> for topic, Answer:<mask> for question
+                 indicative_sentence: str = 'I <mask> it!', #I <mask> it! for sentiment, Category: <mask> for topic, Answer:<mask> for question
                  indicative_sentence_position: Literal['first', 'last'] = 'last',
                  batch_size: int = 32,
                  embedding_model_name: str = 'sentence-transformers/all-mpnet-base-v2',
