@@ -134,11 +134,11 @@ Experiments2 = []
 
 for experiment in Experiments:
 	experiment['--model_method'] = 'DocSCAN_finetuning'
-	experiment['--augmentation_method'] = 'Backtranslation_fr_en'
+	experiment['--augmentation_method'] = 'Cropping'
 
 for experiment in Experiments:
 	experiment2 = copy.deepcopy(experiment)
-	experiment2['--augmentation_method'] = 'Cropping'
+	experiment2['--augmentation_method'] = 'Backtranslation_fr_en'
 	Experiments2.append(experiment2)
 
 Experiments += Experiments2
@@ -165,9 +165,9 @@ nvmlInit()
 deviceCount = nvmlDeviceGetCount()
 
 if deviceCount > 0:
-	CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(deviceCount)}
+	CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(deviceCount-1)}
 	device = 'CUDA'
-	freeCUDA = {i:False for i in range(deviceCount)}
+	freeCUDA = {i:False for i in range(deviceCount-1)}
 	count = 0
 else:
 	print('NO CUDA AVAILABLE')
