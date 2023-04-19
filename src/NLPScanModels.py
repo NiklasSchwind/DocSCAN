@@ -435,8 +435,8 @@ class DocSCAN_Trainer:
 
         self.model.to(self.device)
         optimizer = torch.optim.Adam(self.model.parameters())
-        criterion = ConfidenceBasedCE(threshold=threshold, apply_class_balancing=True)
-        criterion.to(self.device)
+        criterion = ConfidenceBasedCE(threshold=threshold, apply_class_balancing=True).to(self.device)
+
 
         dataset = list(zip(prototype_embeddings, augmented_prototype_embeddings))
 
@@ -452,7 +452,7 @@ class DocSCAN_Trainer:
                 try:
                     anchor_weak, anchor_strong = batch[0].to(self.device), batch[1].to(self.device)
                     original_output, augmented_output = self.model(anchor_weak), self.model(anchor_strong)
-                    total_loss = criterion(original_output, augmented_output)
+                    total_loss = criterion(original_output.to(self.device), augmented_output.to(self.device))
                     total_loss.backward()
                     optimizer.step()
                     optimizer.zero_grad()
