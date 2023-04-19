@@ -131,11 +131,17 @@ Experiments = [
 ]
 
 for experiment in Experiments:
+	experiment2 = experiment
 	experiment['--augmentation_method'] = 'Backtranslation_fr_en'
-
+	experiment2['--augmentation_method'] = 'Cropping'
+	Experiments.append(experiment2)
 
 def start_experiment(experiment, device):
-	outfile = f'LogsSelflabeling/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}.txt'
+	if experiment["--augmentation_method"] == 'Backtranslation_fr_en':
+		outfile = f'LogsSelflabeling/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}.txt'
+	else:
+		outfile = f'LogsSelflabeling/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}_ratio_0.2.txt'
+
 	with open(outfile, 'w') as f:
 		f.write('Start')
 	experiment_prompt = 'PYTHONPATH=src python src/NLPScan.py'
