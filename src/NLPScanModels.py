@@ -433,13 +433,14 @@ class DocSCAN_Trainer:
 
     def train_selflabeling(self, prototype_embeddings, augmented_prototype_embeddings, threshold = 0.99, num_epochs = 5 ):
 
+        self.model.to(self.device)
         optimizer = torch.optim.Adam(self.model.parameters())
         criterion = ConfidenceBasedCE(threshold=threshold, apply_class_balancing=True)
         criterion.to(self.device)
 
         dataset = list(zip(prototype_embeddings, augmented_prototype_embeddings))
 
-        dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=self.batch_size)
+        dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=self.batch_size, device = self.device )
 
         train_iterator = range(int(num_epochs))
 

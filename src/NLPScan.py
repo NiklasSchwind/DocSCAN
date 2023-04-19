@@ -256,7 +256,7 @@ class DocSCANPipeline():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--path", type=str, help="path to output path where output of docscan gets saved")
-    parser.add_argument("--embedding_model", default="sentence-transformers/all-mpnet-base-v2", type=str,
+    parser.add_argument("--embedding_model", default="SBert", type=str,
                         help="SBERT model to use to embedd sentences")
     parser.add_argument("--max_seq_length", default=128, type=int,
                         help="max seq length of sbert model, sequences longer than this get truncated at this value")
