@@ -22,7 +22,7 @@ class DataAugmentation:
             model = MarianMTModel.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}').to(self.device)
             for batch in self._divide_chunks(data, self.batch_size):
 
-                augmented_data+= self._translate_texts(tokenizer,model,language_before, batch)
+                augmented_data += self._translate_texts(tokenizer,model,language_before, batch)
             data = augmented_data
             language_before = language
 
@@ -52,13 +52,13 @@ class DataAugmentation:
         #
         tokenized_texts['input_ids'] = tokenized_texts['input_ids'][:,:512]
         tokenized_texts['attention_mask'] = tokenized_texts['attention_mask'][:, :512]
-        print(tokenized_texts['input_ids'].size())
+
         # Generate translation using model
         translated = model.generate(**tokenized_texts)
 
         # Convert the generated tokens indices back into text
         translated_texts = [tokenizer.decode(t, skip_special_tokens=True) for t in translated]
-        print(translated_texts)
+
         return translated_texts
 
     def random_deletion(self, texts : List[str], ratio : float):
