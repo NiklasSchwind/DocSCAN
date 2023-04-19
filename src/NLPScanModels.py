@@ -440,7 +440,7 @@ class DocSCAN_Trainer:
 
         dataset = list(zip(prototype_embeddings, augmented_prototype_embeddings))
 
-        dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=self.batch_size, device = self.device )
+        dataloader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=self.batch_size)
         dataloader.to(self.device)
         train_iterator = range(int(num_epochs))
 
