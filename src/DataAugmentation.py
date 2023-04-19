@@ -50,7 +50,8 @@ class DataAugmentation:
         tokenized_texts = tokenizer(formated_batch_texts, return_tensors="pt",  padding=True ).to(self.device)
 
         #print(tokenized_texts)
-
+        tokenized_texts['input_ids'] = tokenized_texts['input_ids'][:,:512]
+        tokenized_texts['attention_mask'] = tokenized_texts['attention_mask'][:, :512]
         # Generate translation using model
         translated = model.generate(**tokenized_texts)
 
