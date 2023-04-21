@@ -19,8 +19,8 @@ class Embedder:
                  path: str,
                  embedding_method: Literal['SBert', 'TSDEA', 'IndicativeSentence','SimCSEsupervised', 'SimCSEunsupervised','Doc2Vec768'],
                  device: str,
-                 indicative_sentence: str = 'I <mask> it!', #I <mask> it! for sentiment, Category: <mask> for topic, Answer:<mask> for question
-                 indicative_sentence_position: Literal['first', 'last'] = 'last',
+                 indicative_sentence: str = 'Category: <mask>.', #I <mask> it! for sentiment, Category: <mask> for topic, Answer:<mask> for question
+                 indicative_sentence_position: Literal['first', 'last'] = 'first',
                  batch_size: int = 32,
                  embedding_model_name: str = 'sentence-transformers/all-mpnet-base-v2',
                  max_sequence_length: int = 128,
@@ -221,9 +221,13 @@ class Embedder:
 
         return corpus_embeddings
 
+    def set_indicative_sentence(self, indicative_sentence: str):
 
+        self.indicative_sentence = indicative_sentence
 
+    def set_indicative_sentence_position(self, indicative_sentence_position: Literal['first', 'last']):
 
+        self.indicative_sentence_position = indicative_sentence_position
 
 
 

@@ -22,6 +22,7 @@ class FinetuningThroughSelflabeling:
                  device: str,
                  threshold: float,
                  clustering_method: str,
+                 args
                  ):
         self.device = device
         self.model_trainer = model_trainer
@@ -34,6 +35,7 @@ class FinetuningThroughSelflabeling:
         self.threshold = threshold
         self.clustering_method = clustering_method
         self.data_augmenter = DataAugmentation(device = self.device, batch_size = self.batch_size)
+        self.args = args
 
     def mine_prototypes(self, predict_dataset: DocScanDataset):
 
@@ -70,8 +72,19 @@ class FinetuningThroughSelflabeling:
         elif augmentation_method == 'Cropping':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = 0.2)
 
-        embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,safeEmbeddings=False)
-        embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings=True,safeEmbeddings=False)
+        if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
+            self.embedder.set_indicative_sentence('Answer: <mask>.')
+            self.embedder.set_indicative_sentence_position('last')
+        elif self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'IMDB'):
+            self.embedder.set_indicative_sentence('I <mask> it!')
+            self.embedder.set_indicative_sentence_position('last')
+        elif self.embedder.embedding_method == 'IndicativeSentence':
+            self.embedder.set_indicative_sentence('Category: <mask>.')
+            self.embedder.set_indicative_sentence_position('first')
+
+
+        embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
+        embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
 
         self.model_trainer.train_selflabeling(embeddings_prototypes.to(), embeddings_augmented, threshold = self.threshold, num_epochs = 5)
 

@@ -102,7 +102,7 @@ class DocSCANPipeline():
                 SelfLabeling = FinetuningThroughSelflabeling(model_trainer=Trainer, evaluation = evaluation_afterSL,
                  embedder = embedder, train_data = df_train, train_embeddings = self.X,
                  neighbor_dataset = self.neighbor_dataset,
-                 batch_size = self.args.batch_size, device = self.device, threshold = self.args.threshold, clustering_method = self.args.clustering_method)
+                 batch_size = self.args.batch_size, device = self.device, threshold = self.args.threshold, clustering_method = self.args.clustering_method, args = self.args)
 
                 SelfLabeling.fine_tune_through_selflabeling(augmentation_method = self.args.augmentation_method)
 
