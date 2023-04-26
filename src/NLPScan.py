@@ -160,7 +160,7 @@ class DocSCANPipeline():
                     targets = [targets_map[i] for i in self.df_test["label"]]
 
                     metrics = evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
-                    accuracy_development.append(metrics)
+                    accuracy_development.append(metrics["accuracy"])
                     prototype_number_development.append(len(prototypes))
 
 
