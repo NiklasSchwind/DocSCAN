@@ -114,6 +114,54 @@ class DocSCANPipeline():
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
 
+            elif mode == 'DocSCAN_finetuning_multi':
+
+                predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
+                                                 test_embeddings=self.X_test, device=self.args.device, method = self.args.clustering_method)
+                predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
+                                                                 collate_fn=predict_dataset.collate_fn_predict,
+                                                                 batch_size=self.args.batch_size)
+
+                Trainer = DocSCAN_Trainer(num_classes= self.args.num_classes,device = self.args.device, dropout = self.args.dropout, batch_size= self.args.batch_size, hidden_dim = len(self.X[-1]), method = self.args.clustering_method)
+                Trainer.train_model(neighbor_dataset = self.neighbor_dataset, train_dataset_embeddings = self.X, num_epochs = self.args.num_epochs)
+                predictions, probabilities = Trainer.get_predictions(predict_dataloader)
+                print("docscan trained with n=", self.args.num_classes, "clusters...")
+                targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                targets = [targets_map[i] for i in self.df_test["label"]]
+                evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
+                print(len(targets), len(predictions))
+                print('#############Before SelfLabeling: ################################')
+                evaluation_beforeSL.print_statistic_of_latest_experiment()
+
+                SelfLabeling = FinetuningThroughSelflabeling(model_trainer=Trainer, evaluation = evaluation_afterSL,
+                 embedder = embedder, train_data = df_train, train_embeddings = self.X,
+                 neighbor_dataset = self.neighbor_dataset,
+                 batch_size = self.args.batch_size, device = self.device, threshold = self.args.threshold, clustering_method = self.args.clustering_method, args = self.args)
+
+                prototypes_before = []
+                prototypes = [0]
+
+                while len(prototypes_before) < len(prototypes):
+
+                    prototypes_before = prototypes
+
+                    prototypes = SelfLabeling.fine_tune_through_selflabeling(augmentation_method = self.args.augmentation_method, giveProtoypes = True)
+
+                    prototypes = prototypes['sentence']
+
+                    print(f'Number prototypes: {len(prototypes)}')
+
+                    predictions, probabilities = SelfLabeling.get_predictions(predict_dataloader)
+
+                    targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                    targets = [targets_map[i] for i in self.df_test["label"]]
+
+                    evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
+
+                evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
+                evaluation_afterSL.print_statistic_of_latest_experiment()
+
+
             elif mode == 'PrototypeBert':
 
                 #Train DocSCAN model with train dataset to mine Protoypes

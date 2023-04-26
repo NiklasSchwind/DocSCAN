@@ -120,13 +120,17 @@ class Evaluation:
                 "classification_report": classification_report, "confusion matrix": cm,
                 "reordered_preds": reordered_preds}
 
-    def evaluate(self,targets, predictions, addToStatistics: bool = True):
+    def evaluate(self,targets, predictions, addToStatistics: bool = True, doPrint: bool = False):
 
         targets = np.array(targets)
         predictions = np.array(predictions)
         hungarian_match_metrics = self.hungarian_evaluate(targets, predictions)
         if addToStatistics:
             self.add_evaluation(hungarian_match_metrics['full_statistics'])
+
+        if doPrint:
+            self.print_statistic_of_latest_experiment(hungarian_match_metrics['full_statistics'])
+
 
         return hungarian_match_metrics
 
@@ -136,9 +140,10 @@ class Evaluation:
         self.experiment_statistics[int(self.experiment_counter)] = full_statistics
         self.experiment_list.append(int(self.experiment_counter))
 
-    def print_statistic_of_latest_experiment(self):
+    def print_statistic_of_latest_experiment(self, experiment = None):
 
-        experiment = self.experiment_statistics[self.experiment_counter]
+        if experiment is None:
+            experiment = self.experiment_statistics[self.experiment_counter]
 
         print(f'DocSCAN Experiment with {self.name_dataset} using {self.name_embeddings} number {int(self.experiment_counter)+1}:')
         print('\n')

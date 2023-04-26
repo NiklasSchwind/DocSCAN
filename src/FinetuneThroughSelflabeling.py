@@ -57,7 +57,7 @@ class FinetuningThroughSelflabeling:
 
         return df_Prototypes
 
-    def fine_tune_through_selflabeling(self, augmentation_method = 'bla'):
+    def fine_tune_through_selflabeling(self, augmentation_method = 'bla', giveProtoypes: bool = False):
 
         # train data
         predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.train_embeddings, mode="predict",
@@ -87,6 +87,9 @@ class FinetuningThroughSelflabeling:
         embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
 
         self.model_trainer.train_selflabeling(embeddings_prototypes.to(), embeddings_augmented, threshold = self.threshold, num_epochs = 5)
+
+        if giveProtoypes:
+            return df_prototypes
 
 
     def get_predictions(self, test_data):
