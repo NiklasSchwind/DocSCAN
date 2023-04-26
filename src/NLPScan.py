@@ -131,7 +131,7 @@ class DocSCANPipeline():
                 targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
                 targets = [targets_map[i] for i in self.df_test["label"]]
                 metrics = evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
-                accuracy_development.append(metrics)
+                accuracy_development.append(metrics['full_statistics']["accuracy"])
                 print(len(targets), len(predictions))
                 print('#############Before SelfLabeling: ################################')
                 evaluation_beforeSL.print_statistic_of_latest_experiment()
@@ -160,7 +160,7 @@ class DocSCANPipeline():
                     targets = [targets_map[i] for i in self.df_test["label"]]
 
                     metrics = evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
-                    accuracy_development.append(metrics["accuracy"])
+                    accuracy_development.append(metrics['full_statistics']["accuracy"])
                     prototype_number_development.append(len(prototypes))
 
 
