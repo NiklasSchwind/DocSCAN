@@ -132,7 +132,7 @@ class Evaluation:
             self.print_statistic_of_latest_experiment(hungarian_match_metrics['full_statistics'])
 
 
-        return hungarian_match_metrics
+        return hungarian_match_metrics['full_statistics']
 
     def add_evaluation(self,full_statistics):
 
