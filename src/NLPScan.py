@@ -116,6 +116,8 @@ class DocSCANPipeline():
 
             elif mode == 'DocSCAN_finetuning_multi':
 
+                accuracy_development = []
+                prototype_number_development = [0]
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
                                                  test_embeddings=self.X_test, device=self.args.device, method = self.args.clustering_method)
                 predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
@@ -128,7 +130,8 @@ class DocSCANPipeline():
                 print("docscan trained with n=", self.args.num_classes, "clusters...")
                 targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
                 targets = [targets_map[i] for i in self.df_test["label"]]
-                evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
+                metrics = evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
+                accuracy_development.append(metrics)
                 print(len(targets), len(predictions))
                 print('#############Before SelfLabeling: ################################')
                 evaluation_beforeSL.print_statistic_of_latest_experiment()
@@ -156,7 +159,13 @@ class DocSCANPipeline():
                     targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
                     targets = [targets_map[i] for i in self.df_test["label"]]
 
-                    evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
+                    metrics = evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
+                    accuracy_development.append(metrics)
+                    prototype_number_development.append(len(prototypes))
+
+
+                print(accuracy_development)
+                print(prototype_number_development)
 
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
