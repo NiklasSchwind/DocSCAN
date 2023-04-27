@@ -303,7 +303,7 @@ class DocSCANPipeline():
                 else:
                     print(f'############!!!!!!!!!!NO PROTOTYPES found in Experiment {_}!!!!!!!!################')
 
-        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy':
+        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
         else:
