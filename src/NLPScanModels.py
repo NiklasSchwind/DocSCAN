@@ -253,21 +253,28 @@ class Bert_Trainer:
         return predictions_test, probabilities_test
 
 
-
 class DocScanModel(torch.nn.Module):
-    def __init__(self, num_labels, dropout, hidden_dim=768, device = 'cpu'):
+    def __init__(self, num_labels, dropout, hidden_dim=768, device = 'cpu', secondlayer = False):
         super(DocScanModel, self).__init__()
         self.num_labels = num_labels
         self.classifier = torch.nn.Linear(hidden_dim, num_labels)
+        if secondlayer:
+            self.classifier2 = torch.nn.Linear(hidden_dim * 2, num_labels)
         self.device = device
         #self.device = "cpu"
         self.dropout = dropout
+        self.secondlayer = secondlayer
 
     def forward(self, feature):
         if self.dropout is not None:
             dropout = torch.nn.Dropout(p=self.dropout)
             feature = dropout(feature)
         output = self.classifier(feature)
+        if self.secondlayer:
+            if self.dropout is not None:
+                dropout = torch.nn.Dropout(p=self.dropout)
+                hidden_output = dropout(output)
+            output = self.classifier2(hidden_output)
         return output
 
 class DocScanDataset(torch.utils.data.Dataset):
