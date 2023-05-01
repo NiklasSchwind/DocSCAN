@@ -71,7 +71,7 @@ class DocSCANPipeline():
                                                                  batch_size=self.args.batch_size)
 
                 Trainer = DocSCAN_Trainer(num_classes= self.args.num_classes,device = self.device, dropout = self.args.dropout, batch_size= self.args.batch_size, hidden_dim = len(self.X[-1]), method = self.args.clustering_method)
-                Trainer.train_model(neighbor_dataset = self.neighbor_dataset, train_dataset_embeddings = self.X, num_epochs = self.args.num_epochs)
+                Trainer.train_model(neighbor_dataset = self.neighbor_dataset, train_dataset_embeddings = self.X, num_epochs = self.args.num_epochs, entropy_weight=self.args.entropy_weight)
                 predictions, probabilities = Trainer.get_predictions(predict_dataloader)
                 print("docscan trained with n=", self.args.num_classes, "clusters...")
                 targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
@@ -334,6 +334,8 @@ if __name__ == "__main__":
                         help="should the embeddings be calculated again")
     parser.add_argument("--augmentation_method", default='Backtranslation_fr_en', type=str,
                         help="can be 'Cropping' or 'Backtranslation_fr_en' for now")
+    parser.add_argument("--entropy_weight", default=2.0, type=float,
+                        help="adjust the Entropy Weight")
     args = parser.parse_args()
 
     if args.dropout == 0:

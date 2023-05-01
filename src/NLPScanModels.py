@@ -423,10 +423,10 @@ class DocSCAN_Trainer:
         self.model.zero_grad()
 
 
-    def train_model(self, neighbor_dataset, train_dataset_embeddings, num_epochs):
+    def train_model(self, neighbor_dataset, train_dataset_embeddings, num_epochs, entropy_weight = 2.0):
         train_dataset = DocScanDataset(neighbor_dataset, train_dataset_embeddings, mode="train", device = self.device, method = self.method)
         optimizer = torch.optim.Adam(self.model.parameters())
-        criterion = SCANLoss()
+        criterion = SCANLoss(entropy_weight = entropy_weight)
         criterion.to(self.device)
 
         train_dataloader = torch.utils.data.DataLoader(train_dataset, shuffle=True, collate_fn=train_dataset.collate_fn,
