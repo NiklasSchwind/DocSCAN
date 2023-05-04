@@ -134,9 +134,9 @@ nvmlInit()
 deviceCount = nvmlDeviceGetCount()
 
 if deviceCount > 0:
-	CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(deviceCount-1)}
+	CUDA = {i : nvmlDeviceGetHandleByIndex(i) for i in range(deviceCount)}
 	device = 'CUDA'
-	freeCUDA = {i:False for i in range(deviceCount-1)}
+	freeCUDA = {i:False for i in range(deviceCount)}
 	count = 0
 else:
 	print('NO CUDA AVAILABLE')
@@ -144,7 +144,7 @@ else:
 	count = len(Experiments) + 1
 
 processes = {}
-possible_devices = list(range(deviceCount-1))
+possible_devices = list(range(deviceCount))
 used_devices = []
 process_device = {}
 
