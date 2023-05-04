@@ -68,11 +68,11 @@ class FinetuningThroughSelflabeling:
         df_augmented = df_prototypes
 
         if augmentation_method == 'Backtranslation_fr_en':
-            df_augmented['sentence'] = self.data_augmenter.backtranslation(df_prototypes['sentence'], language_order = ['fr','en'])
+            df_augmented['sentence'] = self.data_augmenter.backtranslation(df_augmented['sentence'], language_order = ['fr','en'])
         elif augmentation_method == 'Deletion':
-            df_augmented['sentence'] = self.data_augmenter.random_deletion(df_prototypes['sentence'], ratio = 0.2)
+            df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = 0.2)
         elif augmentation_method == 'Cropping':
-            df_augmented['sentence'] = self.data_augmenter.random_cropping(df_prototypes['sentence'])
+            df_augmented['sentence'] = self.data_augmenter.random_cropping(df_augmented['sentence'])
         elif augmentation_method == '':
             df_augmented['sentence'] = df_prototypes['sentence']
 
