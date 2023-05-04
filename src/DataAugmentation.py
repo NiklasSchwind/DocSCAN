@@ -65,11 +65,11 @@ class DataAugmentation:
 
         return [' '.join([word for word in text.split(' ') if random.random() >= ratio]) for text in texts]
 
-    def SBert_embed_with_dropout(self, texts: List[str]):
+    def SBert_embed_with_dropout(self, texts: List[str],sbert_model, max_seq_length):
 
         with torch.no_grad():
-            embedder = SentenceTransformer(self.args.sbert_model)
-            embedder.max_seq_length = self.args.max_seq_length
+            embedder = SentenceTransformer(sbert_model)
+            embedder.max_seq_length = max_seq_length
             embedder.train()
             corpus_embeddings = encode_with_dropout(embedder, texts, batch_size=32, show_progress_bar=True,
                                                     eval=False, device=self.device)
