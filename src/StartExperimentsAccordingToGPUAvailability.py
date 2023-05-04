@@ -57,91 +57,60 @@ Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup','--cluste
 
 Experiments = [
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Cropping'},
 			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5, '--data_augmentation': 'Cropping'},
 {'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 10},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 10,'--data_augmentation': 'Cropping'},
 {'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5},
 			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5},
+{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Cropping'},
+			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5, '--data_augmentation': 'Cropping'},
+{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 10,'--data_augmentation': 'Cropping'},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5},
+			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5},
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Cropping'},
+			   {'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5, '--data_augmentation': 'Cropping'},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 10,'--data_augmentation': 'Cropping'},
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5},
+			   {'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5},
+{'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5, '--data_augmentation': 'Backtranslation_fr_en'},
 {'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 10},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 10,'--data_augmentation': 'Backtranslation_fr_en'},
+{'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5, '--data_augmentation': 'Backtranslation_fr_en'},
 {'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 10},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 10},
-			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-			   {'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 10},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 10},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5},
-	{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5}
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 10,'--data_augmentation': 'Backtranslation_fr_en'},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5, '--data_augmentation': 'Backtranslation_fr_en'},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 10,'--data_augmentation': 'Backtranslation_fr_en'},
+
+
+
+
+
+
+
+
 ]
 
-Experiments2 = []
 
-for experiment in Experiments:
-	experiment['--model_method'] = 'DocSCAN_finetuning'
-	experiment['--augmentation_method'] = 'Cropping'
 
-for experiment in Experiments:
-	experiment2 = copy.deepcopy(experiment)
-	experiment2['--augmentation_method'] = 'Backtranslation_fr_en'
-	Experiments2.append(experiment2)
 
-Experiments += Experiments2
 
 def start_experiment(experiment, device):
 	if experiment["--augmentation_method"] == 'Backtranslation_fr_en':

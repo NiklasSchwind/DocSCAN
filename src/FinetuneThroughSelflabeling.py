@@ -74,7 +74,7 @@ class FinetuningThroughSelflabeling:
         elif augmentation_method == 'Cropping':
             df_augmented['sentence'] = self.data_augmenter.random_cropping(df_augmented['sentence'])
         elif augmentation_method == '':
-            df_augmented['sentence'] = df_prototypes['sentence']
+            df_augmented['sentence'] = df_augmented['sentence']
 
 
         if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
@@ -89,10 +89,10 @@ class FinetuningThroughSelflabeling:
 
 
         embeddings_prototypes = self.embedder.embed(df_prototypes['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
-        #if self.embedder.embedding_method == 'SBert':
-        #    embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'])
-        #else:
-        embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
+        if self.embedder.embedding_method == 'SBert' and augmentation_method == 'Dropout':
+            embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'])
+        else:
+            embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
                                                    safeEmbeddings=False)
 
         self.model_trainer.train_selflabeling(embeddings_prototypes, embeddings_augmented, threshold = self.threshold, num_epochs = 5)
