@@ -88,7 +88,7 @@ class FinetuningThroughSelflabeling:
 
         embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
         if self.embedder.embedding_method == 'SBert':
-            embeddings_augmented = self.self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'])
+            embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'])
         else:
             embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
                                                    safeEmbeddings=False)
