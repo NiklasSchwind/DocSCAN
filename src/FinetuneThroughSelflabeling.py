@@ -70,11 +70,11 @@ class FinetuningThroughSelflabeling:
         if augmentation_method == 'Backtranslation_fr_en':
             df_augmented['sentence'] = self.data_augmenter.backtranslation(df_prototypes['sentence'], language_order = ['fr','en'])
         elif augmentation_method == 'Deletion':
-            df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = 0.2)
+            df_augmented['sentence'] = self.data_augmenter.random_deletion(df_prototypes['sentence'], ratio = 0.2)
         elif augmentation_method == 'Cropping':
-            df_augmented['sentence'] = self.data_augmenter.random_cropping(df_augmented['sentence'])
+            df_augmented['sentence'] = self.data_augmenter.random_cropping(df_prototypes['sentence'])
         elif augmentation_method == '':
-            pass
+            df_augmented['sentence'] = df_prototypes['sentence']
         if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
             self.embedder.set_indicative_sentence('Answer: <mask>.')
             self.embedder.set_indicative_sentence_position('last')
@@ -87,9 +87,13 @@ class FinetuningThroughSelflabeling:
 
 
         embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
-        embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
+        if self.embedder.embedding_method == 'SBert':
+            embeddings_augmented = self.self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'])
+        else:
+            embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
+                                                   safeEmbeddings=False)
 
-        self.model_trainer.train_selflabeling(embeddings_prototypes.to(), embeddings_augmented, threshold = self.threshold, num_epochs = 5)
+        self.model_trainer.train_selflabeling(embeddings_prototypes, embeddings_augmented, threshold = self.threshold, num_epochs = 5)
 
         if giveProtoypes:
             return df_prototypes
