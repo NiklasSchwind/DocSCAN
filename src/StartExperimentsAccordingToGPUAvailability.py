@@ -109,7 +109,7 @@ Experiments = [
 ]
 
 for experiment in Experiments:
-	experiment['--augmentation_method'] = experiment['--data_augmentation']
+	experiment["--augmentation_method"] = experiment['--data_augmentation']
 	del experiment['--data_augmentation']
 
 
