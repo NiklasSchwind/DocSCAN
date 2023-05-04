@@ -77,6 +77,16 @@ class DataAugmentation:
 
         return corpus_embeddings
 
+    def random_cropping(self, texts : List[str]):
+
+        split_texts = [text.split(' ') for text in texts]
+        lens = [len(split_text) for split_text in split_texts]
+
+        return [split_text[random.randint(0,lens[i]):random.randint(0,lens[i])] for i, split_text in enumerate(split_texts)]
+
+
+
+
 
 
 

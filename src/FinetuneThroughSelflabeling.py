@@ -69,9 +69,12 @@ class FinetuningThroughSelflabeling:
 
         if augmentation_method == 'Backtranslation_fr_en':
             df_augmented['sentence'] = self.data_augmenter.backtranslation(df_prototypes['sentence'], language_order = ['fr','en'])
-        elif augmentation_method == 'Cropping':
+        elif augmentation_method == 'Deletion':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = 0.2)
-
+        elif augmentation_method == 'Cropping':
+            df_augmented['sentence'] = self.data_augmenter.random_cropping(df_augmented['sentence'])
+        elif augmentation_method == '':
+            pass
         if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
             self.embedder.set_indicative_sentence('Answer: <mask>.')
             self.embedder.set_indicative_sentence_position('last')
