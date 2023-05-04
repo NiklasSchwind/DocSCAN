@@ -75,6 +75,8 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = self.data_augmenter.random_cropping(df_prototypes['sentence'])
         elif augmentation_method == '':
             df_augmented['sentence'] = df_prototypes['sentence']
+
+
         if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
             self.embedder.set_indicative_sentence('Answer: <mask>.')
             self.embedder.set_indicative_sentence_position('last')
@@ -86,7 +88,7 @@ class FinetuningThroughSelflabeling:
             self.embedder.set_indicative_sentence_position('first')
 
 
-        embeddings_prototypes = self.embedder.embed(df_augmented['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
+        embeddings_prototypes = self.embedder.embed(df_prototypes['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
         #if self.embedder.embedding_method == 'SBert':
         #    embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'])
         #else:
