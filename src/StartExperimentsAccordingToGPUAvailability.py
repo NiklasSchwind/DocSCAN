@@ -110,6 +110,9 @@ Experiments = [
 
 for experiment in Experiments:
 	experiment["--augmentation_method"] = experiment['--data_augmentation']
+	if experiment["--augmentation_method"] == 'Cropping':
+		experiment["--augmentation_method"] = 'Deletion'
+
 	del experiment['--data_augmentation']
 
 
