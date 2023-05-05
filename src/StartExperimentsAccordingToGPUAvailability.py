@@ -54,7 +54,7 @@ Experiments = [	{'--embedding_model': 'SBert', '--path': '20newsgroup','--cluste
 
 				   ]
 '''
-
+'''
 Experiments = [
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Dropout'},
@@ -159,7 +159,7 @@ Experiments = [
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 10,'--data_augmentation': 'Backtranslation_de_en'},
 
 ]
-'''
+
 
 for experiment in Experiments:
 	experiment["--augmentation_method"] = experiment['--data_augmentation']
