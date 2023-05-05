@@ -69,11 +69,13 @@ class FinetuningThroughSelflabeling:
 
         if augmentation_method == 'Backtranslation_fr_en':
             df_augmented['sentence'] = self.data_augmenter.backtranslation(df_augmented['sentence'], language_order = ['fr','en'])
+        elif augmentation_method == 'Backtranslation_de_en':
+            df_augmented['sentence'] = self.data_augmenter.backtranslation(df_augmented['sentence'], language_order = ['de','en'])
         elif augmentation_method == 'Deletion':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = 0.2)
         elif augmentation_method == 'Cropping':
             df_augmented['sentence'] = self.data_augmenter.random_cropping(df_augmented['sentence'])
-        elif augmentation_method == '':
+        elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
 
 
@@ -90,7 +92,7 @@ class FinetuningThroughSelflabeling:
 
         embeddings_prototypes = self.embedder.embed(df_prototypes['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
         if self.embedder.embedding_method == 'SBert' and augmentation_method == 'Dropout':
-            embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'])
+            embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'], 'sentence-transformers/all-mpnet-base-v2',128)
         else:
             embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
                                                    safeEmbeddings=False)
