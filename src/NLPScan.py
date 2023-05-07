@@ -336,6 +336,8 @@ if __name__ == "__main__":
                         help="can be 'Cropping' or 'Backtranslation_fr_en' for now")
     parser.add_argument("--entropy_weight", default=2.0, type=float,
                         help="adjust the Entropy Weight")
+    parser.add_argument("--ratio_for_deletion", default=0.2, type=float,
+                        help="adjust the Entropy Weight")
     args = parser.parse_args()
 
     if args.dropout == 0:
