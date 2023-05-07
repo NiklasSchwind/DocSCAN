@@ -36,8 +36,8 @@ class DocSCANPipeline():
 
     def run_main(self):
         random.seed(seeds[0])
-        #np.random.seed(seeds[0])
-        #torch.manual_seed(seeds[0])
+        np.random.seed(seeds[0])
+        torch.manual_seed(seeds[0])
         print("loading data...")
         train_data = os.path.join(self.args.path, "train.jsonl")
         test_data = os.path.join(self.args.path, "test.jsonl")
@@ -69,8 +69,8 @@ class DocSCANPipeline():
         for _ in range(int(self.args.repetitions)):
 
             random.seed(seeds[_])
-            #np.random.seed(seeds[_])
-            #torch.manual_seed(seeds[_])
+            np.random.seed(seeds[_])
+            torch.manual_seed(seeds[_])
 
             if mode == 'DocSCAN':
 
