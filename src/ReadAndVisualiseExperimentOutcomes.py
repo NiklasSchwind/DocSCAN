@@ -49,4 +49,4 @@ def return_list_of_accuracies_selflabeling(path):
 
 
 mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/TrueSelfLabelingLogs'
-print(return_list_of_accuracies_selflabeling(mypath))
+print(return_list_of_accuracies_selflabeling(mypath).sort_values('Difference'))
