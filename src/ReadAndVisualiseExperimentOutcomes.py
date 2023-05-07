@@ -49,7 +49,7 @@ def return_list_of_accuracies_selflabeling(path):
 
 
 mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/TrueSelfLabelingLogs'
-frame= return_list_of_accuracies_selflabeling(mypath)\
+frame= return_list_of_accuracies_selflabeling(mypath)
 frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference')
 
 print(frame)
