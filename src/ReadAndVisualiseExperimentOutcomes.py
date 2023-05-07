@@ -27,6 +27,9 @@ def return_accuracy_values_and_difference(selflabelingfile):
         before_selflabeling = 'Experiment not finished'
     return before_selflabeling, after_selflabeling, difference
 
+def return_next_in_list(previous,list,add):
+    return list[list.index(previous)+add]
+
 
 def return_list_of_accuracies_selflabeling(path):
 
@@ -35,11 +38,19 @@ def return_list_of_accuracies_selflabeling(path):
     for file in onlyfiles:
         file = open(file, 'r')
         before_selflabeling, after_selflabeling, difference = return_accuracy_values_and_difference(file)
-        columns.append([file.name, before_selflabeling, after_selflabeling, difference])
+        columns.append([return_next_in_list('Dataset',file.name.split('_'),1),
+                        return_next_in_list('Embedding', file.name.split('_'),1),
+                        return_next_in_list('clustering', file.name.split('_'),2),
+                        return_next_in_list('epochs', file.name.split('_'), 1),
+                        return_next_in_list('threshold', file.name.split('_'), 1),
+                        return_next_in_list('threshold', file.name.split('_'), 2),
+                        before_selflabeling,
+                        after_selflabeling,
+                        difference])
 
 
     return pd.DataFrame(columns,
-                      columns=['ExperimentName', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
+                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
                       )
 
 
