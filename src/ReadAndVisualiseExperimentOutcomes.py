@@ -97,7 +97,7 @@ def display_ratio_experiments():
     mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioLogs'
     frame = return_list_of_accuracies_ratio(mypath)
 
-    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference')
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('After Selflabeling')
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
