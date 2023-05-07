@@ -53,20 +53,56 @@ def return_list_of_accuracies_selflabeling(path):
                       columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
                       )
 
+def return_list_of_accuracies_ratio(path):
+
+    onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+    columns = []
+    for file in onlyfiles:
+        file = open(file, 'r')
+        before_selflabeling, after_selflabeling, difference = return_accuracy_values_and_difference(file)
+        columns.append([return_next_in_list('Dataset',file.name.split('_'),1),
+                        return_next_in_list('Embedding', file.name.split('_'),1),
+                        return_next_in_list('clustering', file.name.split('_'),2),
+                        return_next_in_list('epochs', file.name.split('_'), 1),
+                        return_next_in_list('threshold', file.name.split('_'), 1),
+                        return_next_in_list('threshold', file.name.split('_'), 2),
+                        return_next_in_list('ratio', file.name.split('_'), 1),
+                        before_selflabeling,
+                        after_selflabeling,
+                        difference])
+
+
+    return pd.DataFrame(columns,
+                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Augmentation Method', 'Ratio', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
+                      )
 
 
 
 
+def display_selflabeling_experiments():
 
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/TrueSelfLabelingLogs'
+    frame= return_list_of_accuracies_selflabeling(mypath)
 
-mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/TrueSelfLabelingLogs'
-frame= return_list_of_accuracies_selflabeling(mypath)
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference')
 
-frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference')
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None,
+                           'display.precision', 3,
+                           ):
 
-with pd.option_context('display.max_rows', None,
-                       'display.max_columns', None,
-                       'display.precision', 3,
-                       ):
+        print(frame)
 
-    print(frame)
+def display_ratio_experiments():
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioLogs'
+    frame = return_list_of_accuracies_ratio(mypath)
+
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference')
+
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None,
+                           'display.precision', 3,
+                           ):
+        print(frame)
+
+display_ratio_experiments()
