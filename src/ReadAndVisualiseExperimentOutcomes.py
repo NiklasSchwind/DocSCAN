@@ -12,6 +12,7 @@ def return_accuracy_values_and_difference(selflabelingfile):
     lines_file = selflabelingfile.readlines()
     for line in reversed(lines_file):
         if line[0:8] == 'Accuracy:' and i == 0:
+            print(line.split(' ')[2][0])
             if line.split(' ')[2][0] == '(':
                 after_selflabeling = float(line.split(' ')[1])
             i += 1
