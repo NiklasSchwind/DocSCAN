@@ -13,7 +13,10 @@ from Embedder import Embedder
 from NLPScanModels import DocSCAN_Trainer, Bert_Trainer, DocScanDataset
 from scipy.special import softmax
 from FinetuneThroughSelflabeling import FinetuningThroughSelflabeling
+import random
 
+
+seeds = [162562563,36325637,37537389,84876734,356743674568,4674737,3737584,487468373,15425523,763423]
 class DocSCANPipeline():
     def __init__(self, args):
         self.args = args
@@ -31,7 +34,7 @@ class DocSCANPipeline():
         return df
 
     def run_main(self):
-
+        random.seed(seeds[0])
         print("loading data...")
         train_data = os.path.join(self.args.path, "train.jsonl")
         test_data = os.path.join(self.args.path, "test.jsonl")
@@ -61,6 +64,8 @@ class DocSCANPipeline():
 
 
         for _ in range(3):
+
+            random.seed(seeds[_])
 
             if mode == 'DocSCAN':
 
