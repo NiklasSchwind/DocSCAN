@@ -161,7 +161,7 @@ Experiments = [
 
 ]
 '''
-
+'''
 Experiments = [{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Dropout'},
 			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
@@ -197,42 +197,54 @@ Experiments = [{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering
 
 ]
 
-
 '''
+
 Experiments = [{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.05},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.01, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.1},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.02, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.15},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.03, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.2},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.05, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.25},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.07, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.3},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.1, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.35},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.15, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.4},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.2, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.45},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.25, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
-				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.5},
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.3, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.55}]
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.35, '--repetitions': 10},
+{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.4, '--repetitions': 10},
+{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.45, '--repetitions': 10},
+{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
+				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.5, '--repetitions': 10},
+{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.55, '--repetitions': 10}]
 
-'''
+
 
 for experiment in Experiments:
 	experiment["--augmentation_method"] = experiment['--data_augmentation']

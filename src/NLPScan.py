@@ -63,7 +63,7 @@ class DocSCANPipeline():
                             #DocBERT --> Trains Full Bert Classifier with SCAN loss
 
 
-        for _ in range(3):
+        for _ in range(int(self.args.repetitions)):
 
             random.seed(seeds[_])
 
@@ -343,6 +343,8 @@ if __name__ == "__main__":
                         help="adjust the Entropy Weight")
     parser.add_argument("--ratio_for_deletion", default=0.2, type=float,
                         help="adjust the Entropy Weight")
+    parser.add_argument("--repetitions", default=3, type=float,
+                        help="Number Repetitions of Experiment")
     args = parser.parse_args()
 
     if args.dropout == 0:

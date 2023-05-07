@@ -1,9 +1,10 @@
 from typing import List
-from transformers import MarianMTModel, MarianTokenizer
+from transformers import MarianMTModel, MarianTokenizer, AutoTokenizer, AutoModelWithLMHead
 import random
 import torch
 from sentence_transformers import SentenceTransformer
 from utils.EncodeDropout import encode_with_dropout
+
 
 
 
@@ -84,9 +85,19 @@ class DataAugmentation:
 
         return [split_text[random.randint(0,lens[i]):random.randint(0,lens[i])] for i, split_text in enumerate(split_texts)]
 
+'''
+    def text_summarization(self, texts: List[str], min_length = 20):
+        texts = list(texts)
+        tokenizer = AutoTokenizer.from_pretrained('T5-base')
+        model = AutoModelWithLMHead.from_pretrained('T5-base', return_dict=True)
+        inputs = tokenizer.encode(["summarize: " + text for text in texts], return_tensors='pt', max_length=512, truncation=True)
+        input_ids, attention_mask =  inputs.input_ids,  inputs.attention_mask
+        output = model.generate(inputs, min_length=min_length, max_length=min_length*3)
+        summaries = tokenizer.decode(output)
 
+        return summaries
 
-
+'''
 
 
 
