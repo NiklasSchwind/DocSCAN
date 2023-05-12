@@ -66,7 +66,7 @@ def return_list_of_accuracies_ratio(path):
                         return_next_in_list('epochs', file.name.split('_'), 1),
                         return_next_in_list('threshold', file.name.split('_'), 1),
                         return_next_in_list('threshold', file.name.split('_'), 2),
-                        return_next_in_list('ratio', file.name.split('_'), 1),
+                        return_next_in_list('ratio', file.name.split('_'), 1).replace('.txt',''),
                         before_selflabeling,
                         after_selflabeling,
                         difference])
@@ -112,8 +112,25 @@ def display_ratio_experiments():
                            'display.precision', 3,
                            ):
         print(frame)
-
+    print(frame['Before Selflabeling'].to_list())
+    print(frame['Ratio'].to_list())
     print(frame['After Selflabeling'].to_list())
     print(frame['Difference'].to_list())
 
 display_ratio_experiments()
+'''
+import matplotlib.pyplot as plt
+
+# Some sample data
+x_values = [1, 2, 3, 5, 6]
+y_values = [4, 6, 3, 8, 2]
+
+# Create a scatter plot with x_values on the x-axis and y_values on the y-axis
+plt.scatter(x_values, y_values)
+
+# Set the x-axis to be scaled proportionally to the numerical values of x_values
+plt.autoscale(enable=True, axis='x', tight=True)
+
+# Show the plot
+plt.show()
+'''
