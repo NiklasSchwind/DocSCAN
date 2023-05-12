@@ -116,4 +116,4 @@ def display_ratio_experiments():
     print(frame['After Selflabeling'].to_list())
     print(frame['Difference'].to_list())
 
-display_selflabeling_experiments()
+display_ratio_experiments()
