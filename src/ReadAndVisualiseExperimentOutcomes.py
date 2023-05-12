@@ -117,8 +117,8 @@ def display_ratio_experiments():
     print(frame['After Selflabeling'].to_list())
     print(frame['Difference'].to_list())
 
-#display_ratio_experiments()
-
+display_selflabeling_experiments()
+'''
 import matplotlib.pyplot as plt
 
 # Some sample data
@@ -131,12 +131,16 @@ Difference = [4.399999999999999, 2.499999999999986, 2.999999999999986, 4.3999999
 
 # Create a scatter plot with x_values on the x-axis and y_values on the y-axis
 
-plt.scatter(Ratio, Before_Selflabeling)
-plt.scatter(Ratio, After_Selflabeling)
-plt.errorbar(Ratio, [(Before_Selflabeling[i] + After_Selflabeling[i])/2 for i in range(len(Before_Selflabeling))], yerr=Difference, fmt='none', ecolor='black', capsize=3)
+plt.scatter([r*100 for r in Ratio], Before_Selflabeling)
+plt.scatter([r*100 for r in Ratio], After_Selflabeling)
+plt.errorbar([r*100 for r in Ratio], [(Before_Selflabeling[i] + After_Selflabeling[i])/2 for i in range(len(Before_Selflabeling))], yerr=[i/2 for i in Difference], fmt='none', ecolor='black', capsize=3)
 
 # Set the x-axis to be scaled proportionally to the numerical values of x_values
-plt.autoscale(enable=True, axis='x', tight=True)
-
+plt.autoscale(enable=True, axis='x', tight=False)
+plt.title('Effectiveness of Data Augmentation by Random Deletion \n for Selflabeling under different Deletion Rates')
+plt.xlabel('Probability for Token Deletion [%]')
+plt.ylabel('Accuracy [%]')
+plt.legend()
 # Show the plot
 plt.show()
+'''
