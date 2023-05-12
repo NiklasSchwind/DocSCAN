@@ -88,6 +88,7 @@ def display_selflabeling_experiments():
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
+                            'display.width', 1000,
                            'display.precision', 10,
                            ):
 
