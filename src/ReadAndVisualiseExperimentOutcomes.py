@@ -105,4 +105,4 @@ def display_ratio_experiments():
                            ):
         print(frame)
 
-display_ratio_experiments()
+display_selflabeling_experiments()
