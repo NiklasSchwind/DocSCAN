@@ -84,7 +84,7 @@ def display_selflabeling_experiments():
     mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/TrueSelfLabelingLogs'
     frame= return_list_of_accuracies_selflabeling(mypath)
 
-    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference').sort_values('Augmentation Method')
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference').sort_values(['Augmentation Method', 'Difference'])
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
