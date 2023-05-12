@@ -94,7 +94,7 @@ def display_selflabeling_experiments():
         print(frame)
 
     for i in frame['Augmentation Method'].unique():
-        average_score = frame.loc[frame['Augmentation Method'].str.contains(i), 'Difference'].mean()
+        average_score = frame.loc[frame['Augmentation Method'].str.contains(i) and frame['Augmentation Method'].str.contains('Indicative Sentence'), 'Difference'].mean()
         print(f'Average Score for {i} is {average_score}')
 
 
