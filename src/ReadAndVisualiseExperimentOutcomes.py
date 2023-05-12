@@ -93,6 +93,12 @@ def display_selflabeling_experiments():
 
         print(frame)
 
+    for i in frame['Augmentation Method'].unique():
+        average_score = frame.loc[frame['Augmentation Method'].str.contains(i), 'Difference'].mean()
+        print(f'Average Score for {i} is {average_score}')
+
+
+
 def display_ratio_experiments():
     mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioLogs'
     frame = return_list_of_accuracies_ratio(mypath)
