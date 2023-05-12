@@ -104,12 +104,16 @@ def display_ratio_experiments():
     mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioLogs'
     frame = return_list_of_accuracies_ratio(mypath)
 
-    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('After Selflabeling')
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Ratio')
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
+                           'display.width', 1000,
                            'display.precision', 3,
                            ):
         print(frame)
+
+    print(frame['After Selflabeling'].to_list())
+    print(frame['Difference'].to_list())
 
 display_selflabeling_experiments()
