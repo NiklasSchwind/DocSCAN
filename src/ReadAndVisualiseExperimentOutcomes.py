@@ -92,7 +92,7 @@ def display_selflabeling_experiments():
                            'display.precision', 10,
                            ):
 
-        print(frame[frame['Augmentation Method'] == 'Dropout.txt'])
+        print(frame[frame['Augmentation Method'] == 'Cropping.txt'])
     for j in frame['Augmentation Method'].unique():
         for i in frame['Dataset'].unique():
             average_score = frame.result = frame.loc[(frame['Dataset'] == i) & (frame['Augmentation Method'] == j), 'Difference'].mean()# .loc[frame['Dataset'].str.contains(i), 'Difference'].mean()
