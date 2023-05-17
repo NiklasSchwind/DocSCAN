@@ -81,6 +81,8 @@ class DataAugmentation:
 
     def random_cropping(self, texts : List[str]):
 
+        print('Hello')
+
         split_texts = [text.split(' ') for text in texts]
         lens = [len(split_text) for split_text in split_texts]
 
