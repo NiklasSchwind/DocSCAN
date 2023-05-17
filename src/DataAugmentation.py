@@ -86,13 +86,13 @@ class DataAugmentation:
 
         return [split_text[random.randint(0,lens[i]):random.randint(0,lens[i])] for i, split_text in enumerate(split_texts)]
 
-    def summarize_batch(self, texts : List[str] , batch_size=16, max_length=150):
+    def summarize_batch(self, texts : List[str] , batch_size=64, max_length=150):
 
 
         print("Starting Summarization")
 
-        tokenizer = AutoTokenizer.from_pretrained("mrm8488/t5-small-finetuned-summarize-news")
-        model = AutoModelWithLMHead.from_pretrained("mrm8488/t5-small-finetuned-summarize-news")
+        tokenizer = AutoTokenizer.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
+        model = AutoModelWithLMHead.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
 
         num_texts = len(texts)
         num_batches = (num_texts + batch_size - 1) // batch_size  # Calculate the number of batches
@@ -100,7 +100,7 @@ class DataAugmentation:
         preds = []  # List to store the generated summaries
 
         for i in tqdm(range(num_batches)):
-#?
+
             start_index = i * batch_size
             end_index = (i + 1) * batch_size
 
