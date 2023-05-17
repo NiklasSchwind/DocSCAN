@@ -102,7 +102,7 @@ class DataAugmentation:
         for i in tqdm(range(num_batches)):
 
             start_index = i * batch_size
-            end_index = (i + 1) * batch_size
+            end_index = (i + 1) * batch_size if (i + 1) * batch_size <= num_texts else num_texts
 
             batch_texts = texts[start_index:end_index]  # Get the batch of texts
             encoding = tokenizer.batch_encode_plus(batch_texts, return_tensors="pt", add_special_tokens=True,
