@@ -112,9 +112,9 @@ class DataAugmentation:
             input_ids = encoding["input_ids"]
             attention_mask = encoding["attention_mask"]
 
-            generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, num_beams=2,
+            generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, num_beams=1,
                                            max_length=max_length, repetition_penalty=2.5, length_penalty=1.0,
-                                           early_stopping=True, batch_size = batch_size)
+                                           early_stopping=True )
 
             batch_preds = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=True) for g in
                            generated_ids]
