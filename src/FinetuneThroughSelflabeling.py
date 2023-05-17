@@ -78,6 +78,8 @@ class FinetuningThroughSelflabeling:
         elif augmentation_method == 'Summarization':
             print('\n\n\n hello there \n\n\n')
             df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
+        elif augmentation_method == 'Summarization_small':
+            df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5_small(list(df_augmented['sentence']), 16, 150)
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':
