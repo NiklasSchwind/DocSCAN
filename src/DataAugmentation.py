@@ -81,15 +81,16 @@ class DataAugmentation:
 
     def random_cropping(self, texts : List[str]):
 
-        print('Hello')
-
         split_texts = [text.split(' ') for text in texts]
         lens = [len(split_text) for split_text in split_texts]
 
         return [split_text[random.randint(0,lens[i]):random.randint(0,lens[i])] for i, split_text in enumerate(split_texts)]
 
-    def summarize_batch(self,texts: List[str], batch_size=16, max_length=150):
+    def summarize_batch(self, texts : List[str] , batch_size=16, max_length=150):
+
+
         print("Starting Summarization")
+
         tokenizer = AutoTokenizer.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
         model = AutoModelWithLMHead.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
 
