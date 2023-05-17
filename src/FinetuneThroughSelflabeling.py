@@ -77,6 +77,8 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = self.data_augmenter.random_cropping(df_augmented['sentence'])
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
+        elif augmentation_method == 'Summarization':
+            df_augmented['sentence'] = self.data_augmenter.summarize_batch(df_augmented['sentence'],16,80)
 
 
         if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
