@@ -135,7 +135,42 @@ class DataAugmentation:
 
         preds = []  # List to store the generated summaries
 
-        for i in range(num_batches):
+        for i in tqdm(range(num_batches)):
+            start_index = i * batch_size
+            end_index = (i + 1) * batch_size
+
+            batch_texts = texts[start_index:end_index]  # Get the batch of texts
+            encoding = tokenizer.batch_encode_plus(batch_texts, return_tensors="pt", add_special_tokens=True,
+                                                   padding=True,
+                                                   truncation=True)
+
+            input_ids = encoding["input_ids"]
+            attention_mask = encoding["attention_mask"]
+
+            generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, num_beams=2, min_length = int(max_length/2),
+                                           max_length=max_length, repetition_penalty=2.5, length_penalty=1.0,
+                                           early_stopping=True)
+
+            batch_preds = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=True) for g in
+                           generated_ids]
+            preds.extend(batch_preds)  # Append the batch predictions to the overall predictions list
+
+        return preds
+
+
+    def backtranslate_batch_t5_small(self, texts, batch_size = 16, max_length=150, languages = ['english', 'french', 'english']):
+
+        texts = ['translate  '+text for text in texts]
+
+        tokenizer = AutoTokenizer.from_pretrained('t5-small')
+        model = AutoModelWithLMHead.from_pretrained('t5-small', return_dict=True)
+
+        num_texts = len(texts)
+        num_batches = (num_texts + batch_size - 1) // batch_size  # Calculate the number of batches
+
+        preds = []  # List to store the generated summaries
+
+        for i in tqdm(range(num_batches)):
             start_index = i * batch_size
             end_index = (i + 1) * batch_size
 
