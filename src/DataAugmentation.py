@@ -91,16 +91,16 @@ class DataAugmentation:
 
         print("Starting Summarization")
 
-        tokenizer = AutoTokenizer.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
-        model = AutoModelWithLMHead.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
+        tokenizer = AutoTokenizer.from_pretrained("mrm8488/t5-small-finetuned-summarize-news")
+        model = AutoModelWithLMHead.from_pretrained("mrm8488/t5-small-finetuned-summarize-news")
 
         num_texts = len(texts)
         num_batches = (num_texts + batch_size - 1) // batch_size  # Calculate the number of batches
 
         preds = []  # List to store the generated summaries
 
-        for i in range(num_batches):
-            print(f'batch {i} from {num_batches}')
+        for i in tqdm(range(num_batches)):
+
             start_index = i * batch_size
             end_index = (i + 1) * batch_size
 
@@ -119,7 +119,7 @@ class DataAugmentation:
             batch_preds = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=True) for g in
                            generated_ids]
             preds.extend(batch_preds)  # Append the batch predictions to the overall predictions list
-            print(preds)
+
 
         return preds
 
