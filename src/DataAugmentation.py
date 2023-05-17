@@ -86,7 +86,7 @@ class DataAugmentation:
 
         return [split_text[random.randint(0,lens[i]):random.randint(0,lens[i])] for i, split_text in enumerate(split_texts)]
 
-    def summarize_batch(self, texts : List[str] , batch_size=64, max_length=150):
+    def summarize_batch(self, texts : List[str] , batch_size=16, max_length=150):
 
 
         print("Starting Summarization")
