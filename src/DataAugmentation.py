@@ -96,7 +96,8 @@ class DataAugmentation:
 
         preds = []  # List to store the generated summaries
 
-        for i in tqdm(range(num_batches)):
+        for i in range(num_batches):
+            print(f'batch {i} from {num_batches}')
             start_index = i * batch_size
             end_index = (i + 1) * batch_size
 
@@ -116,6 +117,7 @@ class DataAugmentation:
                            generated_ids]
             preds.extend(batch_preds)  # Append the batch predictions to the overall predictions list
             print(preds)
+
         return preds
 
 
