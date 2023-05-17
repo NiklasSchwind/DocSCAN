@@ -98,7 +98,9 @@ class DataAugmentation:
         num_batches = (num_texts + batch_size - 1) // batch_size  # Calculate the number of batches
 
         preds = []  # List to store the generated summaries
-
+        print(batch_size)
+        print(num_texts)
+        print(num_batches)
         for i in tqdm(range(num_batches)):
 
             start_index = i * batch_size
