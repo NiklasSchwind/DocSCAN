@@ -87,7 +87,7 @@ class DataAugmentation:
         return [split_text[random.randint(0,lens[i]):random.randint(0,lens[i])] for i, split_text in enumerate(split_texts)]
 
     def summarize_batch(self,texts: List[str], batch_size=16, max_length=150):
-
+        print("Starting Summarization")
         tokenizer = AutoTokenizer.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
         model = AutoModelWithLMHead.from_pretrained("mrm8488/t5-base-finetuned-summarize-news")
 
@@ -115,7 +115,7 @@ class DataAugmentation:
             batch_preds = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=True) for g in
                            generated_ids]
             preds.extend(batch_preds)  # Append the batch predictions to the overall predictions list
-
+            print(preds)
         return preds
 
 
