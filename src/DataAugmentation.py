@@ -98,9 +98,7 @@ class DataAugmentation:
         num_batches = (num_texts + batch_size - 1) // batch_size  # Calculate the number of batches
 
         preds = []  # List to store the generated summaries
-        print(batch_size)
-        print(num_texts)
-        print(num_batches)
+
         for i in tqdm(range(num_batches)):
 
             start_index = i * batch_size
@@ -116,7 +114,7 @@ class DataAugmentation:
 
             generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, num_beams=2,
                                            max_length=max_length, repetition_penalty=2.5, length_penalty=1.0,
-                                           early_stopping=True)
+                                           early_stopping=True, batch_size = batch_size)
 
             batch_preds = [tokenizer.decode(g, skip_special_tokens=True, clean_up_tokenization_spaces=True) for g in
                            generated_ids]
