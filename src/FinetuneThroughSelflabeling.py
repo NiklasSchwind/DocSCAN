@@ -86,6 +86,8 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':
             df_augmented['sentence'] = df_augmented['sentence']
+        else:
+            print('\n\n\nNO DATA AUGMENTATION APPLIED!!!!!!!!!!!!!!\n\n\n')
 
 
         if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
