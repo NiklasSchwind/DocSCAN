@@ -124,6 +124,7 @@ class DataAugmentation:
         return preds
 
     def summarize_batch_t5_small(self, texts, batch_size = 16, max_length=150):
+        texts = ['summarize: '+text for text in texts]
         tokenizer = AutoTokenizer.from_pretrained('T5-small')
         model = AutoModelWithLMHead.from_pretrained('T5-small', return_dict=True)
         num_texts = len(texts)
