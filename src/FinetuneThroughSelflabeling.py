@@ -68,19 +68,20 @@ class FinetuningThroughSelflabeling:
         df_augmented = df_prototypes
 
         if augmentation_method == 'Backtranslation_fr_en':
-            df_augmented['sentence'] = self.data_augmenter.backtranslation(df_augmented['sentence'], language_order = ['fr','en'])
+            df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['fr','en'])
         elif augmentation_method == 'Backtranslation_de_en':
-            df_augmented['sentence'] = self.data_augmenter.backtranslation(df_augmented['sentence'], language_order = ['de','en'])
+            df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['de','en'])
         elif augmentation_method == 'Deletion':
-            df_augmented['sentence'] = self.data_augmenter.random_deletion(df_augmented['sentence'], ratio = self.args.ratio_for_deletion)
+            df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Cropping':
-            df_augmented['sentence'] = self.data_augmenter.random_cropping(df_augmented['sentence'])
+            df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']))
         elif augmentation_method == 'Summarization':
             print('\n\n\n hello there \n\n\n')
-            df_augmented['sentence'] = self.data_augmenter.summarize_batch(df_augmented['sentence'], 16, 80)
+            df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
-
+        elif augmentation_method == 'Nothing':
+            df_augmented['sentence'] = df_augmented['sentence']
 
 
         if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
