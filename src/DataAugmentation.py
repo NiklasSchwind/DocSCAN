@@ -4,6 +4,7 @@ import random
 import torch
 from sentence_transformers import SentenceTransformer
 from utils.EncodeDropout import encode_with_dropout
+from tqdm import tqdm
 
 
 
@@ -95,7 +96,7 @@ class DataAugmentation:
 
         preds = []  # List to store the generated summaries
 
-        for i in range(num_batches):
+        for i in tqdm(range(num_batches)):
             start_index = i * batch_size
             end_index = (i + 1) * batch_size
 
