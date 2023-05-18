@@ -132,6 +132,8 @@ def load_data(filename):
 
 print(load_data("20newsgroup/train.jsonl")["label"].value_counts())
 print(load_data("20newsgroup/test.jsonl")["label"].value_counts())
+print(len(load_data("20newsgroup/train.jsonl")["label"]))
+print(len(load_data("20newsgroup/test.jsonl")["label"]))
 '''
 import matplotlib.pyplot as plt
 
