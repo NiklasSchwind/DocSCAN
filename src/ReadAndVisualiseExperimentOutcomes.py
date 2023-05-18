@@ -130,10 +130,9 @@ def load_data(filename):
     df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
     return df
 
-print(load_data("TREC-6/train.jsonl")["label"].value_counts())
-print(load_data("TREC-6/test.jsonl")["label"].value_counts())
-print(load_data("TREC-50/train.jsonl")["label"].value_counts())
-print(load_data("TREC-50/test.jsonl")["label"].value_counts())
+print(load_data("IMDB/train.jsonl")["label"].value_counts())
+print(load_data("IMDB/test.jsonl")["label"].value_counts())
+
 
 '''
 import matplotlib.pyplot as plt
