@@ -2,7 +2,7 @@
 import pandas as pd
 from os import listdir
 from os.path import isfile, join
-
+import json
 
 
 
@@ -117,7 +117,21 @@ def display_ratio_experiments():
     print(frame['After Selflabeling'].to_list())
     print(frame['Difference'].to_list())
 
-display_selflabeling_experiments()
+#display_selflabeling_experiments()
+
+
+def load_data(filename):
+    sentences, labels = [], []
+    with open(filename) as f:
+        for line in f:
+            line = json.loads(line)
+            sentences.append(line["text"])
+            labels.append(line["label"])
+    df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
+    return df
+
+print(load_data("ag_news/train.jsonl")["label"].value_counts())
+print(load_data("ag_news/test.jsonl")["label"].value_counts())
 '''
 import matplotlib.pyplot as plt
 
