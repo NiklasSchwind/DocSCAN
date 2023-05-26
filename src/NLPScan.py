@@ -369,7 +369,7 @@ if __name__ == "__main__":
     if args.outfile != 'NO':
         sys.stdout = open(args.outfile, 'wt')
     args.indicative_sentence  = args.indicative_sentence.replace('^','<').replace('?','>').replace('_',' ').replace('5', '!')
-
+    print(args.new_embeddings)
     docscan = DocSCANPipeline(args)
     if args.model_method == 'DocSCAN_finetuning' or args.model_method == 'PrototypeAccuracy' or args.model_method == 'DocSCAN_finetuning_multi':
         evaluation_beforeSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
