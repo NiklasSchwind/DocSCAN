@@ -75,6 +75,7 @@ class Embedder:
             embeddings = self.load_embeddings(mode)
             self.embeddings = embeddings
         else:
+            print(self.indicative_sentence)
             embeddings = self.embedding_methods[self.embedding_method](texts)
             self.embeddings = embeddings
             if safeEmbeddings:
