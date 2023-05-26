@@ -368,7 +368,7 @@ if __name__ == "__main__":
         args.dropout = None
     if args.outfile != 'NO':
         sys.stdout = open(args.outfile, 'wt')
-
+    args.indicative_sentence  = args.indicative_sentence.replace('!','<').replace('?','>').replace('_',' ')
 
     docscan = DocSCANPipeline(args)
     if args.model_method == 'DocSCAN_finetuning' or args.model_method == 'PrototypeAccuracy' or args.model_method == 'DocSCAN_finetuning_multi':

@@ -355,12 +355,12 @@ Experiments = [{'--embedding_model': 'IndicativeSentence', '--path': '20newsgrou
 
 
 
-'''
+
 for experiment in Experiments:
-	experiment["--augmentation_method"] = experiment['--data_augmentation']
+	experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<','^').replace('>','?').replace(' ','_')
 
 
-	del experiment['--data_augmentation']
+
 '''
 
 
