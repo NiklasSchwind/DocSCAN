@@ -79,7 +79,7 @@ class Embedder:
             self.embeddings = embeddings
             if safeEmbeddings:
                 self.safe_embeddings(mode)
-
+        print(embeddings)
         return embeddings
 
     def _embed_SBert(self, texts: List[str]):
