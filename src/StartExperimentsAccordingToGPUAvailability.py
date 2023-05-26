@@ -198,7 +198,7 @@ Experiments = [{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering
 ]
 
 '''
-
+'''
 Experiments = [{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,
 				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.01, '--repetitions': 10},
@@ -243,22 +243,46 @@ Experiments = [{'--embedding_model': 'SBert', '--path': '20newsgroup', '--cluste
 				'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.5, '--repetitions': 10},
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.55, '--repetitions': 10}]
+'''
+Experiments = [{'--embedding_model': 'SimCSEunsupervised', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10},
+{'--embedding_model': 'SimCSEunsupervised', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10}]
 
-
-
+'''
 for experiment in Experiments:
 	experiment["--augmentation_method"] = experiment['--data_augmentation']
 
 
 	del experiment['--data_augmentation']
-
+'''
 
 
 def start_experiment(experiment, device):
-	if experiment["--augmentation_method"] == 'Deletion':
-		outfile = f'DeletionRatioLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}.txt'
-	else:
-		outfile = f'DeletionRatioLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}.txt'
+	#if experiment["--augmentation_method"] == 'Deletion':
+	outfile = f'NewLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}.txt'#_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}.txt'
+	#else:
+	#	outfile = f'DeletionRatioLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}.txt'
 
 	with open(outfile, 'w') as f:
 		f.write('Start')
