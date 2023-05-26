@@ -82,6 +82,8 @@ class Embedder:
 
         print('Hallo')
         print(os.path.exists(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings{suffix}.npy")) )
+        print(createNewEmbeddings)
+        print(mode != 'embed')
 
         if os.path.exists(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings{suffix}.npy")) and not createNewEmbeddings and mode != 'embed':
 
