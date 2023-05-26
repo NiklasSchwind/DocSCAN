@@ -80,7 +80,11 @@ class Embedder:
 
         texts = [str(text) for text in texts]
 
+        print('Hallo')
+        print(os.path.exists(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings{suffix}.npy")) )
+
         if os.path.exists(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings{suffix}.npy")) and not createNewEmbeddings and mode != 'embed':
+
             embeddings = self.load_embeddings(mode)
             self.embeddings = embeddings
         else:
