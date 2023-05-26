@@ -375,7 +375,7 @@ if __name__ == "__main__":
     elif args.new_embeddings == 'True':
         args.new_embeddings = True
 
-    print(args.new_embeddings)
+
     docscan = DocSCANPipeline(args)
     if args.model_method == 'DocSCAN_finetuning' or args.model_method == 'PrototypeAccuracy' or args.model_method == 'DocSCAN_finetuning_multi':
         evaluation_beforeSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
