@@ -51,14 +51,14 @@ class Embedder:
 
     def safe_embeddings(self,mode: Literal['test', 'train','embed']):
         if self.embedding_method == 'IndicativeSentence':
-            np.save(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings_{self.indicative_sentence}.npy"), self.embeddings.cpu())
+            np.save(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings_{self.indicative_sentence.replace('<','^').replace('>','?').replace(' ','_').replace('!', '5')}.npy"), self.embeddings.cpu())
         else:
             np.save(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy"),
                     self.embeddings.cpu())
 
     def load_embeddings(self,mode: Literal['test', 'train','embed']):
         if self.embedding_method == 'IndicativeSentence':
-            return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings_{self.indicative_sentence}.npy")))
+            return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings_{self.indicative_sentence.replace('^','<').replace('?','>').replace('_',' ').replace('5', '!')}.npy")))
         else:
             return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy")))
 
@@ -70,7 +70,7 @@ class Embedder:
               ):
 
         if self.embedding_method == 'IndicativeSentence':
-            suffix = f'_{self.indicative_sentence}'
+            suffix = f"_{self.indicative_sentence.replace('^','<').replace('?','>').replace('_',' ').replace('5', '!')}"
         else:
             suffix = ''
 
