@@ -50,12 +50,17 @@ class Embedder:
 
 
     def safe_embeddings(self,mode: Literal['test', 'train','embed']):
-
-        np.save(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy"), self.embeddings.cpu())
+        if self.embedding_method == 'IndicativeSentence':
+            np.save(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings_{self.indicative_sentence}.npy"), self.embeddings.cpu())
+        else:
+            np.save(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy"),
+                    self.embeddings.cpu())
 
     def load_embeddings(self,mode: Literal['test', 'train','embed']):
-
-        return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy")))
+        if self.embedding_method == 'IndicativeSentence':
+            return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings_{self.indicative_sentence}.npy")))
+        else:
+            return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy")))
 
     def embed(self,
               texts: List[str],

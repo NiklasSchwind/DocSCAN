@@ -47,12 +47,20 @@ class DocSCANPipeline():
         self.df_test = self.load_data(test_data)
 
         print("embedding sentences...")
+
         embeddings_method = self.args.embedding_model
         embedder = Embedder( path = self.args.path, embedding_method = embeddings_method, device = self.args.device)
 
-        self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= self.args.new_embeddings)
-        self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = self.args.new_embeddings)
-
+        if self.args.indicative_sentence == 'nothing':
+            self.X = embedder.embed(texts = df_train["sentence"], mode = 'train', createNewEmbeddings= self.args.new_embeddings)
+            self.X_test = embedder.embed(texts = self.df_test["sentence"], mode = 'test', createNewEmbeddings = self.args.new_embeddings)
+        else:
+            embedder.set_indicative_sentence(indicative_sentence = self.args.indicative_sentence)
+            embedder.set_indicative_sentence_position(indicative_sentence_position = self.args.indicative_sentence_position)
+            self.X = embedder.embed(texts=df_train["sentence"], mode='train',
+                                    createNewEmbeddings=self.args.new_embeddings)
+            self.X_test = embedder.embed(texts=self.df_test["sentence"], mode='test',
+                                         createNewEmbeddings=self.args.new_embeddings)
         print("retrieving neighbors...")
 
         NeighborDataset = Neighbor_Dataset(num_neighbors= self.args.num_neighbors, num_classes = args.num_classes, device = self.args.device, path= self.args.path, embedding_method = embeddings_method)
@@ -350,6 +358,10 @@ if __name__ == "__main__":
                         help="adjust the Entropy Weight")
     parser.add_argument("--repetitions", default=3, type=float,
                         help="Number Repetitions of Experiment")
+    parser.add_argument("--indicative_sentence", default='nothing', type=str,
+                        help="Indicative Sentence to use or nothing")
+    parser.add_argument("--indicative_sentence_position", default='first', type=str,
+                        help="first or last")
     args = parser.parse_args()
 
     if args.dropout == 0:
