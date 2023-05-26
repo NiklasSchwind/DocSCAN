@@ -348,7 +348,7 @@ if __name__ == "__main__":
                         help="Choose between DocSCAN, DocBert and PrototypeBert")
     parser.add_argument("--threshold", default=0.95, type=float,
                         help="threshold for selvlabeling step")
-    parser.add_argument("--new_embeddings", default=False, type=bool,
+    parser.add_argument("--new_embeddings", default='False', type=str,
                         help="should the embeddings be calculated again")
     parser.add_argument("--augmentation_method", default='Backtranslation_fr_en', type=str,
                         help="can be 'Cropping' or 'Backtranslation_fr_en' for now")
@@ -369,6 +369,12 @@ if __name__ == "__main__":
     if args.outfile != 'NO':
         sys.stdout = open(args.outfile, 'wt')
     args.indicative_sentence  = args.indicative_sentence.replace('^','<').replace('?','>').replace('_',' ').replace('5', '!')
+
+    if args.new_embeddings == 'False':
+        args.new_embeddings = False
+    elif args.new_embeddings == 'True':
+        args.new_embeddings = True
+
     print(args.new_embeddings)
     docscan = DocSCANPipeline(args)
     if args.model_method == 'DocSCAN_finetuning' or args.model_method == 'PrototypeAccuracy' or args.model_method == 'DocSCAN_finetuning_multi':
