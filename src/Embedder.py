@@ -58,7 +58,7 @@ class Embedder:
                     self.embeddings.cpu())
 
     def load_embeddings(self,mode: Literal['test', 'train','embed']):
-
+        print('Hello')
         if self.embedding_method == 'IndicativeSentence':
             ind = self.indicative_sentence
             return torch.from_numpy(np.load(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings_{ind.replace('<','^').replace('>','?').replace(' ','_').replace('!', '5').replace('.', '6')}.npy")))
