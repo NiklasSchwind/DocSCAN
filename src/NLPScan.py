@@ -17,7 +17,7 @@ import random
 import numpy as np
 
 
-seeds = [162562563,36325637,37537389,84876734,356743674568,4674737,3737584,487468373,15425523,763423,5245,52,45252,552467889,98875432,52542,74567457,245241,1341456,746489659,463652451,1341345363,78574763562,51341415]
+seeds = [162562563,36325637,37537389,84876734,674568,474737,37584,48773,15425,7623,5245,52,45252,567889,975432,52542,74557,245241,1341456,7489659,4636551,1341363,7857562,51345]
 class DocSCANPipeline():
     def __init__(self, args):
         self.args = args
@@ -68,9 +68,9 @@ class DocSCANPipeline():
 
         for _ in range(int(self.args.repetitions)):
 
-            random.seed(seeds[_])
-            np.random.seed(seeds[_])
-            torch.manual_seed(seeds[_])
+            random.seed(int(seeds[_]))
+            np.random.seed(int(seeds[_]))
+            torch.manual_seed(int(seeds[_]))
 
             if mode == 'DocSCAN':
 
