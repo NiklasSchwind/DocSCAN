@@ -69,9 +69,14 @@ class Embedder:
               safeEmbeddings: bool = True,
               ):
 
+        if self.embedding_method == 'IndicativeSentence':
+            suffix = f'_{self.indicative_sentence}'
+        else:
+            suffix = ''
+
         texts = [str(text) for text in texts]
 
-        if os.path.exists(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings.npy")) and not createNewEmbeddings and mode != 'embed':
+        if os.path.exists(os.path.join(self.path, f"{mode}-{self.embedding_method}-embeddings{suffix}.npy")) and not createNewEmbeddings and mode != 'embed':
             embeddings = self.load_embeddings(mode)
             self.embeddings = embeddings
         else:

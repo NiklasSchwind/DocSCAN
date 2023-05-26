@@ -357,7 +357,7 @@ Experiments = [{'--embedding_model': 'IndicativeSentence', '--path': '20newsgrou
 
 
 for experiment in Experiments:
-	experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<','^').replace('>','?').replace(' ','_')
+	experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<','^').replace('>','?').replace(' ','_').replace('!', '5')
 
 
 
