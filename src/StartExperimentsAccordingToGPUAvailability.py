@@ -244,6 +244,7 @@ Experiments = [{'--embedding_model': 'SBert', '--path': '20newsgroup', '--cluste
 {'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--data_augmentation': 'Deletion','--ratio_for_deletion': 0.55, '--repetitions': 10}]
 '''
+'''
 Experiments = [{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
 				'--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first' },
@@ -334,6 +335,8 @@ Experiments = [{'--embedding_model': 'IndicativeSentence', '--path': '20newsgrou
 {'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Read <mask> for more on this topic.', '--indicative_sentence_position': 'last' },
+			   '''
+Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
 				'--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first' },
