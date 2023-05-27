@@ -336,6 +336,7 @@ Experiments = [{'--embedding_model': 'IndicativeSentence', '--path': '20newsgrou
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Read <mask> for more on this topic.', '--indicative_sentence_position': 'last' },
 			   '''
+'''
 Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
@@ -355,7 +356,63 @@ Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Read <mask> for more on this topic.', '--indicative_sentence_position': 'last' }]
-
+'''
+Experiments = [
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '[Category: <mask>] ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': ' (<mask>)', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '[<mask>: ] ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '<mask> News: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '[Category: <mask>] ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': ' (<mask>)', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '[<mask>: ] ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '<mask> News: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
+	{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+	 '--indicative_sentence': 'Sentiment: <mask>.', '--indicative_sentence_position': 'first'},
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': 'Sentiment: <mask>.', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+	 '--indicative_sentence': '[Question: <mask>] ', '--indicative_sentence_position': 'first'},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '<mask> question: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+	 '--indicative_sentence': '[Question: <mask>] ', '--indicative_sentence_position': 'first'},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': '<mask> question: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+				'--indicative_sentence': 'Just <mask>! ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
+	 '--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last'}
+]
 
 
 
