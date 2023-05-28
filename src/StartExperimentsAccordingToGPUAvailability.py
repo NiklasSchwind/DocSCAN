@@ -360,7 +360,7 @@ Experiments = [
 Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
-				'--indicative_sentence': 'Question Category: <mask>, Question: ', '--indicative_sentence_position': 'first' },]
+				'--indicative_sentence': 'A question about <mask>: ', '--indicative_sentence_position': 'first' },]
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
