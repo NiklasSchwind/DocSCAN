@@ -357,6 +357,7 @@ FutureExperiment = [
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Read <mask> for more on this topic.', '--indicative_sentence_position': 'last' }]
 '''
+'''
 Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
@@ -366,10 +367,8 @@ Experiments = [
 				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
 
 ]
-
 '''
-FutureExperiment = 
-[
+Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'first', '--entropy_weight': 0.2 },
@@ -415,8 +414,53 @@ FutureExperiment =
 				{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'first', '--entropy_weight': 50.0 },
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 0.2 },
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 0.4 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 0.6 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 0.8 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 1.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 1.5 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 2.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 2.5 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 3.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 4.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path':'20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 5.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 7.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 10.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 20.0 },
+				{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 50.0 },
 ]
-'''
+
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
@@ -483,7 +527,7 @@ for experiment in Experiments:
 
 def start_experiment(experiment, device):
 	#if experiment["--augmentation_method"] == 'Deletion':
-	outfile = f'IndicativeSentencesExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}.txt'#_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}.txt'
+	outfile = f'EntropyWeightExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'#_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}.txt'
 	#else:
 	#	outfile = f'DeletionRatioLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}.txt'
 
