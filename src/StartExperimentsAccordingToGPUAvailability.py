@@ -358,9 +358,9 @@ Experiments = [
 				'--indicative_sentence': 'Read <mask> for more on this topic.', '--indicative_sentence_position': 'last' }]
 '''
 Experiments = [
-{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
-				'--indicative_sentence': 'News Category: <mask>. ', '--indicative_sentence_position': 'first' },]
+				'--indicative_sentence': ' Related: <mask>. ', '--indicative_sentence_position': 'last' },]
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
