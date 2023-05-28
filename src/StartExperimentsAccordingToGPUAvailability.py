@@ -360,10 +360,8 @@ Experiments = [
 Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
-				'--indicative_sentence': 'About: <mask>. ', '--indicative_sentence_position': 'first' },
-{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
-				'--indicative_sentence': 'Topic covered: <mask>. ', '--indicative_sentence_position': 'first' },]
+				'--indicative_sentence': 'Enjoy the following article about <mask>. ', '--indicative_sentence_position': 'first' },
+]
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
