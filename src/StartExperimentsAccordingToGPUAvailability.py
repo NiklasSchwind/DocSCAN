@@ -358,9 +358,9 @@ Experiments = [
 				'--indicative_sentence': 'Read <mask> for more on this topic.', '--indicative_sentence_position': 'last' }]
 '''
 Experiments = [
-{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
-				'--indicative_sentence': 'Category: <mask> ', '--indicative_sentence_position': 'first' },]
+				'--indicative_sentence': 'Question Category: <mask>, Question: ', '--indicative_sentence_position': 'first' },]
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
