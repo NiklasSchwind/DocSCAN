@@ -463,7 +463,7 @@ Experiments = [
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 5.0},
 ]
-	'''
+'''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first', '--entropy_weight': 3.6 },
