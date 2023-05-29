@@ -147,7 +147,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
 
         frame = frame[frame.Accuracy != 'Experiment not finished'].sort_values('Entropy Weight')
         frame = frame[frame.Dataset == 'TREC-6'].sort_values('Entropy Weight')
-        frame = frame[frame['Clustering Method'] == 'EntropyLoss'].sort_values('Entropy Weight')
+        frame = frame[frame['Clustering Method'] == 'SCANLoss'].sort_values('Entropy Weight')
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
