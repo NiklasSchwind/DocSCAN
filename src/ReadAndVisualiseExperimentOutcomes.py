@@ -41,6 +41,9 @@ def return_accuracy_values(file):
     except:
         after_selflabeling = 'Experiment not finished'
 
+    if after_selflabeling == None:
+        after_selflabeling = 'Experiment not finished'
+
     return after_selflabeling
 
 def return_next_in_list(previous,list,add):
