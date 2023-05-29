@@ -4,7 +4,10 @@ from os import listdir
 from os.path import isfile, join
 import json
 
-
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 
 def return_accuracy_values_and_difference(selflabelingfile):
@@ -26,6 +29,19 @@ def return_accuracy_values_and_difference(selflabelingfile):
         after_selflabeling = 'Experiment not finished'
         before_selflabeling = 'Experiment not finished'
     return before_selflabeling, after_selflabeling, difference
+
+def return_accuracy_values(file):
+    i = 0
+    lines_file = file.readlines()
+    try:
+        for line in reversed(lines_file):
+            if line[0:9] == 'Accuracy:' and i == 0:
+                if line.split(' ')[2][0] == '(':
+                    after_selflabeling = float(line.split(' ')[1])*100
+    except:
+        after_selflabeling = 'Experiment not finished'
+
+    return after_selflabeling
 
 def return_next_in_list(previous,list,add):
     return list[list.index(previous)+add]
@@ -51,6 +67,26 @@ def return_list_of_accuracies_selflabeling(path):
 
     return pd.DataFrame(columns,
                       columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
+                      )
+
+def return_list_of_accuracies_entropy_weight(path):
+
+    onlyfiles = [f for f in listdir(path) if isfile(join(path, f))]
+    columns = []
+    for file in onlyfiles:
+        file = open(file, 'r')
+        after_selflabeling = return_accuracy_values(file)
+        columns.append([return_next_in_list('Dataset',file.name.split('_'),1),
+                        return_next_in_list('Embedding', file.name.split('_'),1),
+                        return_next_in_list('clustering', file.name.split('_'),2),
+                        return_next_in_list('epochs', file.name.split('_'), 1),
+                        return_next_in_list('entropy', file.name.split('_'), 2),
+                        after_selflabeling,
+                        ])
+
+
+    return pd.DataFrame(columns,
+                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Entropy Weight', 'Accuracy'],
                       )
 
 def return_list_of_accuracies_ratio(path):
@@ -100,11 +136,12 @@ def display_selflabeling_experiments():
 
 
 
-def display_ratio_experiments():
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioLogs'
-    frame = return_list_of_accuracies_ratio(mypath)
+def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
 
-    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Ratio')
+    if mode == 'entropy':
+        frame = return_list_of_accuracies_entropy_weight(mypath)
+
+        frame = frame[frame.accuracy != 'Experiment not finished'].sort_values('Entropy Weight')
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
@@ -112,13 +149,18 @@ def display_ratio_experiments():
                            'display.precision', 3,
                            ):
         print(frame)
-    print(frame['Before Selflabeling'].to_list())
-    print(frame['Ratio'].to_list())
-    print(frame['After Selflabeling'].to_list())
-    print(frame['Difference'].to_list())
+    if mode == 'entropy':
+        print(frame['Entropy Weight'].to_list())
+        print(frame['Accuracy'].to_list())
+    elif mode == 'ratio':
+        print(frame['Before Selflabeling'].to_list())
+        print(frame['Ratio'].to_list())
+        print(frame['After Selflabeling'].to_list())
+        print(frame['Difference'].to_list())
 
-#display_selflabeling_experiments()
 
+
+display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
 
 def load_data(filename):
     sentences, labels = [], []
@@ -130,8 +172,7 @@ def load_data(filename):
     df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
     return df
 
-print(load_data("IMDB/train.jsonl")["label"].value_counts())
-print(load_data("IMDB/test.jsonl")["label"].value_counts())
+
 
 
 '''
