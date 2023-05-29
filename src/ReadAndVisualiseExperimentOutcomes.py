@@ -162,7 +162,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
 
 
 
-display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
+#display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
 
 def load_data(filename):
     sentences, labels = [], []
@@ -173,7 +173,6 @@ def load_data(filename):
             labels.append(line["label"])
     df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
     return df
-
 
 
 
