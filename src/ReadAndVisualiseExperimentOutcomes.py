@@ -80,7 +80,7 @@ def return_list_of_accuracies_entropy_weight(path):
                         return_next_in_list('Embedding', file.name.split('_'),1),
                         return_next_in_list('clustering', file.name.split('_'),2),
                         return_next_in_list('epochs', file.name.split('_'), 1),
-                        return_next_in_list('entropy', file.name.split('_'), 2).replace('.txt', ''),
+                        float(return_next_in_list('entropy', file.name.split('_'), 2).replace('.txt', '')),
                         after_selflabeling,
                         ])
 
