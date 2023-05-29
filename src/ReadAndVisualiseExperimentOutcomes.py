@@ -141,7 +141,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
     if mode == 'entropy':
         frame = return_list_of_accuracies_entropy_weight(mypath)
 
-        frame = frame[frame.accuracy != 'Experiment not finished'].sort_values('Entropy Weight')
+        frame = frame[frame.Accuracy != 'Experiment not finished'].sort_values('Entropy Weight')
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
