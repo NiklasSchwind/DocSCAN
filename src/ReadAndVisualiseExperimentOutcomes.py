@@ -33,6 +33,7 @@ def return_accuracy_values_and_difference(selflabelingfile):
 def return_accuracy_values(file):
     i = 0
     lines_file = file.readlines()
+    after_selflabeling = 'Experiment not finished'
     try:
         for line in reversed(lines_file):
             if line[0:9] == 'Accuracy:' and i == 0:
@@ -41,8 +42,8 @@ def return_accuracy_values(file):
     except:
         after_selflabeling = 'Experiment not finished'
 
-    if after_selflabeling == None:
-        after_selflabeling = 'Experiment not finished'
+
+
 
     return after_selflabeling
 
