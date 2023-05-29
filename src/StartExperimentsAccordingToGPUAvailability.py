@@ -369,6 +369,30 @@ Experiments = [
 ]
 '''
 Experiments = [
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 4.0 },
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 3.0 },
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 4.0 },
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 3.0 },
+{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'last', '--entropy_weight': 4.0 },
+{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'last', '--entropy_weight': 3.0 },
+]
+
+
+
+'''
+Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 3.5 },
@@ -475,7 +499,7 @@ Experiments = [
 	 '--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first',
 	 '--entropy_weight': 15},
 ]
-
+'''
 '''
 	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
