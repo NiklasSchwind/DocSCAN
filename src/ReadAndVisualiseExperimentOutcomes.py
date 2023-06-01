@@ -190,7 +190,8 @@ def get_random_data_in_same_ratio(train_data,  amount ):
     sentence= []
     labels = []
     for label in set(list(train_data["label"])):
-        share[label] = int((len(list(train_data.loc[train_data['label'] == label]))/len(list(train_data["label"])))*amount)
+        print(label)
+        share[label] = int((len(list(train_data.loc[train_data['label'] == label])) / len(list(train_data["label"]))) * amount)
         print(share[label])
         df = train_data.loc[train_data['label'] == label].sample(n = share[label])
         sentence.extend(list(df["sentence"]))
