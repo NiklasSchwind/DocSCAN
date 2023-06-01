@@ -3,7 +3,8 @@ import pandas as pd
 from os import listdir
 from os.path import isfile, join
 import json
-
+import numpy as np
+import random
 try:
     from typing import Literal
 except ImportError:
@@ -166,7 +167,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
 
 
 
-display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
+#display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
 
 def load_data(filename):
     sentences, labels = [], []
@@ -177,6 +178,36 @@ def load_data(filename):
             labels.append(line["label"])
     df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
     return df
+
+def write_in_jsonl(list, outfile):
+    with open(outfile, 'w') as f:
+        for entry in list:
+            json.dump(entry, f)
+            f.write('\n')
+
+def get_random_data_in_same_ratio(train_data,  amount ):
+    share = {}
+    sentence= []
+    label = []
+    for label in set(list(train_data["label"])):
+        share[label] = int((len(list(train_data.loc[train_data['label'] == label]))/len(list(train_data["label"])))*amount)
+        df = train_data.loc[train_data['label'] == label].sample(share[label])
+        sentence.extend(list(df["sentence"]))
+        label.extend(list(df["label"]))
+    dictlist = []
+    combined_lists = list(zip(sentence, label))
+    random.shuffle(combined_lists)
+    for sentence, label in combined_lists:
+        dictlist.append({'text': sentence  ,'label': label })
+    print(len(dictlist))
+    return dictlist
+
+
+
+
+train_data = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/DBPedia/train.jsonl')
+dictlist = get_random_data_in_same_ratio(train_data,  10000)
+write_in_jsonl(dictlist, '/vol/fob-vol7/mi19/schwindn/DocSCAN/DBPedia_smaller/train.jsonl')
 
 
 
