@@ -190,14 +190,11 @@ def get_random_data_in_same_ratio(train_data,  amount ):
     sentence= []
     labels = []
     for label in set(list(train_data["label"])):
-        print(train_data.loc[train_data['label'] == label]['label'])
         share[label] = int((len(list(train_data.loc[train_data['label'] == label]['label'])) / len(list(train_data["label"]))) * amount)
-        print(share[label])
         df = train_data.loc[train_data['label'] == label].sample(n = share[label])
         sentence.extend(list(df["sentence"]))
         labels.extend(list(df["label"]))
     dictlist = []
-    print(labels)
     combined_lists = list(zip(sentence, labels))
     random.shuffle(combined_lists)
     for sentence, label in combined_lists:
@@ -208,9 +205,9 @@ def get_random_data_in_same_ratio(train_data,  amount ):
 
 
 
-train_data = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/DBPedia/train.jsonl')
+train_data = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/ag_news/train.jsonl')
 dictlist = get_random_data_in_same_ratio(train_data,  10000)
-write_in_jsonl(dictlist, '/vol/fob-vol7/mi19/schwindn/DocSCAN/DBPedia_smaller/train.jsonl')
+write_in_jsonl(dictlist, '/vol/fob-vol7/mi19/schwindn/DocSCAN/ag_news_smaller/train.jsonl')
 
 
 
