@@ -195,6 +195,7 @@ def get_random_data_in_same_ratio(train_data,  amount ):
         sentence.extend(list(df["sentence"]))
         labels.extend(list(df["label"]))
     dictlist = []
+    print(labels)
     combined_lists = list(zip(sentence, labels))
     random.shuffle(combined_lists)
     for sentence, label in combined_lists:
