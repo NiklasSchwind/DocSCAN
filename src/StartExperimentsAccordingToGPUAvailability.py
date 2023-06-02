@@ -612,10 +612,6 @@ Experiments = [
 
 Experiments_proto = [
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'large'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'large'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'base'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'base'},
@@ -628,10 +624,6 @@ Experiments_proto = [
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'large'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'large'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
@@ -640,10 +632,6 @@ Experiments_proto = [
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'small'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'large'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'large'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
@@ -651,10 +639,6 @@ Experiments_proto = [
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'small'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'small'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'large'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'large'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
@@ -666,7 +650,26 @@ Experiments_proto = [
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion'}
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'large'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'large'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'large'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'large'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'large'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'large'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'large'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'large'},
+
+
+
 ]
 
 Experiments = []
@@ -674,7 +677,8 @@ for experiment in Experiments_proto:
 	#experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>',
 	#																									'?').replace(
 	#	' ', '_').replace('!', '5')
-	experiment['--repetitions'] = 10
+	#if experiment['--t5_model'] != 'large':
+	#	experiment['--repetitions'] = 10
 	experiment1 = copy.deepcopy(experiment)
 	experiment2 = copy.deepcopy(experiment)
 	experiment3 = copy.deepcopy(experiment)
