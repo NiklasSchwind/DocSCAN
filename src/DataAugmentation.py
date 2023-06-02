@@ -138,8 +138,8 @@ class DataAugmentation:
 
     def summarize_batch_t5(self, texts, batch_size=128,  t5_model = 'large'):
 
-        min_length = int(min([len(text.split(' ')) for text in texts])/2)
-        max_length = int(max([len(text.split(' ')) for text in texts])/4)
+        min_length = int(min([len(text.split(' ')) for text in texts])/3)
+        max_length = int(max([len(text.split(' ')) for text in texts])/4+3)
         prefix = "summarize: "
         texts = self._t5_generate_output(texts, prefix, batch_size, min_length, max_length, t5_model)
 
