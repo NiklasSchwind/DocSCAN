@@ -130,10 +130,8 @@ class DataAugmentation:
         tokenized_texts = tokenizer.batch_encode_plus(texts, return_tensors="pt", add_special_tokens=True,
                                     padding=True,
                                     truncation=True)
-        min_length = int(max(3, min([len(text) for text in tokenized_texts]) - 7))
-        print(tokenized_texts["input_ids"].size())
-        print(tokenized_texts["input_ids"].size(dim = 1))
-        max_length = tokenized_texts["input_ids"].size(dim = 1) + 7
+        min_length = int(max(3, min([len(text) for text in tokenized_texts])))
+        max_length = int(tokenized_texts["input_ids"].size(dim = 1) + 7)
         '''
         min_length = int(max(3,min([len(text.split(' ')) for text in texts])-7))
         max_length = int(max([len(text.split(' ')) for text in texts])+7)
@@ -146,9 +144,15 @@ class DataAugmentation:
         return texts
 
     def summarize_batch_t5(self, texts, batch_size=128,  t5_model = 'large'):
-
+        tokenizer = AutoTokenizer.from_pretrained(f't5-{t5_model}')
+        tokenized_texts = tokenizer.batch_encode_plus(texts, return_tensors="pt", add_special_tokens=True,
+                                                      padding=True,
+                                                      truncation=True)
         min_length = int(min([len(text.split(' ')) for text in texts])/3)
-        max_length = int(max([len(text.split(' ')) for text in texts])/4+3)
+        max_length = int(tokenized_texts["input_ids"].size(dim=1)/4 + 3)
+
+        #min_length = int(min([len(text.split(' ')) for text in texts])/3)
+        #max_length = int(max([len(text.split(' ')) for text in texts])/4+3)
         prefix = "summarize: "
         texts = self._t5_generate_output(texts, prefix, batch_size, min_length, max_length, t5_model)
 
@@ -178,7 +182,7 @@ class DataAugmentation:
             input_ids = encoding["input_ids"].to(self.device)
             attention_mask = encoding["attention_mask"].to(self.device)
 
-            generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, min_length=min_length,max_length=max_length)#, num_beams=2,
+            generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, min_length=min_length,max_length=max_length, do_sample=True)#, num_beams=2,
                                            #min_length=min_length,
                                            #max_length=max_length, repetition_penalty=2.5, length_penalty=1.0,
                                            #early_stopping=True)
