@@ -610,10 +610,7 @@ Experiments = [
 
 '''
 
-Experiments_proto = [{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
-{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+Experiments_proto = [
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'large'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
@@ -626,6 +623,10 @@ Experiments_proto = [{'--embedding_model': 'SBert', '--path': 'ag_news_smaller',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'small'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'small'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+{'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'large'},
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
