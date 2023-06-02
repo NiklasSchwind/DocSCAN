@@ -67,11 +67,11 @@ class FinetuningThroughSelflabeling:
 
         df_augmented = df_prototypes
 
-        if augmentation_method == 'Backtranslation_fr_en':
-            df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['fr','en'])
-        elif augmentation_method == 'Backtranslation_de_en':
-            df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['de','en'])
-        elif augmentation_method == 'Deletion':
+        #if augmentation_method == 'Backtranslation_fr_en':
+        #    df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['fr','en'])
+        #elif augmentation_method == 'Backtranslation_de_en':
+        #    df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['de','en'])
+        if augmentation_method == 'Deletion':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Cropping':
             df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']))
@@ -80,8 +80,14 @@ class FinetuningThroughSelflabeling:
         #    df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
         elif augmentation_method == 'Summarization':
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
-        elif augmentation_method == 'Backtranslate':
-            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
+        elif augmentation_method == 'Backtranslate_en_fr':
+            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']), languages = ['English', 'French', 'English'], t5_model = self.args.t5_model)
+        elif augmentation_method == 'Backtranslate_en_de_fr':
+            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']),languages = ['English', 'German', 'French', 'English'], t5_model = self.args.t5_model)
+        elif augmentation_method == 'Backtranslate_en_de':
+            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts=list(df_augmented['sentence']), languages = ['English', 'German', 'English'],
+                                                                                  t5_model=self.args.t5_model)
+
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':
