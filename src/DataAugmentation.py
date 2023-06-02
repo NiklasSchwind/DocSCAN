@@ -126,8 +126,8 @@ class DataAugmentation:
 
     def backtranslate_batch_t5(self, texts, batch_size = 128, languages = ['English', 'French', 'English'], t5_model = 'large'):
 
-        min_length = min([len(text.split(' ')) for text in texts])-1
-        max_length = max([len(text.split(' ')) for text in texts])+5
+        min_length = int(min([len(text.split(' ')) for text in texts])-1)
+        max_length = int(max([len(text.split(' ')) for text in texts])+5)
 
         for i in range(len(languages)-1):
 
@@ -138,8 +138,8 @@ class DataAugmentation:
 
     def summarize_batch_t5(self, texts, batch_size=128,  t5_model = 'large'):
 
-        min_length = min([len(text.split(' ')) for text in texts])/4
-        max_length = max([len(text.split(' ')) for text in texts])/4
+        min_length = int(min([len(text.split(' ')) for text in texts])/2)
+        max_length = int(max([len(text.split(' ')) for text in texts])/4)
         prefix = "summarize: "
         texts = self._t5_generate_output(texts, prefix, batch_size, min_length, max_length, t5_model)
 
