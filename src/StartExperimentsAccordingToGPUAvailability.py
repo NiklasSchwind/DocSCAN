@@ -674,10 +674,10 @@ for experiment in Experiments_proto:
 	#																									'?').replace(
 	#	' ', '_').replace('!', '5')
 	experiment['--repetitions'] = 10
-	experiment1 = experiment
-	experiment2 = experiment
-	experiment3 = experiment
-	experiment4 = experiment
+	experiment1 = copy.deepcopy(experiment)
+	experiment2 = copy.deepcopy(experiment)
+	experiment3 = copy.deepcopy(experiment)
+	experiment4 = copy.deepcopy(experiment)
 
 	#experiment1['--path'] = 'DBPedia_smaller'
 	experiment2['--path'] = 'TREC-6'
