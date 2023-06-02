@@ -124,7 +124,7 @@ class DataAugmentation:
         return preds
 
 
-    def backtranslate_batch_t5(self, texts, batch_size = 108, languages = ['English', 'French', 'English'], t5_model = 'large'):
+    def backtranslate_batch_t5(self, texts, batch_size = 64, languages = ['English', 'French', 'English'], t5_model = 'large'):
 
         min_length = int(max(3,min([len(text.split(' ')) for text in texts])-7))
         max_length = int(max([len(text.split(' ')) for text in texts])+7)
