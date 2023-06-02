@@ -684,17 +684,17 @@ for experiment in Experiments_proto:
 	experiment3 = copy.deepcopy(experiment)
 	experiment4 = copy.deepcopy(experiment)
 
-	#experiment1['--path'] = 'DBPedia_smaller'
+	experiment1['--path'] = 'DBPedia_smaller'
 	#experiment2['--path'] = 'TREC-6'
 	#experiment3['--path'] = 'TREC-50'
 	#experiment3['--num_epochs'] = 10
-	#experiment4['--path'] = '20newsgroup'
+	experiment4['--path'] = '20newsgroup'
 
-	Experiments.append(experiment)
-	#Experiments.append(experiment1)
+	#Experiments.append(experiment)
+	Experiments.append(experiment1)
 	#Experiments.append(experiment2)
 	#Experiments.append(experiment3)
-	#Experiments.append(experiment4)
+	Experiments.append(experiment4)
 
 
 
