@@ -126,9 +126,17 @@ class DataAugmentation:
 
     def backtranslate_batch_t5(self, texts, batch_size = 64, languages = ['English', 'French', 'English'], t5_model = 'large'):
 
+        tokenizer = AutoTokenizer.from_pretrained(f't5-{t5_model}')
+        tokenized_texts = tokenizer.batch_encode_plus(texts, return_tensors="pt", add_special_tokens=True,
+                                    padding=True,
+                                    truncation=True)
+        min_length = int(max(3, min([len(text) for text in tokenized_texts]) - 7))
+        print(tokenized_texts.size())
+        max_length = tokenized_texts.size(dim = 1) + 7
+        '''
         min_length = int(max(3,min([len(text.split(' ')) for text in texts])-7))
         max_length = int(max([len(text.split(' ')) for text in texts])+7)
-
+        '''
         for i in range(len(languages)-1):
 
             prefix = f"translate {languages[i]} to {languages[i+1]}: "
