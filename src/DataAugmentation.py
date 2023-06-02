@@ -149,7 +149,7 @@ class DataAugmentation:
         texts = [prefix + text for text in texts]
 
         tokenizer = AutoTokenizer.from_pretrained('t5-small')
-        model = AutoModelWithLMHead.from_pretrained('t5-small', return_dict=True)
+        model = AutoModelWithLMHead.from_pretrained('t5-small', return_dict=True).to(self.device)
 
         num_texts = len(texts)
         num_batches = (num_texts + batch_size - 1) // batch_size  # Calculate the number of batches
@@ -163,10 +163,10 @@ class DataAugmentation:
             batch_texts = texts[start_index:end_index]  # Get the batch of texts
             encoding = tokenizer.batch_encode_plus(batch_texts, return_tensors="pt", add_special_tokens=True,
                                                    padding=True,
-                                                   truncation=True)
+                                                   truncation=True, device = self.device)
 
-            input_ids = encoding["input_ids"]
-            attention_mask = encoding["attention_mask"]
+            input_ids = encoding["input_ids"].to(self.device)
+            attention_mask = encoding["attention_mask"].to(self.device)
 
             generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, min_length=min_length,max_length=max_length)#, num_beams=2,
                                            #min_length=min_length,
