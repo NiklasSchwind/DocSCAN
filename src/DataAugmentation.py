@@ -126,8 +126,8 @@ class DataAugmentation:
 
     def backtranslate_batch_t5(self, texts, batch_size = 128, languages = ['English', 'French', 'English'], t5_model = 'large'):
 
-        min_length = int(min([len(text.split(' ')) for text in texts])-1)
-        max_length = int(max([len(text.split(' ')) for text in texts])+5)
+        min_length = int(min([len(text.split(' ')) for text in texts])-7)
+        max_length = int(max([len(text.split(' ')) for text in texts])+7)
 
         for i in range(len(languages)-1):
 
