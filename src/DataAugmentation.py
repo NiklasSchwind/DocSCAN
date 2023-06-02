@@ -131,8 +131,9 @@ class DataAugmentation:
                                     padding=True,
                                     truncation=True)
         min_length = int(max(3, min([len(text) for text in tokenized_texts]) - 7))
-        print(tokenized_texts.size())
-        max_length = tokenized_texts.size(dim = 1) + 7
+        print(tokenized_texts["input_ids"].size())
+        print(tokenized_texts["input_ids"].size(dim = 1))
+        max_length = tokenized_texts["input_ids"].size(dim = 1) + 7
         '''
         min_length = int(max(3,min([len(text.split(' ')) for text in texts])-7))
         max_length = int(max([len(text.split(' ')) for text in texts])+7)
