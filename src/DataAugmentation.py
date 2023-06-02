@@ -124,7 +124,7 @@ class DataAugmentation:
         return preds
 
 
-    def backtranslate_batch_t5_small(self, texts, batch_size = 128, languages = ['English', 'French', 'English']):
+    def backtranslate_batch_t5(self, texts, batch_size = 128, languages = ['English', 'French', 'English']):
 
         min_length = min([len(text.split(' ')) for text in texts])-1
         max_length = max([len(text.split(' ')) for text in texts])+5
@@ -132,24 +132,24 @@ class DataAugmentation:
         for i in range(len(languages)-1):
 
             prefix = f"translate {languages[i]} to {languages[i+1]}: "
-            texts = self._t5_small_generate_output(texts, prefix, batch_size, min_length, max_length)
+            texts = self._t5_generate_output(texts, prefix, batch_size, min_length, max_length)
 
         return texts
 
-    def summarize_batch_t5_small(self, texts, batch_size=16, min_length=80, max_length=150):
+    def summarize_batch_t5(self, texts, batch_size=16, min_length=80, max_length=150):
 
 
         prefix = "summarize: "
-        texts = self._t5_small_generate_output(texts, prefix, batch_size, min_length, max_length)
+        texts = self._t5_generate_output(texts, prefix, batch_size, min_length, max_length)
 
         return texts
 
-    def _t5_small_generate_output(self,texts, prefix, batch_size, min_length, max_length):
+    def _t5_generate_output(self,texts, prefix, batch_size, min_length, max_length):
 
         texts = [prefix + text for text in texts]
 
-        tokenizer = AutoTokenizer.from_pretrained('t5-base')
-        model = AutoModelWithLMHead.from_pretrained('t5-base', return_dict=True).to(self.device)
+        tokenizer = AutoTokenizer.from_pretrained('t5-large')
+        model = AutoModelWithLMHead.from_pretrained('t5-large', return_dict=True).to(self.device)
 
         num_texts = len(texts)
         num_batches = (num_texts + batch_size - 1) // batch_size  # Calculate the number of batches
