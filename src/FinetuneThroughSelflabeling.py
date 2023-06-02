@@ -75,13 +75,13 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Cropping':
             df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']))
+        #elif augmentation_method == 'Summarization':
+        #    print('\n\n\n hello there \n\n\n')
+        #    df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
         elif augmentation_method == 'Summarization':
-            print('\n\n\n hello there \n\n\n')
-            df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
-        elif augmentation_method == 'Summarization_small':
-            df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(list(df_augmented['sentence']), 16)
-        elif augmentation_method == 'Backtranslate_small':
-            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(list(df_augmented['sentence']))
+            df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
+        elif augmentation_method == 'Backtranslate':
+            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':

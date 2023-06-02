@@ -368,6 +368,8 @@ Experiments = [
 
 ]
 '''
+
+'''
 Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
@@ -389,7 +391,7 @@ Experiments = [
 				'--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'last', '--entropy_weight': 3.0 },
 ]
 
-
+'''
 
 '''
 Experiments = [
@@ -607,6 +609,41 @@ Experiments = [
 ]
 
 '''
+
+Experiments = [{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Dropout'},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05},
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05},
+			   {'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', "--ratio_for_deletion": 0.05}
+
+]
 
 for experiment in Experiments:
 	experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<','^').replace('>','?').replace(' ','_').replace('!', '5')

@@ -362,6 +362,8 @@ if __name__ == "__main__":
                         help="Indicative Sentence to use or nothing")
     parser.add_argument("--indicative_sentence_position", default='first', type=str,
                         help="first or last")
+    parser.add_argument("--t5_model", default='large', type=str,
+                        help="can be large, base and small")
     args = parser.parse_args()
 
     if args.dropout == 0:
