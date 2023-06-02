@@ -182,7 +182,7 @@ class DataAugmentation:
             input_ids = encoding["input_ids"].to(self.device)
             attention_mask = encoding["attention_mask"].to(self.device)
 
-            generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, min_length=min_length,max_length=max_length, do_sample=True)#, num_beams=2,
+            generated_ids = model.generate(input_ids=input_ids, attention_mask=attention_mask, min_length=min_length, max_length=max_length, do_sample=True)#, num_beams=2,
                                            #min_length=min_length,
                                            #max_length=max_length, repetition_penalty=2.5, length_penalty=1.0,
                                            #early_stopping=True)
