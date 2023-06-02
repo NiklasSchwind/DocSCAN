@@ -80,9 +80,7 @@ class FinetuningThroughSelflabeling:
         #    print('\n\n\n hello there \n\n\n')
         #    df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
         elif augmentation_method == 'Summarization':
-            print(df_augmented['sentence'])
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
-            print(df_augmented['sentence'])
         elif augmentation_method == 'Backtranslate_en_fr':
             df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']), languages = ['English', 'French', 'English'], t5_model = self.args.t5_model)
         elif augmentation_method == 'Backtranslate_en_de_fr':
