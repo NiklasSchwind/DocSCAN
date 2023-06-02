@@ -163,7 +163,7 @@ class DataAugmentation:
             batch_texts = texts[start_index:end_index]  # Get the batch of texts
             encoding = tokenizer.batch_encode_plus(batch_texts, return_tensors="pt", add_special_tokens=True,
                                                    padding=True,
-                                                   truncation=True, device = self.device)
+                                                   truncation=True)
 
             input_ids = encoding["input_ids"].to(self.device)
             attention_mask = encoding["attention_mask"].to(self.device)
