@@ -124,11 +124,14 @@ class DataAugmentation:
         return preds
 
 
-    def backtranslate_batch_t5_small(self, texts, batch_size = 16,  min_length=None ,max_length=None, languages = ['English', 'French', 'English']):
+    def backtranslate_batch_t5_small(self, texts, batch_size = 16, languages = ['English', 'French', 'English']):
+
+        min_length = min([len(text.split(' ')) for text in texts])-1
+        max_length = max([len(text.split(' ')) for text in texts])+5
 
         for i in range(len(languages)-1):
 
-            prefix = f"translate {languages[i]} to {languages[i]}: "
+            prefix = f"translate {languages[i]} to {languages[i+1]}: "
             texts = self._t5_small_generate_output(texts, prefix, batch_size, min_length, max_length)
 
         return texts
