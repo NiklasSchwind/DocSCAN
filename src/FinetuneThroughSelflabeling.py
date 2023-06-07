@@ -126,3 +126,7 @@ class FinetuningThroughSelflabeling:
         predictions, probabilities = self.model_trainer.get_predictions(test_data)
 
         return predictions, probabilities
+
+
+
+

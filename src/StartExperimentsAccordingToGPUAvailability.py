@@ -502,10 +502,10 @@ Experiments = [
 	 '--entropy_weight': 15},
 ]
 '''
-'''
-	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+
+Experiments_proto = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 0.6},
+	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 0.6},
 	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 1.0},
@@ -545,14 +545,77 @@ Experiments = [
 	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 3.4},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 3.6},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 3.8},
 	{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 4.0},
 {'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 4.2},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 4.4},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 4.6},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 4.8},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 5.0},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 5.2},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 5.4},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 5.6},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 5.8},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 6.0},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 6.2},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 6.4},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 6.6},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 6.8}
+
 ]
-'''
+
+Experiments = []
+for experiment in Experiments_proto:
+	experiment1 = copy.deepcopy(experiment)
+	experiment2 = copy.deepcopy(experiment)
+
+	experiment1["--indicative_sentence"] = 'Category: <mask>. '
+	experiment1["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+	experiment1["--path"] = 'DBPedia'
+	experiment1['--indicative_sentence_position'] = 'first'
+
+	experiment2["--indicative_sentence"] = ' Related: <mask>.'
+	experiment2["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+	experiment2["--path"] = 'ag_news'
+	experiment2['--indicative_sentence_position'] = 'last'
+
+	Experiments.append(experiment1)
+	Experiments.append(experiment2)
 
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
@@ -609,7 +672,7 @@ Experiments = [
 ]
 
 '''
-
+'''
 Experiments_proto = [
 {'--embedding_model': 'SBert', '--path': 'ag_news_smaller', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'base'},
@@ -697,7 +760,7 @@ for experiment in Experiments_proto:
 	Experiments.append(experiment4)
 
 
-
+'''
 
 
 
@@ -708,14 +771,14 @@ for experiment in Experiments_proto:
 def start_experiment(experiment, device):
 	#if (experiment["--augmentation_method"] == 'Backtranslate_en_fr' or experiment["--augmentation_method"] == 'Summarization' or experiment["--augmentation_method"] == 'Backtranslate_en_de' or experiment["--augmentation_method"] == 'Backtranslate_en_de_fr') and experiment['--embedding_model'] == 'IndicativeSentence':
 	#	outfile = f'IndicativeSentencesExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_t5_model_{experiment["--t5_model"]}.txt'#_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}.txt'
-	if ((experiment["--augmentation_method"] == 'Backtranslate_en_fr' or experiment["--augmentation_method"] == 'Summarization' or experiment["--augmentation_method"] == 'Backtranslate_en_de' or experiment["--augmentation_method"] == 'Backtranslate_en_de_fr')): #and experiment['--embedding_model'] != 'IndicativeSentence':
-		outfile = f'RealSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_t5_model_{experiment["--t5_model"]}.txt'
+	#if ((experiment["--augmentation_method"] == 'Backtranslate_en_fr' or experiment["--augmentation_method"] == 'Summarization' or experiment["--augmentation_method"] == 'Backtranslate_en_de' or experiment["--augmentation_method"] == 'Backtranslate_en_de_fr')): #and experiment['--embedding_model'] != 'IndicativeSentence':
+	#	outfile = f'RealSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_t5_model_{experiment["--t5_model"]}.txt'
 	#elif (experiment["--augmentation_method"] != 'Backtranslate_en_fr' and experiment["--augmentation_method"] != 'Summarization' and experiment["--augmentation_method"] != 'Backtranslate_en_de' and experiment["--augmentation_method"] != 'Backtranslate_en_de_fr') and experiment['--embedding_model'] == 'IndicativeSentence':
 	#	outfile = f'IndicativeSentencesExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}.txt'  # _threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}.txt'
-	else:
-		outfile = f'RealSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+	#else:
+	#	outfile = f'RealSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 
-	#	outfile = f'DeletionRatioLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_{experiment["--augmentation_method"]}.txt'
+	outfile = f'EntropyWeightExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
 
 	with open(outfile, 'w') as f:
 		f.write('Start')

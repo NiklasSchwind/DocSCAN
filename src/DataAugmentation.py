@@ -1,5 +1,5 @@
 from typing import List
-from transformers import MarianMTModel, MarianTokenizer, AutoTokenizer, AutoModelWithLMHead
+from transformers import MarianMTModel, MarianTokenizer, AutoTokenizer, AutoModelWithLMHead, BartTokenizer, BartForConditionalGeneration
 import random
 import torch
 from sentence_transformers import SentenceTransformer
@@ -195,8 +195,54 @@ class DataAugmentation:
 
         return preds
 
+    def paraphrase_texts(self, texts, model_name, batch_size, device):
+        # Load tokenizer and model
+        tokenizer = BartTokenizer.from_pretrained(model_name)
+        model = BartForConditionalGeneration.from_pretrained(model_name).to(device)
 
+        # Tokenize input texts
+        tokenized_texts = tokenizer.batch_encode_plus(texts, padding=True, truncation=True, return_tensors="pt")
+        input_ids = tokenized_texts["input_ids"].to(device)
+        attention_mask = tokenized_texts["attention_mask"].to(device)
 
+        num_texts = len(texts)
+        paraphrases = []
+
+        for i in range(0, num_texts, batch_size):
+            input_batch = input_ids[i:i + batch_size]
+            mask_batch = attention_mask[i:i + batch_size]
+
+            # Generate paraphrases
+            with torch.no_grad():
+                outputs = model.generate(input_batch, attention_mask=mask_batch, max_length=100, do_sample=True,
+                                         num_return_sequences=1)
+
+            # Decode paraphrases
+            batch_paraphrases = [tokenizer.decode(output, skip_special_tokens=True) for output in outputs]
+            paraphrases.extend(batch_paraphrases)
+
+        return paraphrases
+'''
+        # Example usage
+        texts = [
+            "This is the first sentence.",
+            "Here's another sentence to paraphrase.",
+            "We can paraphrase multiple sentences at once.",
+            "Paraphrasing helps in generating diverse text variations."
+        ]
+        model_name = "eugenesiow/bart-paraphrase"
+        batch_size = 2
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        paraphrases = paraphrase_texts(texts, model_name, batch_size, device)
+
+        # Print original texts and paraphrases
+        for text, paraphrase in zip(texts, paraphrases):
+            print("Original Text:", text)
+            print("Paraphrase:", paraphrase)
+            print()
+
+'''
 
 
 
