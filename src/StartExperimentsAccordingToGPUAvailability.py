@@ -606,20 +606,20 @@ for experiment in Experiments_proto:
 	experiment1 = copy.deepcopy(experiment)
 	experiment2 = copy.deepcopy(experiment)
 
-	del experiment1["--indicative_sentence"]
+	del experiment1['--indicative_sentence']
 	del experiment1["--path"]
 	del experiment1['--indicative_sentence_position']
 	del experiment2["--indicative_sentence"]
 	del experiment2["--path"]
 	del experiment2['--indicative_sentence_position']
 
-	experiment1["--indicative_sentence"] = 'Category: <mask>. '
-	experiment1["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+	experiment1['--indicative_sentence'] = 'Category: <mask>. '
+	experiment1["--indicative_sentence"] = experiment1["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
 	experiment1["--path"] = 'DBPedia'
 	experiment1['--indicative_sentence_position'] = 'first'
 
-	experiment2["--indicative_sentence"] = ' Related: <mask>.'
-	experiment2["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+	experiment2['--indicative_sentence'] = ' Related: <mask>.'
+	experiment2["--indicative_sentence"] = experiment2["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
 	experiment2["--path"] = 'ag_news'
 	experiment2['--indicative_sentence_position'] = 'last'
 
