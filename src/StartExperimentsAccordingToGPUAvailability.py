@@ -502,7 +502,7 @@ Experiments = [
 	 '--entropy_weight': 15},
 ]
 '''
-
+'''
 Experiments_proto = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 0.6},
@@ -625,7 +625,33 @@ for experiment in Experiments_proto:
 
 	Experiments.append(experiment1)
 	Experiments.append(experiment2)
-
+'''
+Experiments = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 2, '--num_neighbors': 1},
+				{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news',
+					'--clustering_method': 'EntropyLoss',
+					'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+					'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last',
+					'--entropy_weight': 2, '--num_neighbors': 1},
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+	 '--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last', '--entropy_weight': 2, '--num_neighbors': 1},
+				   {'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6',
+					'--clustering_method': 'EntropyLoss',
+					'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+					'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last',
+					'--entropy_weight': 2, '--num_neighbors': 1},
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50',
+					'--clustering_method': 'EntropyLoss',
+					'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+					'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last',
+					'--entropy_weight': 2, '--num_neighbors': 1},
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup',
+					'--clustering_method': 'EntropyLoss',
+					'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
+					'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'last',
+					'--entropy_weight': 2, '--num_neighbors': 1}]
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
