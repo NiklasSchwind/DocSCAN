@@ -340,7 +340,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", default=64, type=int, help="Batch size per GPU/CPU for training.")
     parser.add_argument("--dropout", default=0.1, type=float, help="dropout for DocSCAN model")
     parser.add_argument("--num_epochs", default=5, type=int, help="number of epochs to train DocSCAN model")
-    parser.add_argument("--num_neighbors", default=5, type=int, help="number of epochs to train DocSCAN model")
+    parser.add_argument("--num_neighbors", default=1, type=int, help="number of epochs to train DocSCAN model") #TODO
     parser.add_argument("--device", default='cpu', type=str, help="device the code should be run on")
     parser.add_argument("--outfile", default='NO', type=str, help="file to print outputs to")
     parser.add_argument("--clustering_method", default='SCANLoss', type=str, help="Choose between SCANLoss and EntropyLoss")
