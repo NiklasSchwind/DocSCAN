@@ -769,12 +769,13 @@ Experiments_proto = [
 
 
 ]
-
-Experiments = []
-for experiment in Experiments_proto:
-	#experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>',
-	#																									'?').replace(
-	#	' ', '_').replace('!', '5')
+'''
+#Experiments = []
+for experiment in Experiments:
+	experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>',
+																										'?').replace(
+		' ', '_').replace('!', '5')
+	'''
 	#if experiment['--t5_model'] != 'large':
 	#	experiment['--repetitions'] = 10
 	experiment1 = copy.deepcopy(experiment)
@@ -787,15 +788,15 @@ for experiment in Experiments_proto:
 	#experiment3['--path'] = 'TREC-50'
 	#experiment3['--num_epochs'] = 10
 	experiment4['--path'] = '20newsgroup'
-
+	'''
 	#Experiments.append(experiment)
-	Experiments.append(experiment1)
+	#Experiments.append(experiment1)
 	#Experiments.append(experiment2)
 	#Experiments.append(experiment3)
-	Experiments.append(experiment4)
+	#Experiments.append(experiment4)
 
 
-'''
+
 
 
 
