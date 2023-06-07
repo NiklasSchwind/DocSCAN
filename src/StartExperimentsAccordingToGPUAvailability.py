@@ -605,6 +605,12 @@ Experiments = []
 for experiment in Experiments_proto:
 	experiment1 = copy.deepcopy(experiment)
 	experiment2 = copy.deepcopy(experiment)
+	del experiment1["--indicative_sentence"]
+	del experiment1["--path"]
+	del experiment1['--indicative_sentence_position']
+	del experiment2["--indicative_sentence"]
+	del experiment2["--path"]
+	del experiment2['--indicative_sentence_position']
 
 	experiment1["--indicative_sentence"] = 'Category: <mask>. '
 	experiment1["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
