@@ -612,7 +612,7 @@ for experiment in Experiments_proto:
 	del experiment2["--indicative_sentence"]
 	del experiment2["--path"]
 	del experiment2['--indicative_sentence_position']
-	'''
+
 	experiment1["--indicative_sentence"] = 'Category: <mask>. '
 	experiment1["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
 	experiment1["--path"] = 'DBPedia'
@@ -622,7 +622,7 @@ for experiment in Experiments_proto:
 	experiment2["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
 	experiment2["--path"] = 'ag_news'
 	experiment2['--indicative_sentence_position'] = 'last'
-	'''
+
 	Experiments.append(experiment1)
 	Experiments.append(experiment2)
 
