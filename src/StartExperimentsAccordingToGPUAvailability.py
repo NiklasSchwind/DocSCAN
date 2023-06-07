@@ -502,7 +502,7 @@ Experiments = [
 	 '--entropy_weight': 15},
 ]
 '''
-'''
+
 Experiments_proto = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 0.6},
@@ -625,6 +625,7 @@ for experiment in Experiments_proto:
 
 	Experiments.append(experiment1)
 	Experiments.append(experiment2)
+
 '''
 Experiments = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
@@ -652,6 +653,7 @@ Experiments = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia',
 					'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 					'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'last',
 					'--entropy_weight': 2, '--num_neighbors': 1}]
+'''
 '''
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'True',
@@ -770,12 +772,13 @@ Experiments_proto = [
 
 ]
 '''
+'''
 #Experiments = []
 for experiment in Experiments:
 	experiment["--indicative_sentence"] = experiment["--indicative_sentence"].replace('<', '^').replace('>',
 																										'?').replace(
 		' ', '_').replace('!', '5')
-	'''
+	
 	#if experiment['--t5_model'] != 'large':
 	#	experiment['--repetitions'] = 10
 	experiment1 = copy.deepcopy(experiment)
@@ -788,14 +791,14 @@ for experiment in Experiments:
 	#experiment3['--path'] = 'TREC-50'
 	#experiment3['--num_epochs'] = 10
 	experiment4['--path'] = '20newsgroup'
-	'''
+
 	#Experiments.append(experiment)
 	#Experiments.append(experiment1)
 	#Experiments.append(experiment2)
 	#Experiments.append(experiment3)
 	#Experiments.append(experiment4)
 
-
+'''
 
 
 
@@ -814,7 +817,7 @@ def start_experiment(experiment, device):
 	#else:
 	#	outfile = f'RealSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 
-	outfile = f'Experiments-1ex/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
+	outfile = f'EntropyWeightExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
 
 	with open(outfile, 'w') as f:
 		f.write('Start')
