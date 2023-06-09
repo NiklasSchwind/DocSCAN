@@ -604,7 +604,7 @@ Experiments_proto = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBP
 Experiments = []
 for experiment in Experiments_proto:
 	experiment1 = copy.deepcopy(experiment)
-	experiment2 = copy.deepcopy(experiment)#
+	experiment2 = copy.deepcopy(experiment)##
 
 	del experiment1['--indicative_sentence']
 	del experiment1["--path"]
