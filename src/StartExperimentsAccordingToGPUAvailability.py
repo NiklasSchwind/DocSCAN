@@ -609,22 +609,28 @@ for experiment in Experiments_proto:
 	del experiment1['--indicative_sentence']
 	del experiment1["--path"]
 	del experiment1['--indicative_sentence_position']
-	del experiment2["--indicative_sentence"]
+
+
+	experiment1['--indicative_sentence'] = ' All in all, it was <mask>.'
+	experiment1["--indicative_sentence"] = experiment1["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+	experiment1["--path"] = 'IMDB'
+	experiment1['--indicative_sentence_position'] = 'last'
+
+	del experiment2['--indicative_sentence']
 	del experiment2["--path"]
 	del experiment2['--indicative_sentence_position']
 
-	experiment1['--indicative_sentence'] = 'Category: <mask>. '
-	experiment1["--indicative_sentence"] = experiment1["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
-	experiment1["--path"] = 'DBPedia'
-	experiment1['--indicative_sentence_position'] = 'first'
-
-	experiment2['--indicative_sentence'] = ' Related: <mask>.'
-	experiment2["--indicative_sentence"] = experiment2["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+	experiment2['--indicative_sentence'] = 'Category: <mask>. '
+	experiment2["--indicative_sentence"] = experiment2["--indicative_sentence"].replace('<', '^').replace('>',
+																										  '?').replace(
+		' ', '_').replace('!', '5')
 	experiment2["--path"] = 'ag_news'
-	experiment2['--indicative_sentence_position'] = 'last'
+	experiment2['--indicative_sentence_position'] = 'first'
+
 
 	Experiments.append(experiment1)
 	Experiments.append(experiment2)
+
 
 '''
 Experiments = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
