@@ -167,7 +167,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
 
 
 
-#display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
+display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
 
 def load_data(filename):
     sentences, labels = [], []
@@ -205,9 +205,9 @@ def get_random_data_in_same_ratio(train_data,  amount ):
 
 
 
-train_data = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/IMDB/train.jsonl')
-dictlist = get_random_data_in_same_ratio(train_data,  10000)
-write_in_jsonl(dictlist, '/vol/fob-vol7/mi19/schwindn/DocSCAN/IMDB_smaller/train.jsonl')
+#train_data = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/IMDB/train.jsonl')
+#dictlist = get_random_data_in_same_ratio(train_data,  10000)
+#write_in_jsonl(dictlist, '/vol/fob-vol7/mi19/schwindn/DocSCAN/IMDB_smaller/train.jsonl')
 
 
 
