@@ -85,13 +85,14 @@ def return_list_of_accuracies_entropy_weight(path):
                         return_next_in_list('Embedding', file.name.split('_'),1),
                         return_next_in_list('clustering', file.name.split('_'),2),
                         return_next_in_list('epochs', file.name.split('_'), 1),
+                        return_next_in_list('indicativesentence', file.name.split('_'), 2),
                         float(return_next_in_list('entropy', file.name.split('_'), 2).replace('.txt', '')),
                         after_selflabeling,
                         ])
 
 
     return pd.DataFrame(columns,
-                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Entropy Weight', 'Accuracy'],
+                      columns=['Dataset','Embedding','Clustering Method', 'Epochs','Indicative Sentences', 'Entropy Weight', 'Accuracy'],
                       )
 
 def return_list_of_accuracies_ratio(path):
