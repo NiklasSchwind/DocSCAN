@@ -604,18 +604,18 @@ Experiments_proto = [	{'--embedding_model': 'IndicativeSentence', '--path': 'DBP
 Experiments = []
 for experiment in Experiments_proto:
 	experiment1 = copy.deepcopy(experiment)
-	#experiment2 = copy.deepcopy(experiment)##
+	experiment2 = copy.deepcopy(experiment)##
 
 	del experiment1['--indicative_sentence']
 	del experiment1["--path"]
 	del experiment1['--indicative_sentence_position']
 
 
-	experiment1['--indicative_sentence'] = ' All in all, it was <mask>.'
+	experiment1['--indicative_sentence'] = 'Category: <mask>. '
 	experiment1["--indicative_sentence"] = experiment1["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
-	experiment1["--path"] = 'IMDB'
-	experiment1['--indicative_sentence_position'] = 'last'
-	'''
+	experiment1["--path"] = '20newsgroup'
+	experiment1['--indicative_sentence_position'] = 'first'
+
 	del experiment2['--indicative_sentence']
 	del experiment2["--path"]
 	del experiment2['--indicative_sentence_position']
@@ -627,9 +627,9 @@ for experiment in Experiments_proto:
 	experiment2["--path"] = 'ag_news'
 	experiment2['--indicative_sentence_position'] = 'first'
 
-	'''
+
 	Experiments.append(experiment1)
-	#Experiments.append(experiment2)
+	Experiments.append(experiment2)
 
 
 '''
