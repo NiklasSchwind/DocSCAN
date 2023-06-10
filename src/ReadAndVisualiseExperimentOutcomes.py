@@ -156,7 +156,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
                            'display.precision', 3,
                            ):
         print(frame)
-    if mode == 'entropy':
+    if mode == 'entropy':#
         print(frame['Entropy Weight'].to_list())
         print(frame['Accuracy'].to_list())
     elif mode == 'ratio':
