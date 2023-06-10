@@ -277,8 +277,8 @@ class DocSCANPipeline():
 
             elif mode == 'PrototypeAccuracy':
 
-                predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
-                                                 test_embeddings=self.X_test, device=self.device,
+                predict_dataset = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
+                                                 test_embeddings=self.X, device=self.device,
                                                  method=self.args.clustering_method)
                 predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
                                                                  collate_fn=predict_dataset.collate_fn_predict,
@@ -291,8 +291,8 @@ class DocSCANPipeline():
                                     num_epochs=self.args.num_epochs)
                 predictions, probabilities = PrototypeMine_Trainer.get_predictions(predict_dataloader)
                 print("docscan trained with n=", self.args.num_classes, "clusters...")
-                targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
-                targets = [targets_map[i] for i in self.df_test["label"]]
+                targets_map = {i: j for j, i in enumerate(np.unique(df_train["label"]))}
+                targets = [targets_map[i] for i in df_train["label"]]
                 evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_beforeSL.print_statistic_of_latest_experiment()
 
