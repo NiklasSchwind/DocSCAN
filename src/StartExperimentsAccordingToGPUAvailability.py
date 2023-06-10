@@ -6,31 +6,7 @@ import os
 import copy
 
 
-Experiments = [
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
+Experiments_proto = [
 {'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
 	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
 	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 7.0},
@@ -103,8 +79,14 @@ Experiments = [
 
 ]
 
-
-
+Experiments = []
+for experiment in Experiments_proto:
+	if experiment["--path"] == 'DocSCAN':
+		experiment1 = copy.deepcopy(experiment)
+		experiment1["--indicative_sentence"] = experiment1["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+		Experiments.append(experiment1)
+	else:
+		Experiments.append(experiment)
 
 def start_experiment(experiment, device):
 	#if (experiment["--augmentation_method"] == 'Backtranslate_en_fr' or experiment["--augmentation_method"] == 'Summarization' or experiment["--augmentation_method"] == 'Backtranslate_en_de' or experiment["--augmentation_method"] == 'Backtranslate_en_de_fr') and experiment['--embedding_model'] == 'IndicativeSentence':
