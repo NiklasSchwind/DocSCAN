@@ -81,7 +81,7 @@ Experiments_proto = [
 
 Experiments = []
 for experiment in Experiments_proto:
-	if experiment["--path"] == 'DocSCAN':
+	if experiment["--path"] == 'DBPedia':
 		experiment1 = copy.deepcopy(experiment)
 		experiment1["--indicative_sentence"] = experiment1["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
 		Experiments.append(experiment1)
