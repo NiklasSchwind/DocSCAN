@@ -149,7 +149,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
 
         frame = frame[frame.Accuracy != 'Experiment not finished'].sort_values('Entropy Weight')
         frame = frame[frame.Dataset == 'ag'].sort_values('Entropy Weight')
-        #frame = frame[frame['Indicative Sentences'] == 'Category:'].sort_values('Entropy Weight')
+        frame = frame[frame['Indicative Sentences'] != 'Category:'].sort_values('Entropy Weight')
         frame = frame[frame['Clustering Method'] == 'EntropyLoss'].sort_values('Entropy Weight')
 
     with pd.option_context('display.max_rows', None,
