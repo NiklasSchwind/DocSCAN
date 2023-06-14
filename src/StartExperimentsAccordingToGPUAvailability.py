@@ -30,7 +30,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
+				'--num_epochs': 10, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 {'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
@@ -42,7 +42,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
+				'--num_epochs': 10, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 {'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
@@ -54,7 +54,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
+				'--num_epochs': 10, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 {'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
@@ -66,7 +66,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
+				'--num_epochs': 10, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 {'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
@@ -78,7 +78,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
+				'--num_epochs': 10, '--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
 {'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
@@ -90,7 +90,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
+				'--num_epochs':10, '--augmentation_method': 'Backtranslate_en_de', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_fr', '--t5_model': 'base'},
 {'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
@@ -102,7 +102,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
+				'--num_epochs': 10, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
 {'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
@@ -114,7 +114,7 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 			   {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method':'Backtranslate_en_de_fr', '--t5_model': 'base'},
+				'--num_epochs': 10, '--augmentation_method':'Backtranslate_en_de_fr', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
 {'--path': '20newsgroup', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
@@ -181,10 +181,12 @@ def start_experiment(experiment, device):
 		outfile = f'PrototypeAccuracy/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'PrototypeAccuracy' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'PrototypeAccuracy/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
-	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi':
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Deletion':
 		outfile = f'DeletionRatioExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}.txt'
-	else:
-		outfile = f'EntropyWeightExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion':
+		outfile = f'RealSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_t5_model_{experiment["--t5_model"]}.txt'
+	#else:
+	#	outfile = f'EntropyWeightExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
 
 	with open(outfile, 'w') as f:
 		f.write('Start')
