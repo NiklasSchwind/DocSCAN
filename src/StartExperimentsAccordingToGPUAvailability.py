@@ -117,13 +117,6 @@ Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_fi
 				'--num_epochs': 10, '--augmentation_method':'Backtranslate_en_de_fr', '--t5_model': 'base'},
 			   {'--path': 'IMDB_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
-{'--path': '20newsgroup', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--path': 'TREC-6', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--path': 'TREC-50', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--path': 'IMDB', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--path': 'DBPedia', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{'--path': 'DBPedia', '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
 ]
 
 
