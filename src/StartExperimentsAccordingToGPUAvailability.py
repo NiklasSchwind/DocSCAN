@@ -6,87 +6,64 @@ import os
 import copy
 
 
-Experiments_proto = [
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 7.0},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 7.5},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 8.0},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 8.5},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 9.0},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 9.5},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 10.0},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 11.0},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 12.0},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 15.0},
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
-	 '--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 10, '--new_embeddings': 'False',
-	 '--indicative_sentence': 'Category: <mask>. ', '--indicative_sentence_position': 'first', '--entropy_weight': 20.0},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.01},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.03},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.05},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.075},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.1},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.15},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.2},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.01},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.03},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.05},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.075},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.1},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.15},
-{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95, '--num_epochs': 5,'--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.2}
-
-
-
-
+Experiments_proto = [{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'DBPedia', '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': '20_newsgroup', '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'TREC-6', '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'TREC-50', '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'IMDB', '--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'DBPedia', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': '20_newsgroup', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'TREC-6', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'TREC-50', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10} ,
+{'--path': 'IMDB', '--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10} ,
 
 ]
 
+
+
+
+
+optimal_indicative_sentence = {'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Enjoy the following article about <mask>: ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
+realistic_indicative_sentence = {'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Category: <mask>. ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
+
+optimal_indicative_sentence_position = {'DBPedia': 'first', 'DBPedia_smaller': 'first', 'ag_news': 'first', 'ag_news_smaller': 'first', '20newsgroup': 'first', 'TREC-6': 'last', 'TREC-50':'last', 'IMDB': 'last', 'IMDB_smaller': 'last'}
+realistic_indicative_sentence_position = {'DBPedia': 'first', 'DBPedia_smaller': 'first', 'ag_news': 'first', 'ag_news_smaller': 'first', '20newsgroup': 'first', 'TREC-6': 'last', 'TREC-50':'last', 'IMDB': 'last', 'IMDB_smaller': 'last'}
+
+optimal_entropy_weight = {'DBPedia': 7.0, 'DBPedia_smaller': 7.0, 'ag_news': 1.4, 'ag_news_smaller': 1.4, '20newsgroup': 4.0, 'TREC-6': 2.4, 'TREC-50': 1.6, 'IMDB': 1.4, 'IMDB_smaller': 1.4}
+realistic_entropy_weight = {'DBPedia': 3.0, 'DBPedia_smaller': 3.0, 'ag_news': 3.0, 'ag_news_smaller': 3.0, '20newsgroup': 3.0, 'TREC-6': 3.0, 'TREC-50': 3.0, 'IMDB': 3.0, 'IMDB_smaller': 3.0}
+
 Experiments = []
+
+includeSBert = False
+
 for experiment in Experiments_proto:
-	if experiment["--path"] == 'DBPedia':
-		experiment1 = copy.deepcopy(experiment)
-		experiment1["--indicative_sentence"] = experiment1["--indicative_sentence"].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
-		Experiments.append(experiment1)
-	else:
-		Experiments.append(experiment)
+	experiment_IS_optimal = copy.deepcopy(experiment)
+	experiment_IS_realistic = copy.deepcopy(experiment)
+	experiment_SBert = copy.deepcopy(experiment)
+
+	experiment_IS_optimal["--embedding_model"] = 'IndicativeSentence'
+	experiment_IS_optimal['--clustering_method'] = 'EntropyLoss'
+	experiment_IS_optimal['--indicative_sentence'] = optimal_indicative_sentence[experiment['--path']].replace('<', '^').replace('>','?').replace(' ', '_').replace('!', '5')
+	experiment_IS_optimal['--indicative_sentence_position'] = optimal_indicative_sentence_position[experiment['--path']]
+	experiment_IS_optimal['--entropy_weight'] =  optimal_entropy_weight[experiment['--path']]
+
+	experiment_IS_realistic["--embedding_model"] = 'IndicativeSentence'
+	experiment_IS_realistic['--clustering_method'] = 'EntropyLoss'
+	experiment_IS_realistic['--indicative_sentence'] = realistic_indicative_sentence[experiment['--path']].replace('<','^').replace('>', '?').replace(' ', '_').replace('!', '5')
+	experiment_IS_realistic['--indicative_sentence_position'] = realistic_indicative_sentence_position[experiment['--path']]
+	experiment_IS_realistic['--entropy_weight'] = realistic_entropy_weight[experiment['--path']]
+
+	experiment_SBert['--embedding_model'] = 'SBert'
+	experiment_IS_realistic['--clustering_method'] = 'SCANLoss'
+
+	if includeSBert:
+		Experiments.append(experiment_SBert)
+
+	Experiments.append(experiment_IS_realistic)
+	Experiments.append(experiment_IS_optimal)
+
 
 def start_experiment(experiment, device):
 	#if (experiment["--augmentation_method"] == 'Backtranslate_en_fr' or experiment["--augmentation_method"] == 'Summarization' or experiment["--augmentation_method"] == 'Backtranslate_en_de' or experiment["--augmentation_method"] == 'Backtranslate_en_de_fr') and experiment['--embedding_model'] == 'IndicativeSentence':
