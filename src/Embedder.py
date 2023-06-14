@@ -9,6 +9,7 @@ import torch
 import numpy as np
 import os
 import pandas as pd
+from tqdm import tqdm
 from simcse import SimCSE
 
 
@@ -123,7 +124,7 @@ class Embedder:
         mask_token_encodings = []
 
         # Process each batch of input sentences
-        for i in range(num_batches):
+        for i in tqdm(range(num_batches)):
             start = i * self.batch_size
             end = min((i + 1) * self.batch_size, num_sentences)
             # Extract the input tensors for the current batch
