@@ -148,7 +148,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
         frame = return_list_of_accuracies_entropy_weight(mypath)
 
         frame = frame[frame.Accuracy != 'Experiment not finished'].sort_values('Entropy Weight')
-        frame = frame[frame.Dataset == 'TREC-6'].sort_values('Entropy Weight')
+        frame = frame[frame.Dataset == 'TREC-50'].sort_values('Entropy Weight')
         #frame = frame[frame['Indicative Sentences'] != 'Category:'].sort_values('Entropy Weight')
         frame = frame[frame['Clustering Method'] == 'EntropyLoss'].sort_values('Entropy Weight')
 
