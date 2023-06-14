@@ -96,18 +96,6 @@ class FinetuningThroughSelflabeling:
         else:
             print('\n\n\nNO DATA AUGMENTATION APPLIED!!!!!!!!!!!!!!\n\n\n')
 
-
-        if self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'TREC-6' or self.args.path == 'TREC-50'):
-            self.embedder.set_indicative_sentence('Answer: <mask>.')
-            self.embedder.set_indicative_sentence_position('last')
-        elif self.embedder.embedding_method == 'IndicativeSentence' and (self.args.path == 'IMDB'):
-            self.embedder.set_indicative_sentence('I <mask> it!')
-            self.embedder.set_indicative_sentence_position('last')
-        elif self.embedder.embedding_method == 'IndicativeSentence':
-            self.embedder.set_indicative_sentence('Category: <mask>.')
-            self.embedder.set_indicative_sentence_position('first')
-
-
         embeddings_prototypes = self.embedder.embed(df_prototypes['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
         if self.embedder.embedding_method == 'SBert' and augmentation_method == 'Dropout':
             embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'], 'sentence-transformers/all-mpnet-base-v2',128)

@@ -56,7 +56,7 @@ for experiment in Experiments_proto:
 	experiment_IS_realistic['--entropy_weight'] = realistic_entropy_weight[experiment['--path']]
 
 	experiment_SBert['--embedding_model'] = 'SBert'
-	experiment_IS_realistic['--clustering_method'] = 'SCANLoss'
+	experiment_SBert['--clustering_method'] = 'SCANLoss'
 
 	if includeSBert:
 		Experiments.append(experiment_SBert)
