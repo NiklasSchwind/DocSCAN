@@ -454,6 +454,7 @@ class DocSCAN_Trainer:
         for epoch in train_iterator:
             bar_desc = "Epoch %d of %d | num classes %d | Iteration" % (
                 epoch + 1, len(train_iterator), self.num_classes)
+
             epoch_iterator = tqdm(dataloader, desc=bar_desc)
             for step, batch in enumerate(epoch_iterator):
                 try:

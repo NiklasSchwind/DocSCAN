@@ -99,7 +99,7 @@ class Embedder:
 
         embedder = SentenceTransformer(self.embedding_model_name, device = self.device)
         embedder.max_seq_length = self.max_sequence_length
-        corpus_embeddings = embedder.encode(texts, batch_size=32, show_progress_bar=True)
+        corpus_embeddings = embedder.encode(texts, batch_size=32, show_progress_bar=False)
 
         return torch.from_numpy(corpus_embeddings)
 
@@ -124,7 +124,7 @@ class Embedder:
         mask_token_encodings = []
 
         # Process each batch of input sentences
-        for i in tqdm(range(num_batches)):
+        for i in range(num_batches):
             start = i * self.batch_size
             end = min((i + 1) * self.batch_size, num_sentences)
             # Extract the input tensors for the current batch
@@ -181,7 +181,7 @@ class Embedder:
                 weight_decay=0,
                 scheduler='constantlr',
                 optimizer_params={'lr': 3e-5},
-                show_progress_bar=True
+                show_progress_bar=False
             )
 
             self.model = TSDAEModel

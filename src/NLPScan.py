@@ -365,6 +365,8 @@ if __name__ == "__main__":
                         help="first or last")
     parser.add_argument("--t5_model", default='large', type=str,
                         help="can be large, base and small")
+    parser.add_argument("--show_bars", default='False', type=str,
+                        help="True or False")
     args = parser.parse_args()
 
     if args.dropout == 0:
@@ -377,6 +379,11 @@ if __name__ == "__main__":
         args.new_embeddings = False
     elif args.new_embeddings == 'True':
         args.new_embeddings = True
+
+    if args.show_bars == 'False':
+        args.show_bars = False
+    elif args.show_bars == 'True':
+        args.show_bars = True
 
 
     docscan = DocSCANPipeline(args)
