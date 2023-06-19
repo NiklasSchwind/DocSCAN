@@ -38,19 +38,6 @@ class FinetuningThroughSelflabeling:
         self.data_augmenter = DataAugmentation(device = self.device, batch_size = self.batch_size)
         self.args = args
 
-    def get_random_data_in_same_ratio(self, train_data, amount):
-        share = {}
-        datastreams = []
-        for label in set(list(train_data["label"])):
-            share[label] = int((len(list(train_data.loc[train_data['label'] == label]['label'])) / len(
-                list(train_data["label"]))) * amount)
-            df = train_data.loc[train_data['label'] == label].sample(n=share[label])
-            datastreams.append(df)
-        print(datastreams)
-        out_df = pd.concat(datastreams, ignore_index=True, sort=False)
-        out_df.sample(frac=1)
-        return out_df
-
 
 
     def mine_prototypes(self, predict_dataset: DocScanDataset):
@@ -70,7 +57,7 @@ class FinetuningThroughSelflabeling:
         self.train_data["probabilities"] = probabilities_train
 
         df_Prototypes = self.train_data[self.train_data["probabilities"].apply(softmax).apply(np.max) >= self.threshold]
-        df_Prototypes = self.get_random_data_in_same_ratio(df_Prototypes, 10000)
+        df_Prototypes = df_Prototypes.sample(n=min(self.args.max_prototypes,len(df_Prototypes)))
 
         return df_Prototypes
 
