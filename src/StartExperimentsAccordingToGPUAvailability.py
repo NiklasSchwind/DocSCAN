@@ -21,7 +21,11 @@ Experiments_proto = [#{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy
 
 ]
 '''
-Experiments_proto = [{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+Experiments_proto = [{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
+			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 10, '--augmentation_method': 'Backtranslate_en_de_fr', '--t5_model': 'base'},
+	{'--path': 'ag_news_smaller', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'base'},
 			   {'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
