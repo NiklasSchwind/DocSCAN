@@ -112,7 +112,7 @@ class Embedder:
                 embedding_text.append(self.indicative_sentence + text)
             elif self.indicative_sentence_position == 'last':
                 embedding_text.append(text + self.indicative_sentence)
-        print(embedding_text)
+        #print(embedding_text)
         # Load the RoBERTa model and tokenizer
         tokenizer = RobertaTokenizer.from_pretrained(model_name)
         model = RobertaModel.from_pretrained(model_name).to(self.device)
