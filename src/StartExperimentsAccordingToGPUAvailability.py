@@ -119,7 +119,7 @@ for experiment in Experiments_proto:
 
 	Experiments.append(experiment_IS_realistic)
 	Experiments.append(experiment_IS_optimal)
-
+##
 
 def start_experiment(experiment, device):
 	#if (experiment["--augmentation_method"] == 'Backtranslate_en_fr' or experiment["--augmentation_method"] == 'Summarization' or experiment["--augmentation_method"] == 'Backtranslate_en_de' or experiment["--augmentation_method"] == 'Backtranslate_en_de_fr') and experiment['--embedding_model'] == 'IndicativeSentence':
