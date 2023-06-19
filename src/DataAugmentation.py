@@ -151,6 +151,7 @@ class DataAugmentation:
             prefix = f"translate {languages[i]} to {languages[i+1]}: "
             print(prefix)
             texts = self._t5_generate_output(texts, prefix, batch_size, min_length, max_length, t5_model)
+            print(texts)
 
         return texts
 
