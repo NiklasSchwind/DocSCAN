@@ -70,7 +70,7 @@ class FinetuningThroughSelflabeling:
                                                test_embeddings=self.train_embeddings, device=self.device,method = self.clustering_method)
 
         df_prototypes = self.mine_prototypes(predict_dataset_train)
-        print(len(df_prototypes))
+
         df_augmented = df_prototypes
 
         #if augmentation_method == 'Backtranslation_fr_en':
@@ -81,7 +81,7 @@ class FinetuningThroughSelflabeling:
         if augmentation_method == 'Deletion':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Cropping':
-            df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']))
+            df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']), self.args.ratio_for_deletion)
         #elif augmentation_method == 'Summarization':
         #    print('\n\n\n hello there \n\n\n')
         #    df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
