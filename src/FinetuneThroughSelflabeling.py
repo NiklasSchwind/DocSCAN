@@ -68,7 +68,7 @@ class FinetuningThroughSelflabeling:
                                                test_embeddings=self.train_embeddings, device=self.device,method = self.clustering_method)
 
         df_prototypes = self.mine_prototypes(predict_dataset_train)
-
+        print(len(df_prototypes))
         df_augmented = df_prototypes
 
         #if augmentation_method == 'Backtranslation_fr_en':
