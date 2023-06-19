@@ -123,7 +123,7 @@ def return_list_of_accuracies_ratio(path):
 
 def display_selflabeling_experiments():
 
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/TrueSelfLabelingLogs'
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/RealSelflabelingExperiments'
     frame= return_list_of_accuracies_selflabeling(mypath)
 
     frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference').sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
@@ -134,7 +134,7 @@ def display_selflabeling_experiments():
                            'display.precision', 10,
                            ):
 
-        print(frame[frame['Augmentation Method'] == 'Cropping.txt'])
+        print(frame)
     for j in frame['Augmentation Method'].unique():
         for i in frame['Dataset'].unique():
             average_score = frame.result = frame.loc[(frame['Dataset'] == i) & (frame['Augmentation Method'] == j), 'Difference'].mean()# .loc[frame['Dataset'].str.contains(i), 'Difference'].mean()
@@ -168,8 +168,8 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
         print(frame['Difference'].to_list())
 
 
-
-display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
+display_selflabeling_experiments()
+#display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
 
 def load_data(filename):
     sentences, labels = [], []
