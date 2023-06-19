@@ -207,7 +207,7 @@ else:
 	count = len(Experiments) + 1
 
 processes = {}
-possible_devices = list(range(deviceCount-1))
+possible_devices = list(range(deviceCount))
 used_devices = []
 process_device = {}
 
