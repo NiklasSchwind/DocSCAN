@@ -37,6 +37,7 @@ class FinetuningThroughSelflabeling:
         self.clustering_method = clustering_method
         self.data_augmenter = DataAugmentation(device = self.device, batch_size = self.batch_size)
         self.args = args
+        self.num_prototypes = 0
 
 
 
@@ -57,6 +58,7 @@ class FinetuningThroughSelflabeling:
         self.train_data["probabilities"] = probabilities_train
 
         df_Prototypes = self.train_data[self.train_data["probabilities"].apply(softmax).apply(np.max) >= self.threshold]
+        self.num_prototypes = len(df_Prototypes)
         df_Prototypes = df_Prototypes.sample(n=min(self.args.max_prototypes,len(df_Prototypes)))
 
         return df_Prototypes

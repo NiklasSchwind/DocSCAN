@@ -160,18 +160,21 @@ class DocSCANPipeline():
                  neighbor_dataset = self.neighbor_dataset,
                  batch_size = self.args.batch_size, device = self.device, threshold = self.args.threshold, clustering_method = self.args.clustering_method, args = self.args)
 
+                num_prototypes_before = SelfLabeling.num_prototypes
+                num_prototypes = SelfLabeling.num_prototypes + 1
                 prototypes_before = []
                 prototypes = [0]
 
-                while len(prototypes_before) < len(prototypes):
+                while num_prototypes_before < num_prototypes:
 
                     prototypes_before = prototypes
-
+                    num_prototypes_before = num_prototypes
                     prototypes = SelfLabeling.fine_tune_through_selflabeling(augmentation_method = self.args.augmentation_method, giveProtoypes = True)
+                    num_prototypes = SelfLabeling.num_prototypes
 
                     prototypes = prototypes['sentence']
 
-                    print(f'Number prototypes: {len(prototypes)}')
+                    print(f'Number prototypes: {SelfLabeling.num_prototypes}')
 
                     predictions, probabilities = SelfLabeling.get_predictions(predict_dataloader)
 
@@ -180,7 +183,7 @@ class DocSCANPipeline():
 
                     metrics = evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
                     accuracy_development.append(metrics['full_statistics']["accuracy"])
-                    prototype_number_development.append(len(prototypes))
+                    prototype_number_development.append(SelfLabeling.num_prototypes)
 
 
                 print(accuracy_development)
