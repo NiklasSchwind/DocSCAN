@@ -15,8 +15,10 @@ class DataAugmentation:
         self.batch_size = batch_size
 
 
-    def backtranslation(self, data: List[str], language_order: List[str], original_language : str = 'en'):
+    def backtranslation(self, data: List[str], language_order: str = None, original_language : str = 'en'):
 
+        if language_order is None:
+            language_order = ['fr', 'en']
         language_before = original_language
         for language in language_order:
             augmented_data = []
