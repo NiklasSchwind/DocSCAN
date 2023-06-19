@@ -46,6 +46,7 @@ class FinetuningThroughSelflabeling:
                 list(train_data["label"]))) * amount)
             df = train_data.loc[train_data['label'] == label].sample(n=share[label])
             datastreams.extend(df)
+        print(datastreams)
         out_df = pd.concat(datastreams, ignore_index=True, sort=False)
         out_df.sample(frac=1)
         return out_df
