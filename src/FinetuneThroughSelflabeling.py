@@ -93,8 +93,9 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']),languages = ['English', 'German', 'French', 'English'], t5_model = self.args.t5_model)
         elif augmentation_method == 'Backtranslate_en_de':
             df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts=list(df_augmented['sentence']), languages = ['English', 'German', 'English'],
-                                                                                  t5_model=self.args.t5_model)
-
+                                                              t5_model=self.args.t5_model)
+        elif augmentation_method == 'Backtranslation':
+            df_augmented['sentence'] = self.data_augmenter.backtranslation(data=list(df_augmented['sentence']))
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':

@@ -51,7 +51,7 @@ class DataAugmentation:
 
         formated_batch_texts = self._format_batch_texts(language, texts)
 
-        tokenized_texts = tokenizer(formated_batch_texts, return_tensors="pt",  padding=True ).to(self.device)
+        tokenized_texts = tokenizer.batch_encode_plus(formated_batch_texts, return_tensors="pt",  padding=True).to(self.device)
 
         #
         tokenized_texts['input_ids'] = tokenized_texts['input_ids'][:,:512]
@@ -209,7 +209,7 @@ class DataAugmentation:
 
         return preds
 
-    def paraphrase_texts(self, texts, model_name, batch_size, device):
+    def paraphrase_texts(self, texts, batch_size, device, model_name: str = 'eugenesiow/bart-paraphrase'):
         # Load tokenizer and model
         tokenizer = BartTokenizer.from_pretrained(model_name)
         model = BartForConditionalGeneration.from_pretrained(model_name).to(device)

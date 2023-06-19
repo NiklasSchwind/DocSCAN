@@ -162,17 +162,12 @@ class DocSCANPipeline():
 
                 num_prototypes_before = SelfLabeling.num_prototypes
                 num_prototypes = SelfLabeling.num_prototypes + 1
-                prototypes_before = []
-                prototypes = [0]
 
                 while num_prototypes_before < num_prototypes:
 
-                    prototypes_before = prototypes
                     num_prototypes_before = num_prototypes
                     prototypes = SelfLabeling.fine_tune_through_selflabeling(augmentation_method = self.args.augmentation_method, giveProtoypes = True)
                     num_prototypes = SelfLabeling.num_prototypes
-
-                    prototypes = prototypes['sentence']
 
                     print(f'Number prototypes: {SelfLabeling.num_prototypes}')
 
