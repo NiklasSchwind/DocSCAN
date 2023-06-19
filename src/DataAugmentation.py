@@ -51,7 +51,7 @@ class DataAugmentation:
 
         formated_batch_texts = self._format_batch_texts(language, texts)
 
-        tokenized_texts = tokenizer.prepare_seq2seq_batch(formated_batch_texts, return_tensors="pt",  padding=True, batch_size = self.batch_size).to(self.device)
+        tokenized_texts = tokenizer.prepare_seq2seq_batch(formated_batch_texts, return_tensors="pt",  padding=True).to(self.device)
 
         #
         tokenized_texts['input_ids'] = tokenized_texts['input_ids'][:,:512]
