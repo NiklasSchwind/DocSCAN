@@ -24,8 +24,8 @@ class DataAugmentation:
             augmented_data = []
             tokenizer = MarianTokenizer.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}')
             model = MarianMTModel.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}').to(self.device)
-            for i in tqdm(range(0,len(data),self.batch_size)):
-                batch = data[i:min(i+self.batch_size,len(data))]
+            for i in tqdm(range(0,len(data),self.batch_size*2)):
+                batch = data[i:min(i+(self.batch_size*2),len(data))]
                 augmented_data += self._translate_texts(tokenizer,model,language, batch)
             data = augmented_data
             language_before = language
@@ -51,7 +51,7 @@ class DataAugmentation:
 
         formated_batch_texts = self._format_batch_texts(language, texts)
 
-        tokenized_texts = tokenizer.prepare_seq2seq_batch(formated_batch_texts, return_tensors="pt",  padding=True).to(self.device)
+        tokenized_texts = tokenizer.prepare_translation_batch(formated_batch_texts, return_tensors="pt",  padding=True).to(self.device)
 
         #
         tokenized_texts['input_ids'] = tokenized_texts['input_ids'][:,:512]
