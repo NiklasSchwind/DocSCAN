@@ -24,7 +24,7 @@ class DataAugmentation:
             augmented_data = []
             tokenizer = MarianTokenizer.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}')
             model = MarianMTModel.from_pretrained(f'Helsinki-NLP/opus-mt-{language_before}-{language}').to(self.device)
-            for batch in self._divide_chunks(data, self.batch_size):
+            for batch in tqdm(self._divide_chunks(data, self.batch_size)):
 
                 augmented_data += self._translate_texts(tokenizer,model,language_before, batch)
             data = augmented_data
@@ -209,7 +209,7 @@ class DataAugmentation:
 
         return preds
 
-    def paraphrase_texts(self, texts, batch_size, device, model_name: str = 'eugenesiow/bart-paraphrase'):
+    def paraphrase_texts(self, texts, batch_size, device,max_length, model_name: str = 'eugenesiow/bart-paraphrase'):
         # Load tokenizer and model
         tokenizer = BartTokenizer.from_pretrained(model_name)
         model = BartForConditionalGeneration.from_pretrained(model_name).to(device)
@@ -223,12 +223,12 @@ class DataAugmentation:
         paraphrases = []
 
         for i in range(0, num_texts, batch_size):
-            input_batch = input_ids[i:i + batch_size]
-            mask_batch = attention_mask[i:i + batch_size]
+            input_batch = input_ids[i:min(i + batch_size,num_texts)]
+            mask_batch = attention_mask[i:min(i + batch_size,num_texts)]
 
             # Generate paraphrases
             with torch.no_grad():
-                outputs = model.generate(input_batch, attention_mask=mask_batch, max_length=100, do_sample=True,
+                outputs = model.generate(input_batch, attention_mask=mask_batch, max_length=max_length, do_sample=True,
                                          num_return_sequences=1)
 
             # Decode paraphrases
