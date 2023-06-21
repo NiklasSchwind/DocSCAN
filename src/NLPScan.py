@@ -63,7 +63,7 @@ class DocSCANPipeline():
                                          createNewEmbeddings=self.args.new_embeddings)
         print("retrieving neighbors...")
 
-        NeighborDataset = Neighbor_Dataset(num_neighbors= self.args.num_neighbors, num_classes = args.num_classes, device = self.args.device, path= self.args.path, embedding_method = embeddings_method)
+        NeighborDataset = Neighbor_Dataset(num_neighbors= self.args.num_neighbors, num_classes = args.num_classes, device = self.args.device, path= self.args.path, embedding_method = embeddings_method, args = self.args)
 
         self.neighbor_dataset = NeighborDataset.create_neighbor_dataset(self.X, createNewDataset=True)
 

@@ -5,13 +5,14 @@ from utils.memory import MemoryBank
 
 class Neighbor_Dataset:
 
-    def __init__(self, num_neighbors: int, num_classes: int, device: str, path: str, embedding_method: str):
+    def __init__(self, args,num_neighbors: int, num_classes: int, device: str, path: str, embedding_method: str):
 
         self.num_neighbors = num_neighbors
         self.num_classes = num_classes
         self.device = device
         self.path = path
         self.embedding_method = embedding_method
+        self.args = args
 
 
     def _create_neighbor_dataset(self,  memory_bank = None, indices=None,):
@@ -27,8 +28,10 @@ class Neighbor_Dataset:
                     continue
                 examples.append((anchor, neighbor))
         df = pd.DataFrame(examples, columns=["anchor", "neighbor"])
-        if self.num_neighbors == 5:
+        if self.num_neighbors == 5 and self.args.embedding_model != 'IndicativeSentence':
             df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv"))
+        elif self.num_neighbors == 5 and self.args.embedding_model == 'IndicativeSentence':
+            df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence}.csv"))
         else:
             df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv"))
         return df
@@ -50,9 +53,12 @@ class Neighbor_Dataset:
 
     def create_neighbor_dataset(self, data, createNewDataset = False):
 
-        if os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv")) and self.num_neighbors == 5 and not createNewDataset:
+        if os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv")) and self.num_neighbors == 5 and not createNewDataset and self.args.embedding_model != 'IndicativeSentence':
             print("loading neighbor dataset")
-            neighbor_dataset = pd.read_csv(os.path.join(self.path, "neighbor_dataset.csv"))
+            neighbor_dataset = pd.read_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv"))
+        elif os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence}.csv")) and self.num_neighbors == 5 and not createNewDataset and self.args.embedding_model == 'IndicativeSentence':
+            print("loading neighbor dataset")
+            neighbor_dataset = pd.read_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence}.csv"))
 
         elif os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv")) and not createNewDataset:
             neighbor_dataset = pd.read_csv(
