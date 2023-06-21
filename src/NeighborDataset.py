@@ -31,7 +31,7 @@ class Neighbor_Dataset:
         if self.num_neighbors == 5 and self.args.embedding_model != 'IndicativeSentence':
             df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv"))
         elif self.num_neighbors == 5 and self.args.embedding_model == 'IndicativeSentence':
-            df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence}.csv"))
+            df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence.replace('<','^').replace('>','?').replace(' ','_').replace('!', '5').replace('.', '6')}.csv"))
         else:
             df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv"))
         return df
@@ -56,9 +56,9 @@ class Neighbor_Dataset:
         if os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv")) and self.num_neighbors == 5 and not createNewDataset and self.args.embedding_model != 'IndicativeSentence':
             print("loading neighbor dataset")
             neighbor_dataset = pd.read_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv"))
-        elif os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence}.csv")) and self.num_neighbors == 5 and not createNewDataset and self.args.embedding_model == 'IndicativeSentence':
+        elif os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence.replace('<','^').replace('>','?').replace(' ','_').replace('!', '5').replace('.', '6')}.csv")) and self.num_neighbors == 5 and not createNewDataset and self.args.embedding_model == 'IndicativeSentence':
             print("loading neighbor dataset")
-            neighbor_dataset = pd.read_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence}.csv"))
+            neighbor_dataset = pd.read_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence.replace('<','^').replace('>','?').replace(' ','_').replace('!', '5').replace('.', '6')}.csv"))
 
         elif os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv")) and not createNewDataset:
             neighbor_dataset = pd.read_csv(
