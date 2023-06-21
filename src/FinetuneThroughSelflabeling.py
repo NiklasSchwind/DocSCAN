@@ -6,6 +6,7 @@ import numpy as np
 from PrintEvaluation import Evaluation
 from Embedder import Embedder
 from scipy.special import softmax
+import copy
 import random
 
 
@@ -71,7 +72,7 @@ class FinetuningThroughSelflabeling:
 
         df_prototypes = self.mine_prototypes(predict_dataset_train)
 
-        df_augmented = df_prototypes
+        df_augmented = copy.deepcopy(df_prototypes)
 
         #if augmentation_method == 'Backtranslation_fr_en':
         #    df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['fr','en'])
@@ -90,9 +91,6 @@ class FinetuningThroughSelflabeling:
 
             df_augmented['sentence'] = self.data_augmenter.random_sentence(texts = list(df_augmented['sentence']), alldata = list(self.train_data['sentence']))
 
-            print(list(df_augmented['sentence'])[0:2])
-            print('Hi')
-            print(list(df_prototypes['sentence'])[0:2])
         elif augmentation_method == 'Summarization':
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
         elif augmentation_method == 'Backtranslate_en_fr':
