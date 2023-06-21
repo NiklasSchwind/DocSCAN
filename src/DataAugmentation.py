@@ -209,15 +209,15 @@ class DataAugmentation:
 
         return preds
 
-    def paraphrase_texts(self, texts, batch_size, device,max_length, model_name: str = 'eugenesiow/bart-paraphrase'):
+    def paraphrase_texts(self, texts, batch_size, max_length, model_name: str = 'eugenesiow/bart-paraphrase'):
         # Load tokenizer and model
         tokenizer = BartTokenizer.from_pretrained(model_name)
-        model = BartForConditionalGeneration.from_pretrained(model_name).to(device)
+        model = BartForConditionalGeneration.from_pretrained(model_name).to(self.device)
 
         # Tokenize input texts
         tokenized_texts = tokenizer.batch_encode_plus(texts, padding=True, truncation=True, return_tensors="pt")
-        input_ids = tokenized_texts["input_ids"].to(device)
-        attention_mask = tokenized_texts["attention_mask"].to(device)
+        input_ids = tokenized_texts["input_ids"].to(self.device)
+        attention_mask = tokenized_texts["attention_mask"].to(self.device)
 
         num_texts = len(texts)
         paraphrases = []

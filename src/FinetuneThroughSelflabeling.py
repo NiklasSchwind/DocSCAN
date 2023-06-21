@@ -87,19 +87,17 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = self.data_augmenter.random_sentence(texts = list(df_augmented['sentence']), alldata = list(self.train_data['sentence']))
         elif augmentation_method == 'Summarization':
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
-        elif augmentation_method == 'Backtranslate_en_fr':
-            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']), languages = ['English', 'French', 'English'], t5_model = self.args.t5_model)
-        elif augmentation_method == 'Backtranslate_en_de_fr':
-            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts = list(df_augmented['sentence']),languages = ['English', 'German', 'French', 'English'], t5_model = self.args.t5_model)
-        elif augmentation_method == 'Backtranslate_en_de':
-            df_augmented['sentence'] = self.data_augmenter.backtranslate_batch_t5(texts=list(df_augmented['sentence']), languages = ['English', 'German', 'English'],
-                                                              t5_model=self.args.t5_model)
         elif augmentation_method == 'Backtranslation':
             df_augmented['sentence'] = self.data_augmenter.backtranslation(data=list(df_augmented['sentence']))
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':
             df_augmented['sentence'] = df_augmented['sentence']
+        elif augmentation_method == 'Paraphrase':
+            print(list(df_augmented['sentence']))
+            df_augmented['sentence'] = self.data_augmenter.paraphrase_texts(list(df_augmented['sentence']), 64, max([len(sentence)+1 for sentence in df_augmented]))
+            print('Hi')
+            print(list(df_augmented['sentence']))
         else:
             print('\n\n\nNO DATA AUGMENTATION APPLIED!!!!!!!!!!!!!!\n\n\n')
 
