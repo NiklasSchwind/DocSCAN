@@ -102,9 +102,7 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = df_augmented['sentence']
         else:
             print('\n\n\nNO DATA AUGMENTATION APPLIED!!!!!!!!!!!!!!\n\n\n')
-        print(list(df_prototypes['sentence'])[1:3])
-        print('Hi')
-        print(list(df_augmented['sentence'])[1:3])
+
         embeddings_prototypes = self.embedder.embed(df_prototypes['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
         if self.embedder.embedding_method == 'SBert' and augmentation_method == 'Dropout':
             embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'], 'sentence-transformers/all-mpnet-base-v2',128)
