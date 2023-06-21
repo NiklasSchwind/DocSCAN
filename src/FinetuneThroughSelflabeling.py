@@ -83,17 +83,8 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Cropping':
             df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']), self.args.ratio_for_deletion)
-            print(list(df_augmented['sentence']))
-        #elif augmentation_method == 'Summarization':
-        #    print('\n\n\n hello there \n\n\n')
-        #    df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
         elif augmentation_method == 'Random':
-
             df_augmented['sentence'] = self.data_augmenter.random_sentence(texts = list(df_augmented['sentence']), alldata = list(self.train_data['sentence']))
-
-            print(list(df_augmented['sentence'])[0:2])
-            print('Hi')
-            print(list(df_prototypes['sentence'])[0:2])
         elif augmentation_method == 'Summarization':
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
         elif augmentation_method == 'Backtranslate_en_fr':
@@ -111,7 +102,9 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = df_augmented['sentence']
         else:
             print('\n\n\nNO DATA AUGMENTATION APPLIED!!!!!!!!!!!!!!\n\n\n')
-
+        print(list(df_prototypes['sentence'])[1:3])
+        print('Hi')
+        print(list(df_augmented['sentence'])[1:3])
         embeddings_prototypes = self.embedder.embed(df_prototypes['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
         if self.embedder.embedding_method == 'SBert' and augmentation_method == 'Dropout':
             embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'], 'sentence-transformers/all-mpnet-base-v2',128)
