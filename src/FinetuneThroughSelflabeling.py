@@ -7,6 +7,7 @@ from PrintEvaluation import Evaluation
 from Embedder import Embedder
 from scipy.special import softmax
 import copy
+import nlpaug.augmenter.sentence as nas
 import random
 
 
@@ -93,9 +94,12 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':
             df_augmented['sentence'] = df_augmented['sentence']
+        elif augmentation_method == 'LengthIncrease':
+            aug = nas.ContextualWordEmbsForSentenceAug(model_path='distilgpt2')
+            df_augmented['sentence'] = aug.augment(list(df_augmented['sentence']))
         elif augmentation_method == 'Paraphrase':
             print(list(df_augmented['sentence'])[1:5])
-            df_augmented['sentence'] = self.data_augmenter.paraphrase_texts(list(df_augmented['sentence']), 32, max([len(sentence)+1 for sentence in df_augmented]))
+            df_augmented['sentence'] = self.data_augmenter.paraphrase_texts(list(df_augmented['sentence']), 32, max([len(sentence)+1 for sentence in list(df_augmented['sentence'])]))
             print('Hi')
             print(list(df_augmented['sentence'])[1:5])
         else:
