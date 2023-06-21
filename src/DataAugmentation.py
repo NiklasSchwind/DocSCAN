@@ -222,7 +222,7 @@ class DataAugmentation:
         num_texts = len(texts)
         paraphrases = []
 
-        for i in range(0, num_texts, batch_size):
+        for i in tqdm(range(0, num_texts, batch_size)):
             input_batch = input_ids[i:min(i + batch_size,num_texts)]
             mask_batch = attention_mask[i:min(i + batch_size,num_texts)]
 

@@ -94,10 +94,10 @@ class FinetuningThroughSelflabeling:
         elif augmentation_method == 'Nothing':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Paraphrase':
-            print(list(df_augmented['sentence']))
+            print(list(df_augmented['sentence'])[1:5])
             df_augmented['sentence'] = self.data_augmenter.paraphrase_texts(list(df_augmented['sentence']), 64, max([len(sentence)+1 for sentence in df_augmented]))
             print('Hi')
-            print(list(df_augmented['sentence']))
+            print(list(df_augmented['sentence'])[1:5])
         else:
             print('\n\n\nNO DATA AUGMENTATION APPLIED!!!!!!!!!!!!!!\n\n\n')
 
