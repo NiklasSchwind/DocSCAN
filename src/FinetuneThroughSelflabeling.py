@@ -87,11 +87,12 @@ class FinetuningThroughSelflabeling:
         #    print('\n\n\n hello there \n\n\n')
         #    df_augmented['sentence'] = self.data_augmenter.summarize_batch(list(df_augmented['sentence']), 16, 80)
         elif augmentation_method == 'Random':
-            print('Hi')
-            print(list(df_augmented['sentence'])[0:2])
+
             df_augmented['sentence'] = self.data_augmenter.random_sentence(texts = list(df_augmented['sentence']), alldata = list(self.train_data['sentence']))
-            print('Helllloooooo')
+
             print(list(df_augmented['sentence'])[0:2])
+            print('Hi')
+            print(list(df_prototypes['sentence'])[0:2])
         elif augmentation_method == 'Summarization':
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
         elif augmentation_method == 'Backtranslate_en_fr':
