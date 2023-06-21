@@ -236,6 +236,11 @@ class DataAugmentation:
             paraphrases.extend(batch_paraphrases)
 
         return paraphrases
+
+    def random_sentence(self,texts, alldata):
+        return random.choices(alldata,k=len(texts))
+
+
 '''
         # Example usage
         texts = [
