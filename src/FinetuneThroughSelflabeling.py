@@ -115,9 +115,6 @@ class FinetuningThroughSelflabeling:
         else:
             embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
                                                    safeEmbeddings=False)
-        print(embeddings_prototypes[1:5])
-        print('Hi')
-        print(embeddings_augmented[1:5])
         self.model_trainer.train_selflabeling(embeddings_prototypes, embeddings_augmented, threshold = self.threshold, num_epochs = 5)
 
         if giveProtoypes:
