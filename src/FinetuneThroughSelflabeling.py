@@ -90,6 +90,9 @@ class FinetuningThroughSelflabeling:
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
         elif augmentation_method == 'Backtranslation':
             df_augmented['sentence'] = self.data_augmenter.backtranslation(data=list(df_augmented['sentence']))
+            print(list(df_prototypes['sentence'])[1:5])
+            print('Hi')
+            print(list(df_augmented['sentence'])[1:5])
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':
@@ -112,7 +115,9 @@ class FinetuningThroughSelflabeling:
         else:
             embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
                                                    safeEmbeddings=False)
-
+        print(embeddings_prototypes[1:5])
+        print('Hi')
+        print(embeddings_augmented[1:5])
         self.model_trainer.train_selflabeling(embeddings_prototypes, embeddings_augmented, threshold = self.threshold, num_epochs = 5)
 
         if giveProtoypes:
