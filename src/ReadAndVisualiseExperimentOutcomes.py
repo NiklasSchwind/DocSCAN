@@ -126,7 +126,7 @@ def display_selflabeling_experiments():
     mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/PrototypeAccuracy'
     frame= return_list_of_accuracies_selflabeling(mypath)
 
-    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference').sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference').sort_values(['Dataset', 'Embedding', 'Clustering Method', 'Difference'])#.sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
@@ -135,11 +135,12 @@ def display_selflabeling_experiments():
                            ):
 
         print(frame)
+    '''
     for j in frame['Augmentation Method'].unique():
         for i in frame['Dataset'].unique():
             average_score = frame.result = frame.loc[(frame['Dataset'] == i) & (frame['Augmentation Method'] == j), 'Difference'].mean()# .loc[frame['Dataset'].str.contains(i), 'Difference'].mean()
             print(f'Average Score for {i} using {j} is {average_score}')
-
+    '''
 
 
 def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
