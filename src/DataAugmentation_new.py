@@ -5,7 +5,8 @@ import nlpaug.augmenter.sentence as nas
 import nlpaug.flow as nafc
 
 
-
+import nltk
+nltk.download('averaged_perceptron_tagger')
 
 class DataAugmentation_new:
     def __init__(self, device: str, batch_size: int = 64):
