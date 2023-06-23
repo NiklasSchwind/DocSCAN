@@ -123,7 +123,7 @@ def return_list_of_accuracies_ratio(path):
 
 def display_selflabeling_experiments():
 
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/RealSelflabelingExperiments'
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/PrototypeAccuracy'
     frame= return_list_of_accuracies_selflabeling(mypath)
 
     frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference').sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
