@@ -116,6 +116,12 @@ def start_experiment(experiment, device):
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
 		'--augmentation_method'] == 'Backtranslation' and experiment['--embedding_model'] == 'SBert':
 		outfile = f'BacktranslationExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
+			'--augmentation_method'] == 'Paraphrasing' and experiment['--embedding_model'] == 'IndicativeSentence':
+		outfile = f'ParaphrasingExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
+		'--augmentation_method'] == 'Paraphrasing' and experiment['--embedding_model'] == 'SBert':
+		outfile = f'ParaphrasingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NewSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_t5_model_{experiment["--t5_model"]}_new.txt'
