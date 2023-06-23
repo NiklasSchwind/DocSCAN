@@ -66,7 +66,7 @@ Experiments_proto = [{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetu
 					  '--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 					 {'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 					  '--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
-{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5,'--augmentation_method': 'Summarization', '--t5_model': 'base'},
 			   {'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
@@ -79,6 +79,8 @@ Experiments_proto = [{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetu
 					  '--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
 					 {'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 					  '--num_epochs': 5, '--augmentation_method': 'Summarization', '--t5_model': 'base'},
+
+
 					 ]
 
 
@@ -156,7 +158,12 @@ def start_experiment(experiment, device):
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
 		'--augmentation_method'] == 'Paraphrase' and experiment['--embedding_model'] == 'SBert':
 		outfile = f'ParaphrasingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
-
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
+			'--augmentation_method'] == 'Summarization' and experiment['--embedding_model'] == 'IndicativeSentence':
+		outfile = f'SummarizationExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
+		'--augmentation_method'] == 'Summarization' and experiment['--embedding_model'] == 'SBert':
+		outfile = f'SummarizationExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NewSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_t5_model_{experiment["--t5_model"]}_new.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion' and experiment['--embedding_model'] == 'SBert':

@@ -195,7 +195,7 @@ class DocSCANPipeline():
                                           dropout=self.args.dropout, batch_size=self.args.batch_size,
                                           hidden_dim=len(self.X[-1]), method = self.args.clustering_method)
                 PrototypeMine_Trainer.train_model(neighbor_dataset=self.neighbor_dataset, train_dataset_embeddings=self.X,
-                                    num_epochs=self.args.num_epochs)
+                                    num_epochs=self.args.num_epochs,  entropy_weight=self.args.entropy_weight)
                 # Predict train dataset to receive class probabilities
                 predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.X, mode="predict",
                                                        test_embeddings=self.X, device=self.device, method = self.args.clustering_method)
