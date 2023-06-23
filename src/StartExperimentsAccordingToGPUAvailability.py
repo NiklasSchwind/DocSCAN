@@ -22,31 +22,11 @@ Experiments_proto = [#{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy
 ]
 '''
 Experiments_proto = [
-				{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 10, '--augmentation_method': 'Paraphrase'},
-	   			{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-				{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 10, '--augmentation_method': 'Paraphrase'},
-				{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-			   {'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-			   {'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-				{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-			   {'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-			   {'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-				{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-			   {'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Paraphrase'},
-				]
+
+	{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+	 '--num_epochs': 5, '--augmentation_method': 'BacktranslationSentenceLevel'},
+	]
+
 
 
 optimal_indicative_sentence = {'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Enjoy the following article about <mask>: ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
@@ -111,10 +91,10 @@ def start_experiment(experiment, device):
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Deletion' and experiment['--embedding_model'] == 'SBert':
 		outfile = f'DeletionRatioExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}_new.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
-			'--augmentation_method'] == 'Backtranslation' and experiment['--embedding_model'] == 'IndicativeSentence':
+			'--augmentation_method'] == 'BacktranslationSentenceLevel' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'BacktranslationExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
-		'--augmentation_method'] == 'Backtranslation' and experiment['--embedding_model'] == 'SBert':
+		'--augmentation_method'] == 'BacktranslationSentenceLevel' and experiment['--embedding_model'] == 'SBert':
 		outfile = f'BacktranslationExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
 			'--augmentation_method'] == 'Paraphrase' and experiment['--embedding_model'] == 'IndicativeSentence':
