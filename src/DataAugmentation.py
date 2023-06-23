@@ -18,6 +18,7 @@ class DataAugmentation:
 
         data = [text.split('.') for text in data]
 
+
         data_in = [[[i,sentence] for i, sentence in enumerate(text) if len(sentence.split(' ')) >= 6 or len(sentence.split(' ')) == self.max_length(text)] for text in data]
 
         data_in = [random.choice(text) for text in data_in]
@@ -35,7 +36,7 @@ class DataAugmentation:
 
     def sentencelevel_paraphrasing(self, data: List[str]):
 
-        data = [text.split('.') for text in data]
+        data = [text.replace('\n', '.').split('.') for text in data]
 
         data_in = [[[i,sentence] for i, sentence in enumerate(text) if len(sentence.split(' ')) >= 6 or len(sentence.split(' ')) == self.max_length(text)] for text in data]
 
