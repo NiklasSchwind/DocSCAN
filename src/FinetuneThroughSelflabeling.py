@@ -7,6 +7,7 @@ from PrintEvaluation import Evaluation
 from Embedder import Embedder
 from scipy.special import softmax
 import copy
+import time
 #import nlpaug.augmenter.sentence as nas
 import random
 
@@ -89,8 +90,12 @@ class FinetuningThroughSelflabeling:
         elif augmentation_method == 'Summarization':
             df_augmented['sentence'] = self.data_augmenter.summarize_batch_t5(texts = list(df_augmented['sentence']), t5_model = self.args.t5_model)
         elif augmentation_method == 'Backtranslation':
+            start = time.time()
+
             df_augmented['sentence'] = self.data_augmenter.backtranslation(data=list(df_augmented['sentence']))
+            end = time.time()
             print(list(df_prototypes['sentence'])[1:5])
+            print('Time: {:5.3f}s'.format(end-start), end='  ')
             print('Hi')
             print(list(df_augmented['sentence'])[1:5])
         elif augmentation_method == 'BacktranslationSentenceLevel':

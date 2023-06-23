@@ -29,7 +29,7 @@ class DocSCANPipeline():
         with open(filename) as f:
             for line in f:
                 line = json.loads(line)
-                sentences.append(line["text"].replace('\n',''))
+                sentences.append(line["text"])
                 labels.append(line["label"])
         df = pd.DataFrame(list(zip(sentences, labels)), columns=["sentence", "label"])
         return df
