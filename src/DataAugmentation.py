@@ -57,7 +57,7 @@ class DataAugmentation:
         return max([len(sentence.split(' ')) for sentence in sentence_list])
 
     def backtranslation(self, data: List[str], language_order: str = None, original_language : str = 'en'):
-
+        print(data)
         if language_order is None:
             language_order = ['fr', 'en']
         language_before = original_language
