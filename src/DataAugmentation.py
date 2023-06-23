@@ -17,7 +17,7 @@ class DataAugmentation:
     def sentencelevel_backtranslation(self, data: List[str]):
 
         data = [text.split('.') for text in data]
-
+        data = [[sentence.split('\n') for sentence in text] for text in data]
 
         data_in = [[[i,sentence] for i, sentence in enumerate(text) if len(sentence.split(' ')) >= 6 or len(sentence.split(' ')) == self.max_length(text)] for text in data]
 
