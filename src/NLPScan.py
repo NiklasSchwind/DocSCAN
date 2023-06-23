@@ -365,7 +365,7 @@ if __name__ == "__main__":
                         help="can be large, base and small")
     parser.add_argument("--show_bars", default='False', type=str,
                         help="True or False")
-    parser.add_argument("--max_prototypes", default=10000, type=int,
+    parser.add_argument("--max_prototypes", default=5000, type=int,
                         help="maximum number of prototypes")
     args = parser.parse_args()
 
