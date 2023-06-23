@@ -96,7 +96,7 @@ realistic_entropy_weight = {'DBPedia': 3.0, 'DBPedia_smaller': 3.0, 'ag_news': 3
 
 Experiments = []
 
-includeSBert = True
+includeSBert = False
 
 for experiment in Experiments_proto:
 	experiment_IS_optimal = copy.deepcopy(experiment)
