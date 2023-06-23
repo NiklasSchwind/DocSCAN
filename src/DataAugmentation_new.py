@@ -6,6 +6,7 @@ import nlpaug.flow as nafc
 
 
 import nltk
+nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
 
 class DataAugmentation_new:
