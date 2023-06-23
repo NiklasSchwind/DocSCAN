@@ -29,6 +29,10 @@ class DataAugmentation_new:
         aug = naw.SynonymAug()
         augmented_texts = aug.augment(data)
         return augmented_texts
+    def BackTranslationAug(self, data: List[str]):
+        aug = naw.BackTranslationAug()
+        augmented_texts = aug.augment(data)
+        return augmented_texts
 
 DataAugmentation = DataAugmentation_new(device = 'CUDA:1', batch_size = 64)
 
@@ -36,4 +40,5 @@ sentence= 'I am mister fox.'
 print(DataAugmentation.SynonymAug([sentence]))
 print(DataAugmentation.AbstSummAug([sentence]))
 print(DataAugmentation.ContextualWordEmbsAug([sentence]))
+print(DataAugmentation.BackTranslationAug([sentence]))
 
