@@ -93,6 +93,16 @@ class FinetuningThroughSelflabeling:
             print(list(df_prototypes['sentence'])[1:5])
             print('Hi')
             print(list(df_augmented['sentence'])[1:5])
+        elif augmentation_method == 'BacktranslationSentenceLevel':
+            df_augmented['sentence'] = self.data_augmenter.sentencelevel_backtranslation(data=list(df_augmented['sentence']))
+            print(list(df_prototypes['sentence'])[1:5])
+            print('Hi')
+            print(list(df_augmented['sentence'])[1:5])
+        elif augmentation_method == 'ParaphrasingSentenceLevel':
+            df_augmented['sentence'] = self.data_augmenter.sentencelevel_backtranslation(data=list(df_augmented['sentence']))
+            print(list(df_prototypes['sentence'])[1:5])
+            print('Hi')
+            print(list(df_augmented['sentence'])[1:5])
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':

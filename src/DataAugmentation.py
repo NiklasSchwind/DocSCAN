@@ -14,6 +14,47 @@ class DataAugmentation:
         self.device = device
         self.batch_size = batch_size
 
+    def sentencelevel_backtranslation(self, data: List[str]):
+
+        data = [text.split('.') for text in data]
+
+        data_in = [[[i,sentence] for i, sentence in enumerate(text) if len(sentence.split(' ')) >= 6 or len(sentence.split(' ')) == self.max_length(text)] for text in data]
+
+        data_in = [random.choice(text) for text in data_in]
+
+        indexes = [text[0] for text in data_in]
+
+        data_in =  [text[1] for text in data_in]
+
+        data_out = self.backtranslation(data_in)
+        print(data_out)
+        for i, index in enumerate(indexes):
+            data[i][index] = data_out[i].replace('.','')
+
+        return ['.'.join(text) for text in data]
+
+    def sentencelevel_paraphrasing(self, data: List[str]):
+
+        data = [text.split('.') for text in data]
+
+        data_in = [[[i,sentence] for i, sentence in enumerate(text) if len(sentence.split(' ')) >= 6 or len(sentence.split(' ')) == self.max_length(text)] for text in data]
+
+        data_in = [random.choice(text) for text in data_in]
+
+        indexes = [text[0] for text in data_in]
+
+        data_in =  [text[1] for text in data_in]
+
+        data_out = self.paraphrase_texts(list(data_in), 32, max([len(sentence)+1 for sentence in list(data_in)]))
+        print(data_out)
+        for i, index in enumerate(indexes):
+            data[i][index] = ' '+ data_out[i].replace('.','')
+
+        return ['.'.join(text) for text in data]
+
+    def max_length(self, sentence_list):
+
+        return max([len(sentence.split(' ')) for sentence in sentence_list])
 
     def backtranslation(self, data: List[str], language_order: str = None, original_language : str = 'en'):
 
