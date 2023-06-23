@@ -23,29 +23,29 @@ Experiments_proto = [#{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy
 '''
 Experiments_proto = [
 				{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 10, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 10, '--augmentation_method': 'Paraphrasing'},
 	   			{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 				{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 10, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 10, '--augmentation_method': 'Paraphrasing'},
 			   {'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 				{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 			   {'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 			   {'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 				{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 			   {'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 				{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},
 			   {'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
-				'--num_epochs': 5, '--augmentation_method': 'Backtranslation'},]
+				'--num_epochs': 5, '--augmentation_method': 'Paraphrasing'},]
 
 
 
@@ -149,7 +149,7 @@ else:
 	count = len(Experiments) + 1
 
 processes = {}
-possible_devices = [0,2]#list(range(deviceCount))
+possible_devices = [1,2]#list(range(deviceCount))
 used_devices = []
 process_device = {}
 
