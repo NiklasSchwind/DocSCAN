@@ -23,13 +23,13 @@ Experiments_proto = [#{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy
 '''
 Experiments_proto = [
 
-	{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+	{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 	 '--num_epochs': 5, '--augmentation_method': 'Backtranslation', '--max_prototypes': 1000},
-{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 	 '--num_epochs': 5, '--augmentation_method': 'Backtranslation', '--max_prototypes': 1000},
-{'--path':'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+{'--path':'20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 	 '--num_epochs': 5, '--augmentation_method': 'Paraphrasing', '--max_prototypes': 1000},
-{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 	 '--num_epochs': 5, '--augmentation_method': 'Paraphrasing', '--max_prototypes': 1000},
 
 	]
@@ -147,7 +147,7 @@ else:
 	count = len(Experiments) + 1
 
 processes = {}
-possible_devices = [1,2]#list(range(deviceCount))
+possible_devices = [0,2]#list(range(deviceCount))
 used_devices = []
 process_device = {}
 
