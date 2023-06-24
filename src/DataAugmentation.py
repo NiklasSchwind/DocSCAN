@@ -47,7 +47,7 @@ class DataAugmentation:
         data_in =  [text[1] for text in data_in]
 
         data_out = self.paraphrase_texts(list(data_in), 32, max([len(sentence)+1 for sentence in list(data_in)]))
-        print(data_out)
+
         for i, index in enumerate(indexes):
             data[i][index] = ' '+ data_out[i].replace('.','')
 
@@ -58,7 +58,7 @@ class DataAugmentation:
         return max([len(sentence.split(' ')) for sentence in sentence_list])
 
     def backtranslation(self, data: List[str], language_order: str = None, original_language : str = 'en'):
-        print(data)
+
         if language_order is None:
             language_order = ['fr', 'en']
         language_before = original_language
