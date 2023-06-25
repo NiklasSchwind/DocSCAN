@@ -28,6 +28,8 @@ Experiments_proto = [
 	 '--num_epochs': 5, '--augmentation_method': 'Paraphrasing', '--max_prototypes': 1000},
 {'--path':'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 	 '--num_epochs': 5, '--augmentation_method': 'Paraphrasing', '--max_prototypes': 1000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+	 '--num_epochs': 5, '--augmentation_method': 'Backtranslation', '--max_prototypes': 1000},
 	]
 
 
