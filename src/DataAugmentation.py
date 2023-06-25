@@ -28,7 +28,7 @@ class DataAugmentation:
         data_in =  [text[1] for text in data_in]
 
         data_out = self.backtranslation(data_in)
-        print(data_out)
+
         for i, index in enumerate(indexes):
             data[i][index] = data_out[i].replace('.','')
 
