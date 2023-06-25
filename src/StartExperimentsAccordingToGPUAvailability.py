@@ -23,13 +23,17 @@ Experiments_proto = [#{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy
 '''
 Experiments_proto = [
 {'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-	 '--num_epochs': 5, '--augmentation_method': 'Paraphrase', '--max_prototypes': 1000},
+	 '--num_epochs': 5, '--augmentation_method': 'Nothing', '--max_prototypes': 100000000},
 {'--path':'20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-	 '--num_epochs': 5, '--augmentation_method': 'Paraphrase', '--max_prototypes': 1000},
+	 '--num_epochs': 5, '--augmentation_method':'Nothing', '--max_prototypes': 10000000},
 {'--path':'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-	 '--num_epochs': 5, '--augmentation_method': 'Paraphrase', '--max_prototypes': 1000},
+	 '--num_epochs': 5, '--augmentation_method': 'Nothing', '--max_prototypes': 100000000},
 {'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
-	 '--num_epochs': 5, '--augmentation_method': 'Backtranslation', '--max_prototypes': 1000},
+	 '--num_epochs': 5, '--augmentation_method': 'Nothing', '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+	 '--num_epochs': 5, '--augmentation_method': 'Nothing', '--max_prototypes': 100000000},
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+	 '--num_epochs': 10, '--augmentation_method': 'Nothing', '--max_prototypes': 100000000},
 	]
 
 
@@ -113,6 +117,13 @@ def start_experiment(experiment, device):
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
 		'--augmentation_method'] == 'Summarization' and experiment['--embedding_model'] == 'SBert':
 		outfile = f'SummarizationExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
+			'--augmentation_method'] == 'Nothing' and experiment['--embedding_model'] == 'IndicativeSentence':
+		outfile = f'NoAugmentationExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
+		'--augmentation_method'] == 'Nothing' and experiment['--embedding_model'] == 'SBert':
+		outfile = f'NoAugmentationExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NewSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_t5_model_{experiment["--t5_model"]}_new.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion' and experiment['--embedding_model'] == 'SBert':
@@ -145,7 +156,7 @@ else:
 	count = len(Experiments) + 1
 
 processes = {}
-possible_devices = [0,2]#list(range(deviceCount))
+possible_devices = [2]#list(range(deviceCount))
 used_devices = []
 process_device = {}
 
