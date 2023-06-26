@@ -21,6 +21,7 @@ Experiments_proto = [#{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy
 
 ]
 '''
+'''
 Experiments_proto = [
 
 {'--path':'20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
@@ -33,8 +34,36 @@ Experiments_proto = [
 	 '--num_epochs': 10, '--augmentation_method': 'Nothing', '--max_prototypes': 100000000},
 
 	]
-
-
+'''
+Experiments_proto = [
+{ '--path': 'ag_news',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'DBPedia',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'IMDB',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'TREC-6',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'TREC-50',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'TREC-50',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 10, '--repetitions':10},
+{ '--path': '20newsgroup',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'ag_news',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'DBPedia',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'IMDB',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'TREC-6',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'TREC-50',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
+{ '--path': 'TREC-50',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 10, '--repetitions':10},
+{ '--path': '20newsgroup',
+				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},]
 
 optimal_indicative_sentence = {'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Enjoy the following article about <mask>: ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
 realistic_indicative_sentence = {'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Category: <mask>. ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}

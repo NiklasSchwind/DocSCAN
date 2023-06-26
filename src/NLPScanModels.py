@@ -442,7 +442,7 @@ class DocSCAN_Trainer:
     def train_selflabeling(self, prototype_embeddings, augmented_prototype_embeddings, threshold = 0.99, num_epochs = 5 ):
 
         self.model.to(self.device)
-
+        #self.model.train() #added that
         optimizer = torch.optim.Adam(self.model.parameters())
         criterion = ConfidenceBasedCE(device = self.device,threshold=threshold, apply_class_balancing=True)
 
