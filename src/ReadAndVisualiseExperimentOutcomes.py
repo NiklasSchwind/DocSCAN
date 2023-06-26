@@ -64,7 +64,7 @@ def return_list_of_accuracies_selflabeling(path):
                         return_next_in_list('clustering', file.name.split('_'),2),
                         return_next_in_list('epochs', file.name.split('_'), 1),
                         return_next_in_list('threshold', file.name.split('_'), 1),
-                        return_next_in_list('entropy', file.name.split('_'), 2) if return_next_in_list('Embedding', file.name.split('_'),1) == 'IndicativeSentence' else 0,
+                        return_next_in_list('entropy', file.name.split('_'), 2) if 'Em_IS' in str(file) else 0,
                         #return_next_in_list('threshold', file.name.split('_'), 4),
                         before_selflabeling,
                         after_selflabeling,
