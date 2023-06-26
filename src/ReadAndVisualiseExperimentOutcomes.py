@@ -60,7 +60,7 @@ def return_list_of_accuracies_selflabeling(path):
         file = open(file, 'r')
         before_selflabeling, after_selflabeling, difference = return_accuracy_values_and_difference(file)
         columns.append([return_next_in_list('Dataset',file.name.split('_'),1),
-                        return_next_in_list('Embedding', file.name.split('_'),1),
+                        #return_next_in_list('Embedding', file.name.split('_'),1),
                         return_next_in_list('clustering', file.name.split('_'),2),
                         return_next_in_list('epochs', file.name.split('_'), 1),
                         return_next_in_list('threshold', file.name.split('_'), 1),
@@ -72,7 +72,7 @@ def return_list_of_accuracies_selflabeling(path):
 
 
     return pd.DataFrame(columns,
-                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight',  'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
+                      columns=['Dataset','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight',  'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
                       )
 
 def return_list_of_accuracies_entropy_weight(path):
