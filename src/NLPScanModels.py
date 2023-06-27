@@ -399,7 +399,7 @@ class DocSCAN_Trainer:
         cos = torch.nn.CosineSimilarity(dim=1, eps=1e-6)
         softmax = torch.nn.Softmax()
         # train
-
+        print(len(train_dataloader))
         #targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
         #targets = [targets_map[i] for i in self.df_test["label"]]
 
