@@ -127,7 +127,7 @@ def display_selflabeling_experiments():
     mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsNew'
     frame= return_list_of_accuracies_selflabeling(mypath)
 
-    frame = frame[frame.Difference != 'Experiment not finished'].sort_values('Difference').sort_values(['Dataset', 'Clustering Method', 'Difference'])#.sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values(['Dataset',  'Entropy Weight', 'Threshold', 'Deletion Ratio'])#.sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
@@ -241,3 +241,6 @@ plt.legend()
 # Show the plot
 plt.show()
 '''
+
+
+Deletion_ratios = [0.01, 0.02, 0.03, 0.05, 0.075, 0.1, 0.15, 0.2]
