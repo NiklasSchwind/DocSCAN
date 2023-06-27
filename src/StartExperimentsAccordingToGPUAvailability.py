@@ -34,7 +34,7 @@ Experiments_proto = [
 				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
 {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.01, '--max_prototypes': 100000000},
-			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
 			   {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.03, '--max_prototypes': 100000000},
