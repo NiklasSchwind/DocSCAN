@@ -37,6 +37,7 @@ class Neighbor_Dataset:
         return df
 
     def _retrieve_neighbours_gpu(self, X, batchsize=16384, num_neighbors=5):
+        #This is ok since it is not an exact algorithm :)
         import faiss
         res = faiss.StandardGpuResources()  # use a single GPU
         n, dim = X.shape[0], X.shape[1]
