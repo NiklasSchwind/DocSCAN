@@ -101,9 +101,17 @@ Experiments_proto = [
 '''
 
 Experiments_proto = [
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 10, '--augmentation_method': 'Nothing', '--ratio_for_deletion': 0.03, '--max_prototypes': 100000000},
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 10, '--augmentation_method':  'Nothing',  '--max_prototypes': 100000000},
 {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Nothing',  '--max_prototypes': 100000000},
 {'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method':  'Nothing',  '--max_prototypes': 100000000},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Nothing',  '--max_prototypes': 100000000},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method':  'Nothing',  '--max_prototypes': 100000000},
 {'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method':  'Nothing',  '--max_prototypes': 100000000},
