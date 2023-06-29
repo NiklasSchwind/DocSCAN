@@ -84,7 +84,7 @@ class FinetuningThroughSelflabeling:
         if augmentation_method == 'Deletion':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Cropping':
-            df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']), self.args.ratio_for_deletion)
+            df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Random':
             df_augmented['sentence'] = self.data_augmenter.random_sentence(texts = list(df_augmented['sentence']), alldata = list(self.train_data['sentence']))
         elif augmentation_method == 'Summarization':

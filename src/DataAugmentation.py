@@ -131,14 +131,8 @@ class DataAugmentation:
         crop_out = [sum([1 if random.random() <= ratio/2 else 0 for j in range(lens[i])]) for i in range(len(split_texts))]
         crop_out_high = [sum([0 if random.random() <= ratio/2 else 1 for j in range(lens[i])]) for i in range(len(split_texts))]
         bounds_crop_out = [(min(i),max(i)) for i in zip(crop_out, crop_out_high)]
-        crop_in = [sum([1 if random.random() <= 1 - ratio / 2 else 0 for j in range(lens[i])]) for i in range(len(split_texts))]
-        crop_in_high = [sum([0 if random.random() <= 1 - ratio / 2 else 1 for j in range(lens[i])]) for i in range(len(split_texts))]
-        bounds_crop_in = [(min(i),max(i)) for i in zip(crop_in, crop_in_high)]
 
-        if random.random() >= 0.5:
-            return [' '.join(split_text[bounds_crop_in[i][0]:bounds_crop_in[i][1]]) for i, split_text in enumerate(split_texts)]
-        else:
-            return [' '.join(split_text[0:bounds_crop_out[i][0]] + split_text[bounds_crop_out[i][1]:]) for i, split_text in enumerate(split_texts)]
+        return [' '.join(split_text[bounds_crop_out[i][0]:bounds_crop_out[i][1]]) for i, split_text in enumerate(split_texts)]
 
     def summarize_batch(self, texts : List[str] , batch_size=16, max_length=150):
 
