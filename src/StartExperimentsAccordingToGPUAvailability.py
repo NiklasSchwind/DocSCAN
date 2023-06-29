@@ -21,7 +21,7 @@ Experiments_proto = [#{'--path': 'ag_news', '--model_method': 'PrototypeAccuracy
 
 ]
 '''
-
+'''
 Experiments_proto = [
 
 
@@ -99,36 +99,41 @@ Experiments_proto = [
 				'--num_epochs': 5, '--augmentation_method': 'Cropping', '--ratio_for_deletion': 0.2, '--max_prototypes': 100000000},
 	]
 '''
+
 Experiments_proto = [
-{ '--path': 'ag_news',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'DBPedia',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'IMDB',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'TREC-6',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'TREC-50',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'TREC-50',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 10, '--repetitions':10},
-{ '--path': '20newsgroup',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.99, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'ag_news',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'DBPedia',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'IMDB',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'TREC-6',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'TREC-50',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},
-{ '--path': 'TREC-50',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 10, '--repetitions':10},
-{ '--path': '20newsgroup',
-				'--model_method': 'PrototypeAccuracy', '--threshold': 0.95, '--num_epochs': 5, '--repetitions':10},]
-'''
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0, '--max_prototypes': 100000000},
+{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Deletion', '--ratio_for_deletion': 0.02, '--max_prototypes': 100000000},
+]
 '''
 Experiments_proto = [
 {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
