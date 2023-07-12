@@ -87,6 +87,8 @@ class FinetuningThroughSelflabeling:
 
         if augmentation_method == 'Deletion':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
+            print(df_prototypes)
+            print(df_augmented)
         elif augmentation_method == 'Cropping':
             df_augmented['sentence'] = self.data_augmenter.random_cropping(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Random':
@@ -130,11 +132,13 @@ class FinetuningThroughSelflabeling:
 
 
         embeddings_prototypes = self.embedder.embed(df_prototypes['sentence'], mode = 'embed', createNewEmbeddings = True, safeEmbeddings = False)
+        print(embeddings_prototypes)
         if self.embedder.embedding_method == 'SBert' and augmentation_method == 'Dropout':
             embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'], 'sentence-transformers/all-mpnet-base-v2',128)
         else:
             embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
-                                                   safeEmbeddings=False)
+                                               safeEmbeddings=False)
+        print(embeddings_augmented)
         self.model_trainer.train_selflabeling(embeddings_prototypes, embeddings_augmented, threshold = self.threshold, num_epochs = 5, augmentation_method = augmentation_method)
 
         if giveProtoypes:
