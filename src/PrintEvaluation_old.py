@@ -167,7 +167,7 @@ class Evaluation:
     #Returns mean and standartdeviation of a result indicator calculated from all experiments
     def return_median_and_std(self, experiments, variable):
 
-        values = np.array([experiments[i][variable] for i in self.experiment_list])
+        values = np.array([experiments[i][variable] for i in range(self.experiment_counter)])
 
         return f'{np.mean(values).round(3)} ({np.std(values).round(3)})'
 
