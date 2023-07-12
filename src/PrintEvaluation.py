@@ -60,7 +60,7 @@ class Evaluation:
         predictions = predictions direkt von docscan (d.h clusternummer)
         reodered_predicitons = predictions nach hungarian matching (d.h clusternummer entspricht optimalem target)
         '''
-
+#
         num_classes = len(np.unique(targets))
         num_predictions = len(np.unique(predictions))
         num_elems = len(targets)
