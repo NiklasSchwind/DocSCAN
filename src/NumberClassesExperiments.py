@@ -484,7 +484,7 @@ if __name__ == "__main__":
     accuracies = []
     number_classes_list = []
 
-    for i in range(args.stepsize, number_classes, args.stepsize):
+    for i in range(args.stepsize, number_classes+1, args.stepsize):
         random_elements = random.sample(not_used_labels_labels, 5)
         not_used_labels_labels = [element for element in not_used_labels_labels if element not in random_elements]
         use_labels.extend(random_elements)
