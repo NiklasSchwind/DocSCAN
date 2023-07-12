@@ -13,6 +13,24 @@ class Evaluation:
         self.name_dataset = name_dataset
         self.name_embeddings = name_embeddings
 
+    def _hungarian_match_niklas(self, flat_preds, flat_targets, preds_k, targets_k):
+        # Based on implementation from IIC
+        num_samples = len(flat_targets)
+        num_correct = np.zeros((preds_k, targets_k))
+
+        for c1 in range(preds_k):
+            for c2 in range(targets_k):
+                # elementwise, so each sample contributes once
+                votes = int(((flat_preds == c1) * (flat_targets == c2)).sum())
+                num_correct[c1, c2] = votes
+        match = linear_sum_assignment(num_samples - num_correct)
+        match = np.array(list(zip(*match)))
+        res = []
+        for out_c, gt_c in match:
+            res.append((out_c, gt_c))
+        print(res)
+        return res
+
     def _hungarian_match(self, flat_preds, flat_targets, preds_k, targets_k):
         # Based on implementation from IIC
         num_samples = len(flat_targets)
@@ -44,8 +62,10 @@ class Evaluation:
         '''
 
         num_classes = len(np.unique(targets))
+        num_predictions = len(np.unique(predictions))
         num_elems = len(targets)
         match = self._hungarian_match(predictions, targets, preds_k=num_classes, targets_k=num_classes)
+        match_niklas = self._hungarian_match_niklas(predictions, targets, preds_k=num_predictions, targets_k=num_classes)
         reordered_preds = np.zeros(num_elems, dtype=predictions.dtype)
         for pred_i, target_i in match:
             reordered_preds[predictions == int(pred_i)] = int(target_i)
