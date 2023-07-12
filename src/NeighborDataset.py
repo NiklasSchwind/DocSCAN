@@ -15,7 +15,7 @@ class Neighbor_Dataset:
         self.args = args
 
 
-    def _create_neighbor_dataset(self,  memory_bank = None, indices=None,):
+    def _create_neighbor_dataset(self,  memory_bank = None, indices=None,safeNeighborDataset = False):
         if indices is None:
             indices = memory_bank.mine_nearest_neighbors(self.num_neighbors, show_eval=False,
                                                               calculate_accuracy=False)
@@ -28,12 +28,13 @@ class Neighbor_Dataset:
                     continue
                 examples.append((anchor, neighbor))
         df = pd.DataFrame(examples, columns=["anchor", "neighbor"])
-        if self.num_neighbors == 5 and self.args.embedding_model != 'IndicativeSentence':
-            df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv"))
-        elif self.num_neighbors == 5 and self.args.embedding_model == 'IndicativeSentence':
-            df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence.replace('<','^').replace('>','?').replace(' ','_').replace('!', '5').replace('.', '6')}.csv"))
-        else:
-            df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv"))
+        if safeNeighborDataset:
+            if self.num_neighbors == 5 and self.args.embedding_model != 'IndicativeSentence':
+                df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv"))
+            elif self.num_neighbors == 5 and self.args.embedding_model == 'IndicativeSentence':
+                df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}_indicativesentence_{self.args.indicative_sentence.replace('<','^').replace('>','?').replace(' ','_').replace('!', '5').replace('.', '6')}.csv"))
+            else:
+                df.to_csv(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}" + str(self.num_neighbors) + ".csv"))
         return df
 
     def _retrieve_neighbours_gpu(self, X, batchsize=16384, num_neighbors=5):
@@ -52,7 +53,7 @@ class Neighbor_Dataset:
             all_indices.extend(indices)
         return all_indices
 
-    def create_neighbor_dataset(self, data, createNewDataset = False):
+    def create_neighbor_dataset(self, data, createNewDataset = False, safeNeighborDataset = False):
 
         if os.path.exists(os.path.join(self.path, f"neighbor_dataset_{self.embedding_method}.csv")) and self.num_neighbors == 5 and not createNewDataset and self.args.embedding_model != 'IndicativeSentence':
             print("loading SBERT neighbor dataset")
@@ -69,10 +70,10 @@ class Neighbor_Dataset:
                 memory_bank = MemoryBank(data, "", len(data),
                                               data.shape[-1],
                                               self.num_classes)
-                neighbor_dataset = self._create_neighbor_dataset(memory_bank = memory_bank)
+                neighbor_dataset = self._create_neighbor_dataset(memory_bank = memory_bank, safeNeighborDataset = safeNeighborDataset)
             else:
                 indices = self._retrieve_neighbours_gpu(data.cpu().numpy(), num_neighbors=self.num_neighbors)
-                neighbor_dataset = self._create_neighbor_dataset(indices = indices)
+                neighbor_dataset = self._create_neighbor_dataset(indices = indices, safeNeighborDataset = safeNeighborDataset)
 
         return neighbor_dataset
 
