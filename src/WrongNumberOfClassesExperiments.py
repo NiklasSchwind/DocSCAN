@@ -382,14 +382,13 @@ class DocSCANPipeline():
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
 
-
-
-
         if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
+            return evaluation_afterSL.return_median_accuracy()
         else:
             evaluation.print_full_statistics()
+            return evaluation.return_median_accuracy()
 
 
 if __name__ == "__main__":
