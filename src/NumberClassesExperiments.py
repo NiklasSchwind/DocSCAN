@@ -466,8 +466,9 @@ if __name__ == "__main__":
     elif args.show_bars == 'True':
         args.show_bars = True
 
-
-
+    random.seed(232345)
+    np.random.seed(232345)
+    torch.manual_seed(232345)
 
     docscan = DocSCANPipeline(args)
     train_path = os.path.join(args.path, "train.jsonl")
