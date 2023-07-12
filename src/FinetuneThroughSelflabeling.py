@@ -171,7 +171,7 @@ class FinetuningThroughSelflabeling:
         copy_prototypes  = copy.deepcopy(prototypes)
 
 
-        self.model_trainer.train_selflabeling(prototypes, copy_prototypes, threshold = self.threshold, num_epochs = 5, augmentation_method = '')
+        self.model_trainer.train_selflabeling(prototypes, copy_prototypes, threshold = self.threshold, num_epochs = 5, augmentation_method = 'Dropout')
 
 
 
