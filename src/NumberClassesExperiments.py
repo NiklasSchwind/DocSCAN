@@ -474,7 +474,7 @@ if __name__ == "__main__":
 
     df_train = docscan.load_data(train_path)
 
-    not_used_labels_labels = np.unique(df_train['label'])
+    not_used_labels_labels = list(np.unique(df_train['label']))
     number_classes= len(not_used_labels_labels)
 
     use_labels = []
