@@ -62,12 +62,12 @@ class Evaluation:
         '''
 #
         num_classes = len(np.unique(targets))
-        num_predictions = len(np.unique(predictions))
+        #num_predictions = len(np.unique(predictions))
         num_elems = len(targets)
         match = self._hungarian_match(predictions, targets, preds_k=num_classes, targets_k=num_classes)
-        match_niklas = self._hungarian_match_niklas(predictions, targets, preds_k=num_predictions, targets_k=num_classes)
+        #match_niklas = self._hungarian_match_niklas(predictions, targets, preds_k=num_predictions, targets_k=num_classes)
         reordered_preds = np.zeros(num_elems, dtype=predictions.dtype)
-        for pred_i, target_i in match_niklas:
+        for pred_i, target_i in match:
             reordered_preds[predictions == int(pred_i)] = int(target_i)
 
         # Gather performance metrics
