@@ -31,6 +31,7 @@ class Evaluation:
         res = []
         for out_c, gt_c in match:
             res.append((out_c, gt_c))
+        print(res)
         return res
 
     def hungarian_evaluate(self, targets, predictions, class_names=None,
