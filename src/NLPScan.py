@@ -379,7 +379,7 @@ class DocSCANPipeline():
 
 
 
-        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi':
+        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
         else:
