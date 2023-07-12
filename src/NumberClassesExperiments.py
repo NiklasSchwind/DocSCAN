@@ -481,7 +481,9 @@ if __name__ == "__main__":
 
     for i in range(args.stepsize, number_classes, args.stepsize):
         random_elements = random.sample(not_used_labels_labels, 5)
-        source_list = [element for element in not_used_labels_labels if element not in random_elements]
+        not_used_labels_labels = [element for element in not_used_labels_labels if element not in random_elements]
         use_labels.extend(random_elements)
+        print(len(not_used_labels_labels))
+        print(len(use_labels))
         docscan.run_main(classlist = use_labels)
 
