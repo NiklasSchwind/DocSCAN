@@ -402,8 +402,10 @@ class DocSCANPipeline():
         if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
+            return evaluation_afterSL.return_median_accuracy()
         else:
             evaluation.print_full_statistics()
+            return evaluation.return_median_accuracy()
 
 
 if __name__ == "__main__":
@@ -479,12 +481,15 @@ if __name__ == "__main__":
     number_classes= len(not_used_labels_labels)
 
     use_labels = []
+    accuracies = []
+    number_classes_list = []
 
     for i in range(args.stepsize, number_classes, args.stepsize):
         random_elements = random.sample(not_used_labels_labels, 5)
         not_used_labels_labels = [element for element in not_used_labels_labels if element not in random_elements]
         use_labels.extend(random_elements)
-        print(len(not_used_labels_labels))
-        print(len(use_labels))
-        docscan.run_main(classlist = use_labels)
-
+        accuracy = docscan.run_main(classlist = use_labels)
+        accuracies.append(accuracy)
+        number_classes_list.append(len(use_labels))
+    print(number_classes_list)
+    print(accuracies)

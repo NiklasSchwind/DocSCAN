@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 from sklearn import metrics
+import copy
 
 class Evaluation:
 
@@ -170,6 +171,13 @@ class Evaluation:
         values = np.array([experiments[i][variable] for i in self.experiment_list])
 
         return f'{np.mean(values).round(3)} ({np.std(values).round(3)})'
+
+    def return_median_accuracy(self, variable = "accuracy"):
+
+        experiments = copy.deepcopy(self.experiment_statistics)
+        values = np.array([experiments[i][variable] for i in self.experiment_list])
+
+        return np.mean(values).round(3)
 
     # Returns mean and standartdeviation of a result indicator calculated from all experiments if the indicator depends on the class
     def return_median_and_std_classwise(self, experiments, variable, target):
