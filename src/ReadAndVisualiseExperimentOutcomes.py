@@ -215,32 +215,7 @@ def get_random_data_in_same_ratio(train_data,  amount ):
 
 
 
-'''
-import matplotlib.pyplot as plt
 
-# Some sample data
-Before_Selflabeling = [55.1, 56.10000000000001, 56.10000000000001, 55.00000000000001, 55.900000000000006, 56.10000000000001, 57.199999999999996, 55.900000000000006, 57.8, 54.900000000000006, 56.49999999999999, 58.5, 56.39999999999999, 57.49999999999999, 55.800000000000004]
-After_Selflabeling = [59.5, 58.599999999999994, 59.099999999999994, 59.4, 59.3, 60.5, 60.699999999999996, 59.4, 61.3, 58.8, 59.0, 60.099999999999994, 58.9, 60.8, 58.3]
-Ratio = ['0.01', '0.02', '0.03', '0.05', '0.07', '0.1', '0.15', '0.2', '0.25', '0.3', '0.35', '0.4', '0.45', '0.5', '0.55']
-Ratio = [float(i) for i in Ratio]
-Difference = [4.399999999999999, 2.499999999999986, 2.999999999999986, 4.3999999999999915, 3.3999999999999915, 4.3999999999999915, 3.5, 3.499999999999993, 3.5, 3.8999999999999915, 2.500000000000007, 1.5999999999999943, 2.500000000000007, 3.3000000000000043, 2.499999999999993]
-
-
-# Create a scatter plot with x_values on the x-axis and y_values on the y-axis
-
-plt.scatter([r*100 for r in Ratio], Before_Selflabeling)
-plt.scatter([r*100 for r in Ratio], After_Selflabeling)
-plt.errorbar([r*100 for r in Ratio], [(Before_Selflabeling[i] + After_Selflabeling[i])/2 for i in range(len(Before_Selflabeling))], yerr=[i/2 for i in Difference], fmt='none', ecolor='black', capsize=3)
-
-# Set the x-axis to be scaled proportionally to the numerical values of x_values
-plt.autoscale(enable=True, axis='x', tight=False)
-plt.title('Effectiveness of Data Augmentation by Random Deletion \n for Selflabeling under different Deletion Rates')
-plt.xlabel('Probability for Token Deletion [%]')
-plt.ylabel('Accuracy [%]')
-plt.legend()
-# Show the plot
-plt.show()
-'''
 
 
 

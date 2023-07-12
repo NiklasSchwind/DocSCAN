@@ -81,6 +81,10 @@ class FinetuningThroughSelflabeling:
         #elif augmentation_method == 'Backtranslation_de_en':
         #    df_augmented['sentence'] = self.data_augmenter.backtranslation(list(df_augmented['sentence']), language_order = ['de','en'])
 
+        if augmentation_method == 'Random':
+            augmentation_methods = ['Dropout', 'Cropping', 'Deletion', 'Nothing']
+            augmentation_method = random.choice(augmentation_methods)
+
         if augmentation_method == 'Deletion':
             df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = self.args.ratio_for_deletion)
         elif augmentation_method == 'Cropping':
@@ -111,7 +115,8 @@ class FinetuningThroughSelflabeling:
         elif augmentation_method == 'Dropout':
             df_augmented['sentence'] = df_augmented['sentence']
         elif augmentation_method == 'Nothing':
-            df_augmented['sentence'] = df_augmented['sentence']
+            df_augmented['sentence'] = self.data_augmenter.random_deletion(list(df_augmented['sentence']), ratio = 0)
+
         #elif augmentation_method == 'LengthIncrease':
         #    aug = nas.ContextualWordEmbsForSentenceAug(model_path='distilgpt2')
         #    df_augmented['sentence'] = aug.augment(list(df_augmented['sentence']))
@@ -134,6 +139,40 @@ class FinetuningThroughSelflabeling:
 
         if giveProtoypes:
             return df_prototypes
+
+    def mine_prototype_indexes(self, predict_dataset: DocScanDataset):
+
+        predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
+                                                               collate_fn=predict_dataset.collate_fn_predict,
+                                                               batch_size=self.batch_size)
+
+        predictions_train, probabilities_train = self.model_trainer.get_predictions(predict_dataloader)
+        targets_map_train = {i: j for j, i in enumerate(np.unique(self.train_data["label"]))}
+        targets_train = [targets_map_train[i] for i in self.train_data["label"]]
+
+        docscan_clusters_train = self.evaluator.evaluate(np.array(targets_train), np.array(predictions_train), addToStatistics=False)[
+            "reordered_preds"]
+        self.train_data["label"] = targets_train
+        self.train_data["clusters"] = docscan_clusters_train
+        self.train_data["probabilities"] = probabilities_train
+        prototype_indexes = self.train_data.loc[self.train_data["probabilities"].apply(softmax).apply(np.max) >= self.threshold].index
+
+        return prototype_indexes
+
+    def fine_tune_through_selflabeling_fast(self):
+
+        # train data
+        predict_dataset_train = DocScanDataset(self.neighbor_dataset, self.train_embeddings, mode="predict",
+                                               test_embeddings=self.train_embeddings, device=self.device,method = self.clustering_method)
+
+        prototype_indexes = self.mine_prototype_indexes(predict_dataset_train)
+
+        prototypes = copy.deepcopy(self.train_embeddings[prototype_indexes])
+        copy_prototypes  = copy.deepcopy(prototypes)
+
+
+        self.model_trainer.train_selflabeling(prototypes, copy_prototypes, threshold = self.threshold, num_epochs = 5, augmentation_method = '')
+
 
 
     def get_predictions(self, test_data):

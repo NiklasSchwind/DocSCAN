@@ -321,6 +321,64 @@ class DocSCANPipeline():
                 else:
                     print(f'############!!!!!!!!!!NO PROTOTYPES found in Experiment {_}!!!!!!!!################')
 
+
+            elif mode == 'NLPSCAN_fast':
+
+                accuracy_development = []
+                prototype_number_development = [0]
+                predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
+                                                 test_embeddings=self.X_test, device=self.args.device, method = self.args.clustering_method)
+                predict_dataloader = torch.utils.data.DataLoader(predict_dataset, shuffle=False,
+                                                                 collate_fn=predict_dataset.collate_fn_predict,
+                                                                 batch_size=self.args.batch_size)
+
+                Trainer = DocSCAN_Trainer(num_classes= self.args.num_classes,device = self.args.device, dropout = self.args.dropout, batch_size= self.args.batch_size, hidden_dim = len(self.X[-1]), method = self.args.clustering_method)
+                Trainer.train_model(neighbor_dataset = self.neighbor_dataset, train_dataset_embeddings = self.X, num_epochs = self.args.num_epochs,  entropy_weight=self.args.entropy_weight)
+                predictions, probabilities = Trainer.get_predictions(predict_dataloader)
+                print("docscan trained with n=", self.args.num_classes, "clusters...")
+                targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                targets = [targets_map[i] for i in self.df_test["label"]]
+                metrics = evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
+                accuracy_development.append(metrics['full_statistics']["accuracy"])
+                print(len(targets), len(predictions))
+                print('#############Before SelfLabeling: ################################')
+                evaluation_beforeSL.print_statistic_of_latest_experiment()
+
+                SelfLabeling = FinetuningThroughSelflabeling(model_trainer=Trainer, evaluation = evaluation_afterSL,
+                 embedder = embedder, train_data = df_train, train_embeddings = self.X,
+                 neighbor_dataset = self.neighbor_dataset,
+                 batch_size = self.args.batch_size, device = self.device, threshold = self.args.threshold, clustering_method = self.args.clustering_method, args = self.args)
+
+                num_prototypes_before = SelfLabeling.num_prototypes
+                num_prototypes = SelfLabeling.num_prototypes + 1
+
+                while num_prototypes_before < num_prototypes:
+
+                    num_prototypes_before = num_prototypes
+                    SelfLabeling.fine_tune_through_selflabeling_fast()
+                    num_prototypes = SelfLabeling.num_prototypes
+
+                    print(f'Number prototypes: {SelfLabeling.num_prototypes}')
+
+                    predictions, probabilities = SelfLabeling.get_predictions(predict_dataloader)
+
+                    targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
+                    targets = [targets_map[i] for i in self.df_test["label"]]
+
+                    metrics = evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
+                    accuracy_development.append(metrics['full_statistics']["accuracy"])
+                    prototype_number_development.append(SelfLabeling.num_prototypes)
+
+
+                print(accuracy_development)
+                print(prototype_number_development)
+
+                evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
+                evaluation_afterSL.print_statistic_of_latest_experiment()
+
+
+
+
         if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
@@ -366,7 +424,7 @@ if __name__ == "__main__":
                         help="can be large, base and small")
     parser.add_argument("--show_bars", default='False', type=str,
                         help="True or False")
-    parser.add_argument("--max_prototypes", default=5000, type=int,
+    parser.add_argument("--max_prototypes", default=1000000, type=int,
                         help="maximum number of prototypes")
     args = parser.parse_args()
 
@@ -388,7 +446,7 @@ if __name__ == "__main__":
 
 
     docscan = DocSCANPipeline(args)
-    if args.model_method == 'DocSCAN_finetuning' or args.model_method == 'PrototypeAccuracy' or args.model_method == 'DocSCAN_finetuning_multi':
+    if args.model_method == 'DocSCAN_finetuning' or args.model_method == 'PrototypeAccuracy' or args.model_method == 'DocSCAN_finetuning_multi' or args.model_method == 'NLPSCAN_fast':
         evaluation_beforeSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
         evaluation_afterSL = Evaluation(name_dataset=args.path, name_embeddings=args.embedding_model)
 
