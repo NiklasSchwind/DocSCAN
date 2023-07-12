@@ -483,9 +483,12 @@ if __name__ == "__main__":
     use_labels = []
     accuracies = []
     number_classes_list = []
+    stepsize = args.stepsize
 
-    for i in range(args.stepsize, number_classes+1, args.stepsize):
-        random_elements = random.sample(not_used_labels_labels, 5)
+    for i in range(stepsize, number_classes+1, stepsize):
+        if len(not_used_labels_labels) < stepsize:
+            stepsize = len(not_used_labels_labels)
+        random_elements = random.sample(not_used_labels_labels, args.stepsize)
         not_used_labels_labels = [element for element in not_used_labels_labels if element not in random_elements]
         use_labels.extend(random_elements)
         accuracy = docscan.run_main(classlist = use_labels)
