@@ -52,7 +52,7 @@ class DocSCANPipeline():
         df_train = self.load_data(train_data)
         self.args.num_classes = len(classlist)
         self.df_test = self.load_data(test_data)
-
+        print(df_train)
         orig_df_train = copy.deepcopy(df_train)
         orig_df_test = copy.deepcopy(self.df_test)
 
