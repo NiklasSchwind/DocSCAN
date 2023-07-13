@@ -1,15 +1,17 @@
 
 import numpy as np
+from os import listdir
+from os.path import isfile, join
 
 
 
-def correct_accuracy_calculation_selflabeling(selflabelingfile):
+def correct_accuracy_calculation_selflabeling(in_file, out_file):
     i = 0
-    file = open(selflabelingfile, 'r')
+    file = open(in_file, 'r')
     lines_file = file.readlines()
     accuracies_beforeSL = []
     accuracies_afterSL = []
-    out = open(selflabelingfile.replace('.txt', '_edit.txt'), 'w')
+    out = open(out_file, 'w')
     for j, line in enumerate(lines_file):
         if line[0:3] == '[0.':
             accuracies_beforeSL.append(float(line.split(', ')[0][1:]))
@@ -26,7 +28,10 @@ def correct_accuracy_calculation_selflabeling(selflabelingfile):
     out.close()
     file.close()
 
+def correct_folder(inpath, outpath):
+    onlyfiles = [str(f) for f in listdir(inpath) if isfile(join(inpath, f))]
+    print(onlyfiles)
 
-file = open('/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsNew/Dataset_TREC-6_Em_IS_clustering_method_EntropyLoss_model_method_DocSCAN_finetuning_multi_epochs_5_indicativesentence__^mask?._entropy_weight_3.0_threshold_0.99_augmentation_method_Deletion_ratio_0_new.txt', 'r')
-correct_accuracy_calculation_selflabeling('/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsNew/Dataset_TREC-6_Em_IS_clustering_method_EntropyLoss_model_method_DocSCAN_finetuning_multi_epochs_5_indicativesentence__^mask?._entropy_weight_3.0_threshold_0.99_augmentation_method_Deletion_ratio_0_new.txt')
+#correct_accuracy_calculation_selflabeling('/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsNew/Dataset_TREC-6_Em_IS_clustering_method_EntropyLoss_model_method_DocSCAN_finetuning_multi_epochs_5_indicativesentence__^mask?._entropy_weight_3.0_threshold_0.99_augmentation_method_Deletion_ratio_0_new.txt')
 
+correct_folder('/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsNew', '')
