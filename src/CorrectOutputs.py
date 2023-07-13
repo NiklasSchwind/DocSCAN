@@ -15,13 +15,11 @@ def correct_accuracy_calculation_selflabeling(selflabelingfile):
             accuracies_beforeSL.append(float(line.split(', ')[0][1:]))
             accuracies_afterSL.append(float(line.split(', ')[-1][:-2]))
             out.write(line)
-        elif line[0:9] == 'Accuracy:' and i == 0:
-            if line.split(' ')[2][0] == '(':
-                out.write(f'Accuracy: {np.mean(accuracies_beforeSL).round(3)} ({np.std(accuracies_beforeSL).round(3)}) \n')
+        elif line[0:9] == 'Accuracy:' and i == 0 and line.split(' ')[2][0] == '(':
+            out.write(f'Accuracy: {np.mean(accuracies_beforeSL).round(3)} ({np.std(accuracies_beforeSL).round(3)}) \n')
             i += 1
-        elif line[0:9] == 'Accuracy:' and i == 1:
-            if line.split(' ')[2][0] == '(':
-                out.write(f'Accuracy: {np.mean(accuracies_afterSL).round(3)} ({np.std(accuracies_afterSL).round(3)})\n')
+        elif line[0:9] == 'Accuracy:' and i == 1 and line.split(' ')[2][0] == '(':
+            out.write(f'Accuracy: {np.mean(accuracies_afterSL).round(3)} ({np.std(accuracies_afterSL).round(3)})\n')
             i += 1
         else:
             out.write(line)
