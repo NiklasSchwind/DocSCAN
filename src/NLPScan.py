@@ -134,6 +134,17 @@ class DocSCANPipeline():
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
 
+            elif mode == 'kmeans':
+                from sklearn import preprocessing
+                from sklearn.cluster import KMeans
+                kmeans = KMeans(n_clusters=self.args.num_classes).fit(preprocessing.normalize(self.X_test))
+                predictions = []
+                targets = [targets_map[i] for i in self.df_test["label"]]
+                for index in range(len(self.X_test)):
+                    predictions.append(kmeans.labels_[index])
+                evaluation.evaluate(np.array(targets), np.array(predictions))
+                evaluation.print_statistic_of_latest_experiment()
+
             elif mode == 'DocSCAN_finetuning_multi':
 
                 accuracy_development = []
