@@ -4,6 +4,7 @@ from sentence_transformers import SentenceTransformer
 from NeighborDataset import Neighbor_Dataset
 from utils.memory import MemoryBank
 import torch
+from sklearn import metrics
 from utils.DocSCAN_utils import DocScanModel
 from utils.losses import SCANLoss
 from tqdm import tqdm
@@ -15,6 +16,9 @@ from scipy.special import softmax
 from FinetuneThroughSelflabeling import FinetuningThroughSelflabeling
 import random
 import numpy as np
+from sklearn.linear_model import SGDClassifier
+from sklearn.cluster import MiniBatchKMeans, KMeans
+from sklearn import preprocessing
 
 
 seeds = [162562563,36325637,37537389,84876734,674568,474737,37584,48773,15425,7623,5245,52,45252,567889,975432,52542,74557,245241,1341456,7489659,4636551,1341363,7857562,51345]
@@ -135,8 +139,7 @@ class DocSCANPipeline():
                 evaluation_afterSL.print_statistic_of_latest_experiment()
 
             elif mode == 'kmeans_test':
-                from sklearn import preprocessing
-                from sklearn.cluster import KMeans
+
                 kmeans = KMeans(n_clusters=self.args.num_classes).fit(preprocessing.normalize(self.X_test))
                 predictions = []
                 targets = [targets_map[i] for i in self.df_test["label"]]
@@ -147,8 +150,7 @@ class DocSCANPipeline():
 
 
             elif mode == 'kmeans_train':
-                from sklearn.cluster import KMeans
-                from sklearn import preprocessing
+
                 kmeans = KMeans(n_clusters=self.args.num_classes).fit(preprocessing.normalize(self.X))
                 predictions = kmeans.predict(preprocessing.normalize(self.X_test))
                 targets = [targets_map[i] for i in self.df_test["label"]]
@@ -156,13 +158,22 @@ class DocSCANPipeline():
                 evaluation.print_statistic_of_latest_experiment()
 
             elif mode == 'kmeans_train_mini_batch':
-                from sklearn.cluster import MiniBatchKMeans
-                from sklearn import preprocessing
+
                 kmeans = MiniBatchKMeans(n_clusters=self.args.num_classes, batch_size = 512).fit(preprocessing.normalize(self.X))
                 predictions = kmeans.predict(preprocessing.normalize(self.X_test))
                 targets = [targets_map[i] for i in self.df_test["label"]]
                 evaluation.evaluate(np.array(targets), np.array(predictions))
                 evaluation.print_statistic_of_latest_experiment()
+
+            elif mode == 'SVM':
+                svm = SGDClassifier(loss='hinge', penalty='l2',
+                                    alpha=1e-5, random_state=42,
+                                    max_iter=500, tol=1e-5, class_weight=None, verbose=1)
+
+                svm.fit(self.X, np.array(df_train["label"]))
+                labels = svm.predict(self.X_test)
+                print(metrics.classification_report(labels,list(self.df_test["label"])))
+                print("accuracy", metrics.accuracy_score(labels,list(self.df_test["label"])))
 
             elif mode == 'DocSCAN_finetuning_multi':
 
