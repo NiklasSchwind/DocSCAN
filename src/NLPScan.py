@@ -4,7 +4,6 @@ from sentence_transformers import SentenceTransformer
 from NeighborDataset import Neighbor_Dataset
 from utils.memory import MemoryBank
 import torch
-from sklearn import metrics
 from utils.DocSCAN_utils import DocScanModel
 from utils.losses import SCANLoss
 from tqdm import tqdm
@@ -18,6 +17,7 @@ import random
 import numpy as np
 from sklearn.linear_model import SGDClassifier
 from sklearn.cluster import MiniBatchKMeans, KMeans
+import sklearn
 from sklearn import preprocessing
 
 
@@ -172,8 +172,8 @@ class DocSCANPipeline():
 
                 svm.fit(self.X, np.array(df_train["label"]))
                 labels = svm.predict(self.X_test)
-                print(metrics.classification_report(labels,list(self.df_test["label"])))
-                print("accuracy", metrics.accuracy_score(labels,list(self.df_test["label"])))
+                accuracy = sklearn.metrics.accuracy_score(labels,list(self.df_test["label"]))
+                print(f"accuracy: {accuracy}")
 
             elif mode == 'DocSCAN_finetuning_multi':
 
