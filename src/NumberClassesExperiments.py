@@ -52,15 +52,7 @@ class DocSCANPipeline():
         df_train = self.load_data(train_data)
         self.args.num_classes = len(classlist)
         self.df_test = self.load_data(test_data)
-        print(self.df_test)
-        orig_df_train = copy.deepcopy(df_train)
-        orig_df_test = copy.deepcopy(self.df_test)
 
-        indeces_train = orig_df_train.loc[orig_df_train['label'].isin(classlist)].index
-        indeces_test = orig_df_test.loc[orig_df_test['label'] .isin(classlist)].index
-
-        df_train = df_train[df_train['label'].isin(classlist)]
-        self.df_test = self.df_test[self.df_test['label'].isin(classlist)]
 
 
 
@@ -79,6 +71,16 @@ class DocSCANPipeline():
                                     createNewEmbeddings=self.args.new_embeddings)
             self.X_test = embedder.embed(texts=self.df_test["sentence"], mode='test',
                                          createNewEmbeddings=self.args.new_embeddings)
+
+
+        orig_df_train = copy.deepcopy(df_train)
+        orig_df_test = copy.deepcopy(self.df_test)
+
+        indeces_train = orig_df_train.loc[orig_df_train['label'].isin(classlist)].index
+        indeces_test = orig_df_test.loc[orig_df_test['label'].isin(classlist)].index
+
+        df_train = df_train[df_train['label'].isin(classlist)]
+        self.df_test = self.df_test[self.df_test['label'].isin(classlist)]
 
         self.X = self.X[indeces_train]
         self.X_test = self.X_test[indeces_test]
