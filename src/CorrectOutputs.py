@@ -13,7 +13,7 @@ def correct_accuracy_calculation_selflabeling(selflabelingfile):
     for j, line in enumerate(lines_file):
         if line[0:3] == '[0.':
             accuracies_beforeSL.append(float(line.split(', ')[0][1:]))
-            accuracies_afterSL.append(float(line.split(', ')[-1][:-1]))
+            accuracies_afterSL.append(float(line.split(', ')[-1][:-2]))
             out.write(line)
         elif line[0:9] == 'Accuracy:' and i == 0:
             if line.split(' ')[2][0] == '(':
