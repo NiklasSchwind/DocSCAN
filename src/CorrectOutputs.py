@@ -35,8 +35,8 @@ def correct_folder(inpath, outpath):
         out_file = '/'.join([outpath, file])
         print(in_file)
         print(out_file)
-        #correct_accuracy_calculation_selflabeling(in_file, out_file)
-    print(onlyfiles)
+        correct_accuracy_calculation_selflabeling(in_file, out_file)
+
 
 #correct_accuracy_calculation_selflabeling('/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsNew/Dataset_TREC-6_Em_IS_clustering_method_EntropyLoss_model_method_DocSCAN_finetuning_multi_epochs_5_indicativesentence__^mask?._entropy_weight_3.0_threshold_0.99_augmentation_method_Deletion_ratio_0_new.txt')
 
