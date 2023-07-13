@@ -155,6 +155,15 @@ class DocSCANPipeline():
                 evaluation.evaluate(np.array(targets), np.array(predictions))
                 evaluation.print_statistic_of_latest_experiment()
 
+            elif mode == 'kmeans_train_mini_batch':
+                from sklearn.cluster import MiniBatchKMeans
+                from sklearn import preprocessing
+                kmeans = MiniBatchKMeans(n_clusters=self.args.num_classes, batch_size = 512).fit(preprocessing.normalize(self.X))
+                predictions = kmeans.predict(preprocessing.normalize(self.X_test))
+                targets = [targets_map[i] for i in self.df_test["label"]]
+                evaluation.evaluate(np.array(targets), np.array(predictions))
+                evaluation.print_statistic_of_latest_experiment()
+
             elif mode == 'DocSCAN_finetuning_multi':
 
                 accuracy_development = []
