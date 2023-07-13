@@ -121,16 +121,6 @@ class DocSCANPipeline():
                 evaluation.evaluate(np.array(targets), np.array(predictions))
                 print(len(targets), len(predictions))
                 evaluation.print_statistic_of_latest_experiment()
-            elif mode == 'kmeans':
-                from sklearn import preprocessing
-                from sklearn.cluster import KMeans
-                kmeans = KMeans(n_clusters=self.args.num_classes).fit(preprocessing.normalize(self.X_test))
-                predictions = []
-                targets = [targets_map[i] for i in self.df_test["label"]]
-                for index in range(len(self.X_test)):
-                    predictions.append(kmeans.labels_[index])
-                evaluation.evaluate(np.array(targets), np.array(predictions))
-                evaluation.print_statistic_of_latest_experiment()
 
             elif mode == 'DocSCAN_finetuning':
 
@@ -497,7 +487,7 @@ if __name__ == "__main__":
     number_classes_list = []
     stepsize = args.stepsize
 
-    for i in range(stepsize, number_classes+1, stepsize):
+    for i in range(stepsize, number_classes+stepsize, stepsize):
         if len(not_used_labels_labels) < stepsize:
             stepsize = len(not_used_labels_labels)
         random_elements = random.sample(not_used_labels_labels, args.stepsize)
