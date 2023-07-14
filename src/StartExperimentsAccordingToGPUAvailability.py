@@ -170,7 +170,7 @@ def start_experiment(experiment, device):
 	elif 'NCE' in experiment['--model_method'] and experiment['--embedding_model'] == 'SBert':
 		outfile = f'NumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}.txt'
 
-
+#
 	with open(outfile, 'w') as f:
 		f.write('Start')
 
