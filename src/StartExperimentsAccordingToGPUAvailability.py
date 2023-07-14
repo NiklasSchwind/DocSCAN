@@ -43,10 +43,20 @@ Experiments_proto = [
 {'--path': 'TREC-50', '--model_method': 'DocSCAN',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 10},
 {'--path': 'RNC', '--model_method': 'DocSCAN',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
 {'--path': '20newsgroup', '--model_method': 'DocSCAN', '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
+{'--path': 'TREC-50', '--model_method': 'kmeans_train_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 10},
+{'--path': 'RNC', '--model_method': 'kmeans_train_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
+{'--path': '20newsgroup', '--model_method': 'kmeans_train_NCE', '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
+{'--path': 'TREC-50', '--model_method': 'kmeans_train_mini_batch_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 10},
+{'--path': 'RNC', '--model_method': 'kmeans_train_mini_batch_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
+{'--path': '20newsgroup', '--model_method': 'kmeans_train_mini_batch_NCE', '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
+{'--path': 'TREC-50', '--model_method': 'SVM_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 1},
+{'--path': 'RNC', '--model_method': 'SVM_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 1},
+{'--path': '20newsgroup', '--model_method': 'SVM_NCE', '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 1},
+
 
 ]
 
-experiment_prompts = {'NLPSCAN_fast': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'DocSCAN': 'PYTHONPATH=src python src/NumberClassesExperiments.py','SVM': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_test': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train_mini_batch' : 'PYTHONPATH=src python src/NLPScan.py'}
+experiment_prompts = {'SVM_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_mini_batch_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','NLPSCAN_fast': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'DocSCAN': 'PYTHONPATH=src python src/NumberClassesExperiments.py','SVM': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_test': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train_mini_batch' : 'PYTHONPATH=src python src/NLPScan.py'}
 
 optimal_indicative_sentence = {'RNC': 'Category: <mask>. ', 'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Enjoy the following article about <mask>: ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
 realistic_indicative_sentence = {'RNC': 'Category: <mask>. ','DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Category: <mask>. ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
@@ -155,7 +165,10 @@ def start_experiment(experiment, device):
 		outfile = f'NumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
 	elif (experiment['--model_method'] == 'NLPSCAN_fast' or experiment['--model_method'] == 'DocSCAN') and experiment['--embedding_model'] == 'SBert':
 		outfile = f'NumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
-
+	elif 'NCE' in experiment['--model_method']  and experiment['--embedding_model'] == 'IndicativeSentence':
+		outfile = f'NumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}_indicativesentence_{experiment["--indicative_sentence"]}.txt'
+	elif 'NCE' in experiment['--model_method'] and experiment['--embedding_model'] == 'SBert':
+		outfile = f'NumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}.txt'
 
 
 	with open(outfile, 'w') as f:
