@@ -48,14 +48,14 @@ Experiments_proto = [
 
 experiment_prompts = {'NLPSCAN_fast': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'DocSCAN': 'PYTHONPATH=src python src/NumberClassesExperiments.py','SVM': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_test': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train_mini_batch' : 'PYTHONPATH=src python src/NLPScan.py'}
 
-optimal_indicative_sentence = {'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Enjoy the following article about <mask>: ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
-realistic_indicative_sentence = {'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Category: <mask>. ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
+optimal_indicative_sentence = {'RNC': 'Category: <mask>. ', 'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Enjoy the following article about <mask>: ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
+realistic_indicative_sentence = {'RNC': 'Category: <mask>. ','DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Category: <mask>. ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
 
-optimal_indicative_sentence_position = {'DBPedia': 'first', 'DBPedia_smaller': 'first', 'ag_news': 'first', 'ag_news_smaller': 'first', '20newsgroup': 'first', 'TREC-6': 'last', 'TREC-50':'last', 'IMDB': 'last', 'IMDB_smaller': 'last'}
-realistic_indicative_sentence_position = {'DBPedia': 'first', 'DBPedia_smaller': 'first', 'ag_news': 'first', 'ag_news_smaller': 'first', '20newsgroup': 'first', 'TREC-6': 'last', 'TREC-50':'last', 'IMDB': 'last', 'IMDB_smaller': 'last'}
+optimal_indicative_sentence_position = {'RNC': 'first','DBPedia': 'first', 'DBPedia_smaller': 'first', 'ag_news': 'first', 'ag_news_smaller': 'first', '20newsgroup': 'first', 'TREC-6': 'last', 'TREC-50':'last', 'IMDB': 'last', 'IMDB_smaller': 'last'}
+realistic_indicative_sentence_position = {'RNC': 'first','DBPedia': 'first', 'DBPedia_smaller': 'first', 'ag_news': 'first', 'ag_news_smaller': 'first', '20newsgroup': 'first', 'TREC-6': 'last', 'TREC-50':'last', 'IMDB': 'last', 'IMDB_smaller': 'last'}
 
-optimal_entropy_weight = {'DBPedia': 7.0, 'DBPedia_smaller': 7.0, 'ag_news': 1.4, 'ag_news_smaller': 1.4, '20newsgroup': 4.0, 'TREC-6': 2.4, 'TREC-50': 1.6, 'IMDB': 1.4, 'IMDB_smaller': 1.4}
-realistic_entropy_weight = {'DBPedia': 3.0, 'DBPedia_smaller': 3.0, 'ag_news': 3.0, 'ag_news_smaller': 3.0, '20newsgroup': 3.0, 'TREC-6': 3.0, 'TREC-50': 3.0, 'IMDB': 3.0, 'IMDB_smaller': 3.0}
+optimal_entropy_weight = {'RNC': 2.0, 'DBPedia': 7.0, 'DBPedia_smaller': 7.0, 'ag_news': 1.4, 'ag_news_smaller': 1.4, '20newsgroup': 4.0, 'TREC-6': 2.4, 'TREC-50': 1.6, 'IMDB': 1.4, 'IMDB_smaller': 1.4}
+realistic_entropy_weight = {'RNC':3.0, 'DBPedia': 3.0, 'DBPedia_smaller': 3.0, 'ag_news': 3.0, 'ag_news_smaller': 3.0, '20newsgroup': 3.0, 'TREC-6': 3.0, 'TREC-50': 3.0, 'IMDB': 3.0, 'IMDB_smaller': 3.0}
 
 Experiments = []
 
