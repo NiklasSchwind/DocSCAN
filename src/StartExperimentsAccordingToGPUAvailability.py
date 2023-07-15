@@ -19,7 +19,6 @@ Experiments_proto = [
 {'--path': 'RNC', '--model_method': 'DocSCAN_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
 {'--path': 'RNC', '--model_method': 'kmeans_train_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
 {'--path': 'RNC', '--model_method': 'kmeans_train_mini_batch_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'RNC_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
 {'--path': '20newsgroup', '--model_method': 'DocSCAN_NCE', '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
 {'--path': 'TREC-50', '--model_method': 'SVM_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 1},
 {'--path': 'RNC', '--model_method': 'SVM_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 1},
