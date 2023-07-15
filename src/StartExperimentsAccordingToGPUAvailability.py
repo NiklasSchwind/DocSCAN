@@ -4,27 +4,37 @@ import time
 from datetime import datetime
 import os
 import copy
-Experiments_proto = [
-{'--path': 'RNC', '--model_method': 'kmeans_train', '--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'kmeans_train_mini_batch', '--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'kmeans_test', '--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'SVM', '--repetitions': 1},
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'TREC-50', '--model_method': 'DocSCAN_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'DocSCAN_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'kmeans_train_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'RNC', '--model_method': 'kmeans_train_mini_batch_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': '20newsgroup', '--model_method': 'DocSCAN_NCE', '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 10},
-{'--path': 'TREC-50', '--model_method': 'SVM_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 1},
-{'--path': 'RNC', '--model_method': 'SVM_NCE',  '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 1},
-{'--path': '20newsgroup', '--model_method': 'SVM_NCE', '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 1},
 
-]
+
+
+Experiments_proto = [
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03, '--max_prototypes': 100000000},
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': 'DBPedia', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03, '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Random', '--ratio_for_deletion': 0.03,  '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5,'--augmentation_method': 'Random', '--ratio_for_deletion': 0.03, '--max_prototypes': 100000000},
+
+
+	]
 
 experiment_prompts = {'DocSCAN_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'SVM_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_mini_batch_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','NLPSCAN_fast': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'DocSCAN': 'PYTHONPATH=src python src/NumberClassesExperiments.py','SVM': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_test': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train_mini_batch' : 'PYTHONPATH=src python src/NLPScan.py'}
 
@@ -81,8 +91,12 @@ def start_experiment(experiment, device):
 		outfile = f'PrototypeAccuracy/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'PrototypeAccuracy' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'PrototypeAccuracy/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Random' and experiment['--embedding_model'] == 'IndicativeSentence':
+		outfile = f'RandomAugmentationExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Random' and experiment['--embedding_model'] == 'SBert':
+		outfile = f'RandomAugmentationExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}_new.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Cropping' and experiment['--embedding_model'] == 'IndicativeSentence':
-		outfile = f'CroppingExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}_new.txt'
+		outfile = f'CroppingExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Cropping' and experiment['--embedding_model'] == 'SBert':
 		outfile = f'CroppingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_ratio_{experiment["--ratio_for_deletion"]}_new.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Deletion' and experiment['--embedding_model'] == 'IndicativeSentence':
@@ -172,7 +186,7 @@ else:
 	count = len(Experiments) + 1
 
 processes = {}
-possible_devices = [0]#list(range(deviceCount))
+possible_devices = [1,2,3]#list(range(deviceCount))
 used_devices = []
 process_device = {}
 
