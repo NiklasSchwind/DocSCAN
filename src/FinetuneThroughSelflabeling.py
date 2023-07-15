@@ -171,6 +171,7 @@ class FinetuningThroughSelflabeling:
 
         prototype_indexes = self.mine_prototype_indexes(predict_dataset_train)
         self.num_prototypes = len(prototype_indexes)
+        print(f'Num Prototypes {self.num_prototypes}')
         prototypes = copy.deepcopy(self.train_embeddings[prototype_indexes])
         copy_prototypes  = copy.deepcopy(prototypes)
 
