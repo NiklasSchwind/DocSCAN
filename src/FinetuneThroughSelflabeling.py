@@ -162,7 +162,7 @@ class FinetuningThroughSelflabeling:
         self.train_data["probabilities"] = probabilities_train
         print(len(self.train_data["probabilities"]))
         max_prob = self.train_data["probabilities"].apply(softmax).apply(np.max)
-        prototype_indexes = self.train_data[max_prob >= self.threshold].index
+        prototype_indexes = max_prob[max_prob >= self.threshold].index
         print(prototype_indexes)
         return prototype_indexes
 
