@@ -151,7 +151,7 @@ class FinetuningThroughSelflabeling:
                                                                batch_size=self.batch_size)
 
         predictions_train, probabilities_train = self.model_trainer.get_predictions(predict_dataloader)
-        print(len(probabilities_train))
+        print(f'list {len(probabilities_train)}')
         targets_map_train = {i: j for j, i in enumerate(np.unique(self.train_data["label"]))}
         targets_train = [targets_map_train[i] for i in self.train_data["label"]]
 
