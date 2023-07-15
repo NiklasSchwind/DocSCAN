@@ -160,6 +160,18 @@ class FinetuningThroughSelflabeling:
         self.train_data["label"] = targets_train
         self.train_data["clusters"] = docscan_clusters_train
         self.train_data["probabilities"] = probabilities_train
+
+        probabilities_array = np.array(self.train_data["probabilities"].tolist())
+
+
+        softmax_probabilities = np.apply_along_axis(softmax, 1, probabilities_array)
+
+
+        max_probabilities = np.max(softmax_probabilities, axis=1)
+
+
+        indices = np.where(max_probabilities >= self.threshold)[0]
+        print(indices)
         print(len(self.train_data["probabilities"]))
         max_prob = self.train_data["probabilities"].apply(softmax).apply(np.max)
         print(len(max_prob))
