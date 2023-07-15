@@ -323,8 +323,9 @@ class DocSCANPipeline():
 
                 svm.fit(self.X, np.array(df_train["label"]))
                 labels = svm.predict(self.X_test)
-                accuracy = sklearn.metrics.accuracy_score(labels,list(self.df_test["label"]))
+                accuracy_SVM = sklearn.metrics.accuracy_score(labels,list(self.df_test["label"]))
                 print(f"accuracy: {accuracy}")
+
 
             elif mode == 'PrototypeAccuracy':
 
@@ -435,6 +436,8 @@ class DocSCANPipeline():
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
             return evaluation_afterSL.return_median_accuracy()
+        elif self.args.model_method == 'SVM_NCE':
+            return accuracy
         else:
             evaluation.print_full_statistics()
             return evaluation.return_median_accuracy()
