@@ -160,7 +160,7 @@ class FinetuningThroughSelflabeling:
         self.train_data["clusters"] = docscan_clusters_train
         self.train_data["probabilities"] = probabilities_train
         prototype_indexes = self.train_data.loc[self.train_data["probabilities"].apply(softmax).apply(np.max) >= self.threshold].index
-
+        print(prototype_indexes)
         return prototype_indexes
 
     def fine_tune_through_selflabeling_fast(self):
