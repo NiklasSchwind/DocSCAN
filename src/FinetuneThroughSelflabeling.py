@@ -171,13 +171,8 @@ class FinetuningThroughSelflabeling:
 
 
         indices = np.where(max_probabilities >= self.threshold)[0]
-        print(indices)
-        print(len(self.train_data["probabilities"]))
-        max_prob = self.train_data["probabilities"].apply(softmax).apply(np.max)
-        print(len(max_prob))
-        prototype_indexes = max_prob[max_prob >= self.threshold].index
-        print(prototype_indexes)
-        return prototype_indexes
+
+        return indices
 
     def fine_tune_through_selflabeling_fast(self):
 
