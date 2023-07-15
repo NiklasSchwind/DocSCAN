@@ -185,7 +185,7 @@ class FinetuningThroughSelflabeling:
             self.num_prototypes = len(prototype_indexes)
         else:
             self.num_prototypes = len(prototype_indexes)
-            print(f'Num Prototypes {self.num_prototypes} and {self.train_embeddings.size()}')
+            print(f'Num Prototypes {self.num_prototypes}')
             prototypes = copy.deepcopy(self.train_embeddings[prototype_indexes])
             copy_prototypes  = copy.deepcopy(prototypes)
 

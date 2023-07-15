@@ -109,7 +109,7 @@ class DocSCANPipeline():
             np.random.seed(int(seeds[_]))
             torch.manual_seed(int(seeds[_]))
 
-            if mode == 'DocSCAN':
+            if mode == 'DocSCAN_NCE':
 
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
                                                  test_embeddings=self.X_test, device=self.device, method = self.args.clustering_method)
@@ -325,7 +325,7 @@ class DocSCANPipeline():
                 svm.fit(self.X, np.array(df_train["label"]))
                 labels = svm.predict(self.X_test)
                 accuracy_SVM = sklearn.metrics.accuracy_score(labels,list(self.df_test["label"]))
-                print(f"accuracy: {accuracy}")
+                print(f"accuracy: {accuracy_SVM}")
 
 
             elif mode == 'PrototypeAccuracy':
@@ -438,7 +438,7 @@ class DocSCANPipeline():
             evaluation_afterSL.print_full_statistics()
             return evaluation_afterSL.return_median_accuracy()
         elif self.args.model_method == 'SVM_NCE':
-            return accuracy
+            return accuracy_SVM
         else:
             evaluation.print_full_statistics()
             return evaluation.return_median_accuracy()
