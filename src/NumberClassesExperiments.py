@@ -87,6 +87,7 @@ class DocSCANPipeline():
         self.df_test = self.df_test[self.df_test['label'].isin(classlist)]
 
         self.X = self.X[indeces_train]
+        print(self.X.size())
         self.X_test = self.X_test[indeces_test]
 
         print("retrieving neighbors...")
