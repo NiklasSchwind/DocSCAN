@@ -181,13 +181,16 @@ class FinetuningThroughSelflabeling:
                                                test_embeddings=self.train_embeddings, device=self.device,method = self.clustering_method)
 
         prototype_indexes = self.mine_prototype_indexes(predict_dataset_train)
-        self.num_prototypes = len(prototype_indexes)
-        print(f'Num Prototypes {self.num_prototypes} and {self.train_embeddings.size()}')
-        prototypes = copy.deepcopy(self.train_embeddings[prototype_indexes])
-        copy_prototypes  = copy.deepcopy(prototypes)
+        if len(prototype_indexes) == 0:
+            self.num_prototypes = len(prototype_indexes)
+        else:
+            self.num_prototypes = len(prototype_indexes)
+            print(f'Num Prototypes {self.num_prototypes} and {self.train_embeddings.size()}')
+            prototypes = copy.deepcopy(self.train_embeddings[prototype_indexes])
+            copy_prototypes  = copy.deepcopy(prototypes)
 
 
-        self.model_trainer.train_selflabeling(prototypes, copy_prototypes, threshold = self.threshold, num_epochs = 5, augmentation_method = 'Dropout')
+            self.model_trainer.train_selflabeling(prototypes, copy_prototypes, threshold = self.threshold, num_epochs = 5, augmentation_method = 'Dropout')
 
 
 

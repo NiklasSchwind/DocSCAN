@@ -85,10 +85,9 @@ class DocSCANPipeline():
 
         df_train = df_train[df_train['label'].isin(classlist)]
         self.df_test = self.df_test[self.df_test['label'].isin(classlist)]
-        print(len(indeces_train))
-        print(len(df_train['sentence']))
+
         self.X = self.X[indeces_train]
-        print(self.X.size())
+
         self.X_test = self.X_test[indeces_test]
 
         print("retrieving neighbors...")
@@ -407,7 +406,7 @@ class DocSCANPipeline():
                 num_prototypes_before = SelfLabeling.num_prototypes
                 num_prototypes = SelfLabeling.num_prototypes + 1
 
-                while num_prototypes_before < num_prototypes:
+                while num_prototypes_before <= num_prototypes:
 
                     num_prototypes_before = num_prototypes
                     SelfLabeling.fine_tune_through_selflabeling_fast()
