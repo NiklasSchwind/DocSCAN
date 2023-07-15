@@ -28,7 +28,7 @@ class Evaluation:
         res = []
         for out_c, gt_c in match:
             res.append((out_c, gt_c))
-        print(res)
+
         return res
 
     def _hungarian_match(self, flat_preds, flat_targets, preds_k, targets_k):
@@ -49,7 +49,7 @@ class Evaluation:
         res = []
         for out_c, gt_c in match:
             res.append((out_c, gt_c))
-        print(res)
+
         return res
 
     def hungarian_evaluate(self, targets, predictions, class_names=None,
