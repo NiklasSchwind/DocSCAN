@@ -1,6 +1,6 @@
 
 import pandas as pd
-from os import listdir
+from os import listdir, path
 from os.path import isfile, join
 import json
 import numpy as np
@@ -124,7 +124,7 @@ def return_list_of_accuracies_ratio(path):
 
 def display_selflabeling_experiments():
 
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DropoutExperiments'
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/PrototypeAccuracy'
     frame= return_list_of_accuracies_selflabeling(mypath)
 
     frame = frame[frame.Difference != 'Experiment not finished'].sort_values(['Dataset',  'Entropy Weight', 'Threshold'])#.sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
@@ -170,7 +170,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
         print(frame['Difference'].to_list())
 
 
-display_selflabeling_experiments()
+display_selflabeling_experiments(path())
 #display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
 
 def load_data(filename):
