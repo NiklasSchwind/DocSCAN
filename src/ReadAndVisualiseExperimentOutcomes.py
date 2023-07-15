@@ -170,7 +170,7 @@ def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
         print(frame['Difference'].to_list())
 
 
-display_selflabeling_experiments(path())
+display_selflabeling_experiments()
 #display_experiments(mode = 'entropy', mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/EntropyWeightExperiments')
 
 def load_data(filename):
