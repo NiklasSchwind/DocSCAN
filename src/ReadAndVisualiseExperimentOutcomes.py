@@ -72,7 +72,7 @@ def return_list_of_accuracies_selflabeling(path):
 
 
     return pd.DataFrame(columns,
-                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight', 'Deletion Ratio', 'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
+                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight', 'Deletion ratio', 'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
                       )
 
 def return_list_of_accuracies_entropy_weight(path):
