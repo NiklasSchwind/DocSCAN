@@ -124,7 +124,7 @@ def return_list_of_accuracies_ratio(path):
 
 def display_selflabeling_experiments():
 
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsCorrected'
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/BacktranslationExperiments'
     frame= return_list_of_accuracies_selflabeling(mypath)
 
     frame = frame[frame.Difference != 'Experiment not finished'].sort_values(['Dataset',  'Entropy Weight', 'Threshold', 'Deletion ratio'])#.sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
