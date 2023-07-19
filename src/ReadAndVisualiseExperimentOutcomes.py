@@ -65,14 +65,14 @@ def return_list_of_accuracies_selflabeling(path):
                         return_next_in_list('epochs', file.name.split('_'), 1),
                         return_next_in_list('threshold', file.name.split('_'), 1),
                         return_next_in_list('entropy', file.name.split('_'), 2) if ('Em_IS' in str(file) or 'indicativesentence' in str(file)) else 0,
-                        return_next_in_list('threshold', file.name.split('_'), 6),
+                        #return_next_in_list('threshold', file.name.split('_'), 6),
                         before_selflabeling,
                         after_selflabeling,
                         difference])
 
 
     return pd.DataFrame(columns,
-                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight', 'Deletion ratio', 'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
+                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight',  'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
                       )
 
 def return_list_of_accuracies_entropy_weight(path):
@@ -138,12 +138,11 @@ def display_selflabeling_experiments():
         print(frame)
 
 def display_selflabeling_experiments_list_of_accuracy():
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsCorrected'
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DropoutExperimentsCorrected'
     frame = return_list_of_accuracies_selflabeling(mypath)
 
     frame = frame[frame.Difference != 'Experiment not finished'].sort_values(
-        ['Dataset', 'Entropy Weight', 'Threshold',
-         'Deletion ratio'])  # .sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
+        ['Dataset', 'Entropy Weight', 'Threshold'])  # .sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
 
     with pd.option_context('display.max_rows', None,
                            'display.max_columns', None,
@@ -157,7 +156,7 @@ def display_selflabeling_experiments_list_of_accuracy():
             for k in frame['Entropy Weight'].unique():
                 for l in frame['Threshold'].unique():
                     print(f'{j}, {i}, {k}, {l}')
-                    right_frame =  frame[(frame.Difference != 'Experiment not finished') & (frame.Dataset == j) & (frame['Clustering Method'] == i) & (frame['Entropy Weight'] == k) & (frame['Threshold'] == l)].sort_values(['Deletion ratio'])
+                    right_frame =  frame[(frame.Difference != 'Experiment not finished') & (frame.Dataset == j) & (frame['Clustering Method'] == i) & (frame['Entropy Weight'] == k) & (frame['Threshold'] == l)]
                     accuracy_list = right_frame['Difference'].to_list()
                     accuracy_list = [round(value,2) for value in accuracy_list]
                     print(accuracy_list)
