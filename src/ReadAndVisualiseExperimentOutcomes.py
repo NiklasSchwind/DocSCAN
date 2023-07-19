@@ -157,7 +157,7 @@ def display_selflabeling_experiments_list_of_accuracy():
             for k in frame['Entropy Weight'].unique():
                 for l in frame['Threshold'].unique():
                     print(f'{j}, {i}, {k}, {l}')
-                    right_frame =  frame[(frame.Difference != 'Experiment not finished') | (frame.Dataset == j) | (frame['Clustering Method'] == i) | (frame['Entropy Weight'] == k) | (frame['Threshold'] == l)].sort_values(['Deletion ratio'])
+                    right_frame =  frame[(frame.Difference != 'Experiment not finished') & (frame.Dataset == j) & (frame['Clustering Method'] == i) & (frame['Entropy Weight'] == k) & (frame['Threshold'] == l)].sort_values(['Deletion ratio'])
                     accuracy_list = right_frame['Difference'].to_list()
                     print(accuracy_list)
 
