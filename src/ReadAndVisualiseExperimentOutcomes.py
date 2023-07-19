@@ -159,7 +159,7 @@ def display_selflabeling_experiments_list_of_accuracy():
                     print(f'{j}, {i}, {k}, {l}')
                     right_frame =  frame[(frame.Difference != 'Experiment not finished') & (frame.Dataset == j) & (frame['Clustering Method'] == i) & (frame['Entropy Weight'] == k) & (frame['Threshold'] == l)].sort_values(['Deletion ratio'])
                     accuracy_list = right_frame['Difference'].to_list()
-                    accuracy_list = [value.round(2) for value in accuracy_list]
+                    accuracy_list = [round(value,2) for value in accuracy_list]
                     print(accuracy_list)
 
 
