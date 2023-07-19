@@ -136,12 +136,31 @@ def display_selflabeling_experiments():
                            ):
 
         print(frame)
-    '''
-    for j in frame['Augmentation Method'].unique():
-        for i in frame['Dataset'].unique():
-            average_score = frame.result = frame.loc[(frame['Dataset'] == i) & (frame['Augmentation Method'] == j), 'Difference'].mean()# .loc[frame['Dataset'].str.contains(i), 'Difference'].mean()
-            print(f'Average Score for {i} using {j} is {average_score}')
-    '''
+
+def display_selflabeling_experiments_list_of_accuracy():
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsCorrected'
+    frame = return_list_of_accuracies_selflabeling(mypath)
+
+    frame = frame[frame.Difference != 'Experiment not finished'].sort_values(
+        ['Dataset', 'Entropy Weight', 'Threshold',
+         'Deletion ratio'])  # .sort_values(['Augmentation Method','Dataset', 'Embedding', 'Clustering Method', 'Difference'])
+
+    with pd.option_context('display.max_rows', None,
+                           'display.max_columns', None,
+                           'display.width', 1000,
+                           'display.precision', 10,
+                           ):
+        print(frame)
+
+    for j in frame['Dataset'].unique():
+        for i in frame['Clustering Method'].unique():
+            for k in frame['Entropy Weight'].unique():
+                for l in frame['Threshold'].unique():
+                    print(f'{j}, {i}, {k}, {l}')
+                    accuracy_list =  frame[frame.Difference != 'Experiment not finished' and frame.Dataset == j and frame['Clustering Method']==i and frame['Entropy Weight'] == k and frame['Threshold'] == l].sort_values(['Deletion ratio'])
+                    print(accuracy_list)
+
+
 
 
 def display_experiments(mode: Literal['ratio', 'entropy'], mypath):
