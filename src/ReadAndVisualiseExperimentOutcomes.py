@@ -138,7 +138,7 @@ def display_selflabeling_experiments():
         print(frame)
 
 def display_selflabeling_experiments_list_of_accuracy():
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DropoutExperimentsCorrected'
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/SummarizationExperimentsCorrected'
     frame = return_list_of_accuracies_selflabeling(mypath)
 
     frame = frame[frame.Difference != 'Experiment not finished'].sort_values(
