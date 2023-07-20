@@ -40,7 +40,7 @@ class DocSCANPipeline():
         return df
 
     def run_main(self, classlist):
-        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
+        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi_NCE' or self.args.model_method == 'NLPSCAN_fast_NCE':
             evaluation_beforeSL = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model)
             evaluation_afterSL = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model)
 
@@ -161,7 +161,7 @@ class DocSCANPipeline():
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
 
-            elif mode == 'DocSCAN_finetuning_multi':
+            elif mode == 'DocSCAN_finetuning_multi_NCE':
 
                 accuracy_development = []
                 prototype_number_development = [0]
@@ -376,7 +376,7 @@ class DocSCANPipeline():
                     print(f'############!!!!!!!!!!NO PROTOTYPES found in Experiment {_}!!!!!!!!################')
 
 
-            elif mode == 'NLPSCAN_fast':
+            elif mode == 'NLPSCAN_fast_NCE':
 
                 accuracy_development = []
                 prototype_number_development = [0]
@@ -433,7 +433,7 @@ class DocSCANPipeline():
 
 
 
-        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
+        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi_NCE' or self.args.model_method == 'NLPSCAN_fast_NCE':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
             return evaluation_afterSL.return_median_accuracy()
