@@ -39,7 +39,7 @@ class DocSCANPipeline():
         return df
 
     def run_main(self, classnumber):
-        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
+        if self.args.model_method == 'DocSCAN_finetuning_WNC' or self.args.model_method == 'PrototypeAccuracy_WNC' or self.args.model_method == 'DocSCAN_finetuning_multi_WNC' or self.args.model_method == 'NLPSCAN_fast_WNC':
             evaluation_beforeSL = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model)
             evaluation_afterSL = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model)
             evaluation_beforeSL_max = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model,moreTargets = True)
@@ -96,7 +96,7 @@ class DocSCANPipeline():
             np.random.seed(int(seeds[_]))
             torch.manual_seed(int(seeds[_]))
 
-            if mode == 'DocSCAN':
+            if mode == 'DocSCAN_WNC':
 
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
                                                  test_embeddings=self.X_test, device=self.device, method = self.args.clustering_method)
@@ -116,7 +116,7 @@ class DocSCANPipeline():
                 evaluation.print_statistic_of_latest_experiment()
                 evaluation_max.print_statistic_of_latest_experiment()
 
-            elif mode == 'DocSCAN_finetuning':
+            elif mode == 'DocSCAN_finetuning_WNC':
 
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
                                                  test_embeddings=self.X_test, device=self.args.device, method = self.args.clustering_method)
@@ -154,7 +154,7 @@ class DocSCANPipeline():
                 evaluation_afterSL_max.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL_max.print_statistic_of_latest_experiment()
 
-            elif mode == 'DocSCAN_finetuning_multi':
+            elif mode == 'DocSCAN_finetuning_multi_WNC':
 
                 accuracy_development = []
                 accuracy_development_max = []
@@ -353,7 +353,7 @@ class DocSCANPipeline():
                 else:
                     print(f'############!!!!!!!!!!NO PROTOTYPES found in Experiment {_}!!!!!!!!################')
 
-            elif mode == 'kmeans_train_NCE':
+            elif mode == 'kmeans_train_WNC':
 
                 kmeans = KMeans(n_clusters=self.args.num_classes).fit(preprocessing.normalize(self.X))
                 predictions = kmeans.predict(preprocessing.normalize(self.X_test))
@@ -363,7 +363,7 @@ class DocSCANPipeline():
                 evaluation_max.evaluate(np.array(targets), np.array(predictions))
                 evaluation_max.print_statistic_of_latest_experiment()
 
-            elif mode == 'kmeans_train_mini_batch_NCE':
+            elif mode == 'kmeans_train_mini_batch_WNC':
 
                 kmeans = MiniBatchKMeans(n_clusters=self.args.num_classes, batch_size = 512).fit(preprocessing.normalize(self.X))
                 predictions = kmeans.predict(preprocessing.normalize(self.X_test))
@@ -374,7 +374,7 @@ class DocSCANPipeline():
                 evaluation_max.print_statistic_of_latest_experiment()
 
 
-            elif mode == 'NLPSCAN_fast':
+            elif mode == 'NLPSCAN_fast_WNC':
 
                 accuracy_development = []
                 accuracy_development_max = []
@@ -441,7 +441,7 @@ class DocSCANPipeline():
                 evaluation_afterSL_max.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL_max.print_statistic_of_latest_experiment()
 
-        if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
+        if self.args.model_method == 'DocSCAN_finetuning_WNC' or self.args.model_method == 'PrototypeAccuracy_WNC' or self.args.model_method == 'DocSCAN_finetuning_multi_WNC' or self.args.model_method == 'NLPSCAN_fast_WNC':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
             evaluation_beforeSL_max.print_full_statistics()
