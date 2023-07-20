@@ -59,10 +59,11 @@ class Evaluation:
         '''
 #
         num_classes = len(np.unique(targets))
+        num_preds = len(np.unique(predictions))
         #num_predictions = len(np.unique(predictions))
         num_elems = len(targets)
         if self.moreTargets:
-            match = self._hungarian_match_adjusted(predictions, targets, preds_k=num_elems, targets_k=num_classes)
+            match = self._hungarian_match_adjusted(predictions, targets, preds_k=num_preds, targets_k=num_classes)
             print(match)
         else:
             match = self._hungarian_match(predictions, targets, preds_k=num_classes, targets_k=num_classes)
