@@ -5,15 +5,15 @@ import copy
 
 class Evaluation:
 
-    def __init__(self, name_dataset, name_embeddings):
+    def __init__(self, name_dataset, name_embeddings, moreTargets = False):
 
         self.experiment_counter = -1
         self.experiment_list = []
         self.experiment_statistics = {}
         self.name_dataset = name_dataset
         self.name_embeddings = name_embeddings
-
-    def _hungarian_match_niklas(self, flat_preds, flat_targets, preds_k, targets_k):
+        self.moreTargets = moreTargets
+    def _hungarian_match_adjusted(self, flat_preds, flat_targets, preds_k, targets_k):
         # Based on implementation from IIC
         num_samples = len(flat_targets)
         num_correct = np.zeros((preds_k, targets_k))
@@ -23,8 +23,7 @@ class Evaluation:
                 # elementwise, so each sample contributes once
                 votes = int(((flat_preds == c1) * (flat_targets == c2)).sum())
                 num_correct[c1, c2] = votes
-        match = linear_sum_assignment(num_samples - num_correct)
-        match = np.array(list(zip(*match)))
+        match = [(pred, np.argmax(num_correct[pred,:])) for pred in range(preds_k)]
         res = []
         for out_c, gt_c in match:
             res.append((out_c, gt_c))
@@ -52,9 +51,7 @@ class Evaluation:
 
         return res
 
-    def hungarian_evaluate(self, targets, predictions, class_names=None,
-                           compute_purity=True, compute_confusion_matrix=True,
-                           confusion_matrix_file=None):
+    def hungarian_evaluate(self, targets, predictions):
         '''
         targets = tatsächliche klasse
         predictions = predictions direkt von docscan (d.h clusternummer)
@@ -64,7 +61,11 @@ class Evaluation:
         num_classes = len(np.unique(targets))
         #num_predictions = len(np.unique(predictions))
         num_elems = len(targets)
-        match = self._hungarian_match(predictions, targets, preds_k=num_classes, targets_k=num_classes)
+        if self.moreTargets:
+            match = self._hungarian_match_adjusted(predictions, targets, preds_k=num_elems, targets_k=num_classes)
+            print(match)
+        else:
+            match = self._hungarian_match(predictions, targets, preds_k=num_classes, targets_k=num_classes)
         #match_niklas = self._hungarian_match_niklas(predictions, targets, preds_k=num_predictions, targets_k=num_classes)
         reordered_preds = np.zeros(num_elems, dtype=predictions.dtype)
         for pred_i, target_i in match:

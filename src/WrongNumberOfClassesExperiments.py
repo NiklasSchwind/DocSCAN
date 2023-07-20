@@ -38,9 +38,13 @@ class DocSCANPipeline():
         if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
             evaluation_beforeSL = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model)
             evaluation_afterSL = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model)
+            evaluation_beforeSL_max = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model,moreTargets = True)
+            evaluation_afterSL_max = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model,moreTargets = True)
+
 
         else:
             evaluation = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model)
+            evaluation_max = Evaluation(name_dataset=self.args.path, name_embeddings=self.args.embedding_model,moreTargets = True)
         random.seed(seeds[0])
         np.random.seed(seeds[0])
         torch.manual_seed(seeds[0])
@@ -103,9 +107,10 @@ class DocSCANPipeline():
                 targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
                 targets = [targets_map[i] for i in self.df_test["label"]]
                 evaluation.evaluate(np.array(targets), np.array(predictions))
+                evaluation_max.evaluate(np.array(targets), np.array(predictions))
                 print(len(targets), len(predictions))
                 evaluation.print_statistic_of_latest_experiment()
-
+                evaluation_max.print_statistic_of_latest_experiment()
             elif mode == 'DocSCAN_finetuning':
 
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
@@ -121,9 +126,11 @@ class DocSCANPipeline():
                 targets_map = {i: j for j, i in enumerate(np.unique(self.df_test["label"]))}
                 targets = [targets_map[i] for i in self.df_test["label"]]
                 evaluation_beforeSL.evaluate(np.array(targets), np.array(predictions))
+                evaluation_beforeSL_max.evaluate(np.array(targets), np.array(predictions))
                 print(len(targets), len(predictions))
                 print('#############Before SelfLabeling: ################################')
                 evaluation_beforeSL.print_statistic_of_latest_experiment()
+                evaluation_beforeSL_max.print_statistic_of_latest_experiment()
 
                 SelfLabeling = FinetuningThroughSelflabeling(model_trainer=Trainer, evaluation = evaluation_afterSL,
                  embedder = embedder, train_data = df_train, train_embeddings = self.X,
@@ -139,10 +146,13 @@ class DocSCANPipeline():
 
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
+                evaluation_afterSL_max.evaluate(np.array(targets), np.array(predictions))
+                evaluation_afterSL_max.print_statistic_of_latest_experiment()
 
             elif mode == 'DocSCAN_finetuning_multi':
 
                 accuracy_development = []
+                accuracy_development_max = []
                 prototype_number_development = [0]
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
                                                  test_embeddings=self.X_test, device=self.args.device, method = self.args.clustering_method)
@@ -161,6 +171,11 @@ class DocSCANPipeline():
                 print(len(targets), len(predictions))
                 print('#############Before SelfLabeling: ################################')
                 evaluation_beforeSL.print_statistic_of_latest_experiment()
+                metrics_max = evaluation_beforeSL_max.evaluate(np.array(targets), np.array(predictions))
+                accuracy_development_max.append(metrics_max['full_statistics']["accuracy"])
+                print(len(targets), len(predictions))
+                print('#############Max: ################################')
+                evaluation_beforeSL_max.print_statistic_of_latest_experiment()
 
                 SelfLabeling = FinetuningThroughSelflabeling(model_trainer=Trainer, evaluation = evaluation_afterSL,
                  embedder = embedder, train_data = df_train, train_embeddings = self.X,
@@ -185,14 +200,20 @@ class DocSCANPipeline():
 
                     metrics = evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics = False, doPrint = True)
                     accuracy_development.append(metrics['full_statistics']["accuracy"])
+                    metrics_max = evaluation_afterSL_max.evaluate(np.array(targets), np.array(predictions),
+                                                          addToStatistics=False, doPrint=True)
+                    accuracy_development_max.append(metrics_max['full_statistics']["accuracy"])
                     prototype_number_development.append(SelfLabeling.num_prototypes)
 
 
                 print(accuracy_development)
+                print(accuracy_development_max)
                 print(prototype_number_development)
 
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
+                evaluation_afterSL_max.evaluate(np.array(targets), np.array(predictions))
+                evaluation_afterSL_max.print_statistic_of_latest_experiment()
 
 
             elif mode == 'PrototypeBert':
@@ -331,6 +352,7 @@ class DocSCANPipeline():
             elif mode == 'NLPSCAN_fast':
 
                 accuracy_development = []
+                accuracy_development_max = []
                 prototype_number_development = [0]
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
                                                  test_embeddings=self.X_test, device=self.args.device, method = self.args.clustering_method)
@@ -349,6 +371,11 @@ class DocSCANPipeline():
                 print(len(targets), len(predictions))
                 print('#############Before SelfLabeling: ################################')
                 evaluation_beforeSL.print_statistic_of_latest_experiment()
+                metrics_max = evaluation_beforeSL_max.evaluate(np.array(targets), np.array(predictions))
+                accuracy_development_max.append(metrics_max['full_statistics']["accuracy"])
+                print(len(targets), len(predictions))
+                print('#############Max: ################################')
+                evaluation_beforeSL_max.print_statistic_of_latest_experiment()
 
                 SelfLabeling = FinetuningThroughSelflabeling(model_trainer=Trainer, evaluation = evaluation_afterSL,
                  embedder = embedder, train_data = df_train, train_embeddings = self.X,
@@ -374,13 +401,20 @@ class DocSCANPipeline():
                     metrics = evaluation_afterSL.evaluate(np.array(targets), np.array(predictions), addToStatistics=False, doPrint=True)
                     accuracy_development.append(metrics['full_statistics']["accuracy"])
                     prototype_number_development.append(SelfLabeling.num_prototypes)
+                    metrics_max = evaluation_afterSL_max.evaluate(np.array(targets), np.array(predictions),
+                                                          addToStatistics=False, doPrint=True)
+                    accuracy_development_max.append(metrics_max['full_statistics']["accuracy"])
+
 
 
                 print(accuracy_development)
+                print(accuracy_development_max)
                 print(prototype_number_development)
 
                 evaluation_afterSL.evaluate(np.array(targets), np.array(predictions))
                 evaluation_afterSL.print_statistic_of_latest_experiment()
+                evaluation_afterSL_max.evaluate(np.array(targets), np.array(predictions))
+                evaluation_afterSL_max.print_statistic_of_latest_experiment()
 
         if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
             evaluation_beforeSL.print_full_statistics()
@@ -463,13 +497,16 @@ if __name__ == "__main__":
     not_used_labels_labels = list(np.unique(df_train['label']))
     number_classes = len(not_used_labels_labels)
     stepsize = args.stepsize
-    accuracies = []
+    accuracies_hungarian = []
+    accuracies_max = []
     number_classes_list = []
 
     for i in range(stepsize, number_classes*2 + 1, stepsize):
 
-        accuracy = docscan.run_main(classnumber=i)
-        accuracies.append(accuracy)
+        accuracy_hungarian, accuracy_max = docscan.run_main(classnumber=i)
+        accuracies_hungarian.append(accuracy_hungarian)
+        accuracies_max.append(accuracies_max)
         number_classes_list.append(i)
     print(number_classes_list)
-    print(accuracies)
+    print(accuracies_hungarian)
+    print(accuracies_max)
