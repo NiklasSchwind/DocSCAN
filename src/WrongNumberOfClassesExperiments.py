@@ -427,7 +427,7 @@ class DocSCANPipeline():
             evaluation.print_full_statistics()
             evaluation_max.print_full_statistics()
             return evaluation.return_median_accuracy(), evaluation_max.return_median_accuracy()
-
+#
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
