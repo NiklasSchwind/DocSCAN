@@ -426,8 +426,7 @@ class DocSCANPipeline():
         else:
             evaluation.print_full_statistics()
             evaluation_max.print_full_statistics()
-            print('\n\n\nEvaluation Test\n\n\n')
-            print(evaluation_max.return_median_accuracy())
+
             return evaluation.return_median_accuracy(), evaluation_max.return_median_accuracy()
 
 
