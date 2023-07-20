@@ -15,6 +15,10 @@ from scipy.special import softmax
 from FinetuneThroughSelflabeling import FinetuningThroughSelflabeling
 import random
 import numpy as np
+from sklearn.linear_model import SGDClassifier
+from sklearn.cluster import MiniBatchKMeans, KMeans
+import sklearn
+from sklearn import preprocessing
 
 
 seeds = [162562563,36325637,37537389,84876734,674568,474737,37584,48773,15425,7623,5245,52,45252,567889,975432,52542,74557,245241,1341456,7489659,4636551,1341363,7857562,51345]
@@ -348,6 +352,26 @@ class DocSCANPipeline():
                     evaluation_afterSL.print_statistic_of_latest_experiment()
                 else:
                     print(f'############!!!!!!!!!!NO PROTOTYPES found in Experiment {_}!!!!!!!!################')
+
+            elif mode == 'kmeans_train_NCE':
+
+                kmeans = KMeans(n_clusters=self.args.num_classes).fit(preprocessing.normalize(self.X))
+                predictions = kmeans.predict(preprocessing.normalize(self.X_test))
+                targets = [targets_map[i] for i in self.df_test["label"]]
+                evaluation.evaluate(np.array(targets), np.array(predictions))
+                evaluation.print_statistic_of_latest_experiment()
+                evaluation_max.evaluate(np.array(targets), np.array(predictions))
+                evaluation_max.print_statistic_of_latest_experiment()
+
+            elif mode == 'kmeans_train_mini_batch_NCE':
+
+                kmeans = MiniBatchKMeans(n_clusters=self.args.num_classes, batch_size = 512).fit(preprocessing.normalize(self.X))
+                predictions = kmeans.predict(preprocessing.normalize(self.X_test))
+                targets = [targets_map[i] for i in self.df_test["label"]]
+                evaluation.evaluate(np.array(targets), np.array(predictions))
+                evaluation.print_statistic_of_latest_experiment()
+                evaluation_max.evaluate(np.array(targets), np.array(predictions))
+                evaluation_max.print_statistic_of_latest_experiment()
 
 
             elif mode == 'NLPSCAN_fast':
