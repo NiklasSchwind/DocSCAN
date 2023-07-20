@@ -111,6 +111,7 @@ class DocSCANPipeline():
                 print(len(targets), len(predictions))
                 evaluation.print_statistic_of_latest_experiment()
                 evaluation_max.print_statistic_of_latest_experiment()
+
             elif mode == 'DocSCAN_finetuning':
 
                 predict_dataset = DocScanDataset(self.neighbor_dataset, self.X_test, mode="predict",
@@ -419,10 +420,13 @@ class DocSCANPipeline():
         if self.args.model_method == 'DocSCAN_finetuning' or self.args.model_method == 'PrototypeAccuracy' or self.args.model_method == 'DocSCAN_finetuning_multi' or self.args.model_method == 'NLPSCAN_fast':
             evaluation_beforeSL.print_full_statistics()
             evaluation_afterSL.print_full_statistics()
-            return evaluation_afterSL.return_median_accuracy()
+            evaluation_beforeSL_max.print_full_statistics()
+            evaluation_afterSL_max.print_full_statistics()
+            return evaluation_afterSL.return_median_accuracy(), evaluation_afterSL_max.return_median_accuracy()
         else:
             evaluation.print_full_statistics()
-            return evaluation.return_median_accuracy()
+            evaluation_max.print_full_statistics()
+            return evaluation.return_median_accuracy(), evaluation_max.return_median_accuracy()
 
 
 if __name__ == "__main__":
