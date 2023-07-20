@@ -511,7 +511,7 @@ if __name__ == "__main__":
 
         accuracy_hungarian, accuracy_max = docscan.run_main(classnumber=i)
         accuracies_hungarian.append(accuracy_hungarian)
-        accuracies_max.append(accuracies_max)
+        accuracies_max.append(accuracy_max)
         number_classes_list.append(i)
     print(number_classes_list)
     print(accuracies_hungarian)
