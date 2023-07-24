@@ -528,7 +528,7 @@ if __name__ == "__main__":
         args.stepsize = 7
     elif args.path == 'IMDB' or args.path == 'AGNews':
         args.stepsize = 2
-    elif args.path == 'TREC-6'
+    elif args.path == 'TREC-6':
         args.stepsize = 3
     stepsize = args.stepsize
     accuracies_hungarian = []
