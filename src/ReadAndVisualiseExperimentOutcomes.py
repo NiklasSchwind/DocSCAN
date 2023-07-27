@@ -102,17 +102,16 @@ def return_list_of_accuracies_ratio(path):
     columns = []
     for file in onlyfiles:
         file = open(file, 'r')
-        before_selflabeling, after_selflabeling, difference = return_accuracy_values_and_difference(file)
+        accuracy = return_accuracy_values(file)
         columns.append([return_next_in_list('Dataset',file.name.split('_'),1),
                         return_next_in_list('Embedding', file.name.split('_'),1),
-                        return_next_in_list('clustering', file.name.split('_'),2),
+                        return_next_in_list('method', file.name.split('_'),1),
                         return_next_in_list('epochs', file.name.split('_'), 1),
-                        return_next_in_list('threshold', file.name.split('_'), 1),
-                        return_next_in_list('threshold', file.name.split('_'), 2),
-                        return_next_in_list('ratio', file.name.split('_'), 1).replace('.txt',''),
-                        before_selflabeling,
-                        after_selflabeling,
-                        difference])
+                        return_next_in_list('threshold', file.name.split('_'), 1) if (
+                                    'IndicativeSentence' in str(file) or 'indicativesentence' in str(file)) else 0,
+                        return_next_in_list('entropy', file.name.split('_'), 2) if (
+                                    'IndicativeSentence' in str(file) or 'indicativesentence' in str(file)) else 0,
+                        accuracy])
 
 
     return pd.DataFrame(columns,
@@ -138,7 +137,7 @@ def display_selflabeling_experiments():
         print(frame)
 
 def display_selflabeling_experiments_list_of_accuracy():
-    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DropoutExperiments'
+    mypath = '/vol/fob-vol7/mi19/schwindn/DocSCAN/DeletionRatioExperimentsCorrected'
     frame = return_list_of_accuracies_selflabeling(mypath)
 
     frame = frame[frame.Difference != 'Experiment not finished'].sort_values(
