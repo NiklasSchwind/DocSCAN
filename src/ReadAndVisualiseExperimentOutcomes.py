@@ -65,14 +65,14 @@ def return_list_of_accuracies_selflabeling(path):
                         return_next_in_list('epochs', file.name.split('_'), 1),
                         return_next_in_list('threshold', file.name.split('_'), 1),
                         return_next_in_list('entropy', file.name.split('_'), 2) if ('Em_IS' in str(file) or 'indicativesentence' in str(file)) else 0,
-                        #return_next_in_list('threshold', file.name.split('_'), 6),
+                        return_next_in_list('threshold', file.name.split('_'), 6),
                         before_selflabeling,
                         after_selflabeling,
                         difference])
 
 
     return pd.DataFrame(columns,
-                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight',  'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
+                      columns=['Dataset','Embedding','Clustering Method', 'Epochs', 'Threshold', 'Entropy Weight', 'Ratio', 'Before Selflabeling', 'After Selflabeling', 'Difference']#'Augmentation Method', 'Before Selflabeling', 'After Selflabeling', 'Difference'],
                       )
 
 def return_list_of_accuracies_entropy_weight(path):
