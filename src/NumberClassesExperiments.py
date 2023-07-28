@@ -406,7 +406,7 @@ class DocSCANPipeline():
                 num_prototypes_before = SelfLabeling.num_prototypes
                 num_prototypes = SelfLabeling.num_prototypes + 1
 
-                while num_prototypes_before <= num_prototypes:
+                while num_prototypes_before < num_prototypes:
 
                     num_prototypes_before = num_prototypes
                     SelfLabeling.fine_tune_through_selflabeling_fast()
