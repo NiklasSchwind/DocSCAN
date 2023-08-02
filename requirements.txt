@@ -7,3 +7,4 @@ torch
 yellowbrick==1.3.post1
 wordcloud
 spacy==2.3.5
+simcse
