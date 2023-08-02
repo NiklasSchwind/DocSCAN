@@ -112,11 +112,11 @@ def start_experiment(experiment, device):
 	elif experiment['--model_method'] == 'DocSCAN_NCE' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_NCE' and experiment['--embedding_model'] == 'SBert':
-		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
+		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast_NCE' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast_NCE' and experiment['--embedding_model'] == 'SBert':
-		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
+		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}.txt'
 	elif 'NCE' in experiment['--model_method'] and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}_indicativesentence_{experiment["--indicative_sentence"]}.txt'
 	elif 'NCE' in experiment['--model_method'] and experiment['--embedding_model'] == 'SBert':
@@ -124,11 +124,11 @@ def start_experiment(experiment, device):
 	elif experiment['--model_method'] == 'DocSCAN_WNC' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'WrongNumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_WNC' and experiment['--embedding_model'] == 'SBert':
-		outfile = f'WrongNumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
+		outfile = f'WrongNumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast_WNC' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'WrongNumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast_WNC' and experiment['--embedding_model'] == 'SBert':
-		outfile = f'WrongNumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
+		outfile = f'WrongNumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}.txt'
 	elif 'WNC' in experiment['--model_method'] and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'WrongNumberClassesExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}_indicativesentence_{experiment["--indicative_sentence"]}.txt'
 	elif 'WNC' in experiment['--model_method'] and experiment['--embedding_model'] == 'SBert':
@@ -144,7 +144,7 @@ def start_experiment(experiment, device):
 	elif experiment['--model_method'] == 'NLPSCAN_fast' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NLPScanExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast' and experiment['--embedding_model'] == 'SBert':
-		outfile = f'NLPScanExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
+		outfile = f'NLPScanExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}.txt'
 
 #
 	with open(outfile, 'w') as f:
