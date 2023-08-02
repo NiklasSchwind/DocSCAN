@@ -10,9 +10,30 @@ import copy
 Experiments_proto = [
 
 
-{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-
+{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'RNC', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'RNC', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_NCE', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_NCE', '--threshold': 0.95, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'RNC', '--model_method': 'DocSCAN_NCE', '--threshold': 0.95, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'DBPedia', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
 
 	]
 
@@ -30,7 +51,7 @@ realistic_entropy_weight = {'RNC':3.0, 'DBPedia': 3.0, 'DBPedia_smaller': 3.0, '
 Experiments = []
 
 includeSBert = True
-
+onlySBert = True
 for experiment in Experiments_proto:
 	experiment_IS_optimal = copy.deepcopy(experiment)
 	experiment_IS_realistic = copy.deepcopy(experiment)
@@ -48,14 +69,16 @@ for experiment in Experiments_proto:
 	experiment_IS_realistic['--indicative_sentence_position'] = realistic_indicative_sentence_position[experiment['--path']]
 	experiment_IS_realistic['--entropy_weight'] = realistic_entropy_weight[experiment['--path']]
 
+
 	experiment_SBert['--embedding_model'] = 'SBert'
 	experiment_SBert['--clustering_method'] = 'SCANLoss'
 
-	if includeSBert and (experiment_SBert['--path'] == 'DBPedia' or experiment_SBert['--path'] == '20newsgroup' or experiment_SBert['--path'] == 'ag_news' or experiment_SBert['--path'] == 'RNC'):
+	if includeSBert and (experiment_SBert['--path'] == 'DBPedia' or experiment_SBert['--path'] == '20newsgroup' or experiment_SBert['--path'] == 'ag_news' or experiment_SBert['--path'] == 'RNC') or onlySBert:
 		Experiments.append(experiment_SBert)
 
-	Experiments.append(experiment_IS_realistic)
-	Experiments.append(experiment_IS_optimal)
+	if not onlySBert:
+		Experiments.append(experiment_IS_realistic)
+		Experiments.append(experiment_IS_optimal)
 ##
 
 def start_experiment(experiment, device):
