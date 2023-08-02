@@ -449,11 +449,11 @@ if __name__ == "__main__":
                         help="threshold for selvlabeling step")
     parser.add_argument("--new_embeddings", default='False', type=str,
                         help="should the embeddings be calculated again")
-    parser.add_argument("--augmentation_method", default='Backtranslation_fr_en', type=str,
+    parser.add_argument("--augmentation_method", default='Random', type=str,
                         help="can be 'Cropping' or 'Backtranslation_fr_en' for now")
     parser.add_argument("--entropy_weight", default=2.0, type=float,
                         help="adjust the Entropy Weight")
-    parser.add_argument("--ratio_for_deletion", default=0.2, type=float,
+    parser.add_argument("--ratio_for_deletion", default=0.02, type=float,
                         help="adjust the Entropy Weight")
     parser.add_argument("--repetitions", default=3, type=float,
                         help="Number Repetitions of Experiment")

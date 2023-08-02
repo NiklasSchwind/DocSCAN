@@ -10,15 +10,9 @@ import copy
 Experiments_proto = [
 
 
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-50', '--model_method': 'DocSCAN_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'RNC', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'RNC', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'RNC', '--model_method': 'DocSCAN_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_NCE', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': '20newsgroup', '--model_method': 'DocSCAN_NCE',  '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+
 
 	]
 
@@ -148,9 +142,9 @@ def start_experiment(experiment, device):
 	elif 'SVM' in experiment['--model_method'] and experiment['--embedding_model'] == 'SBert':
 		outfile = f'BaselineExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast' and experiment['--embedding_model'] == 'IndicativeSentence':
-		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
+		outfile = f'NLPScanExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast' and experiment['--embedding_model'] == 'SBert':
-		outfile = f'NumberClassesExperimentsNew/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
+		outfile = f'NLPScanExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
 
 #
 	with open(outfile, 'w') as f:
@@ -186,7 +180,7 @@ else:
 	count = len(Experiments) + 1
 
 processes = {}
-possible_devices = [0]#list(range(deviceCount))
+possible_devices = [1,2]#list(range(deviceCount))
 used_devices = []
 process_device = {}
 
