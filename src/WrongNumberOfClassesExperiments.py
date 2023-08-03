@@ -531,8 +531,7 @@ if __name__ == "__main__":
         args.stepsize = 2
     elif args.path == 'TREC-6':
         args.stepsize = 3
-    elif args.path == 'TREC-50':
-        args.stepsize = 100
+
     stepsize = args.stepsize
     accuracies_hungarian = []
     accuracies_max = []
