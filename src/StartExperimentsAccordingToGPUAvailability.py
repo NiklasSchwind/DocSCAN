@@ -51,7 +51,7 @@ realistic_entropy_weight = {'RNC':3.0, 'DBPedia': 3.0, 'DBPedia_smaller': 3.0, '
 Experiments = []
 
 includeSBert = True
-onlySBert = True
+onlySBert = False
 for experiment in Experiments_proto:
 	experiment_IS_optimal = copy.deepcopy(experiment)
 	experiment_IS_realistic = copy.deepcopy(experiment)
@@ -73,7 +73,7 @@ for experiment in Experiments_proto:
 	experiment_SBert['--embedding_model'] = 'SBert'
 	experiment_SBert['--clustering_method'] = 'SCANLoss'
 
-	if includeSBert and (experiment_SBert['--path'] == 'DBPedia' or experiment_SBert['--path'] == '20newsgroup' or experiment_SBert['--path'] == 'ag_news' or experiment_SBert['--path'] == 'RNC') or onlySBert:
+	if (includeSBert and (experiment_SBert['--path'] == 'DBPedia' or experiment_SBert['--path'] == '20newsgroup' or experiment_SBert['--path'] == 'ag_news' or experiment_SBert['--path'] == 'RNC')) or onlySBert:
 		Experiments.append(experiment_SBert)
 
 	if not onlySBert:
