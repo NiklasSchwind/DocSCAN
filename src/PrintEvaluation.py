@@ -13,6 +13,7 @@ class Evaluation:
         self.name_dataset = name_dataset
         self.name_embeddings = name_embeddings
         self.moreTargets = moreTargets
+
     def _hungarian_match_adjusted(self, flat_preds, flat_targets, preds_k, targets_k):
         # Based on implementation from IIC
         num_samples = len(flat_targets)
@@ -23,6 +24,7 @@ class Evaluation:
                 # elementwise, so each sample contributes once
                 votes = int(((flat_preds == c1) * (flat_targets == c2)).sum())
                 num_correct[c1, c2] = votes
+                print(num_correct)
         match = [(pred, np.argmax(num_correct[pred,:])) for pred in range(preds_k)]
         res = []
         for out_c, gt_c in match:

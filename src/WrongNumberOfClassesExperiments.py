@@ -524,12 +524,15 @@ if __name__ == "__main__":
     df_train = docscan.load_data(train_path)
     not_used_labels_labels = list(np.unique(df_train['label']))
     number_classes = len(not_used_labels_labels)
+
     if args.path == 'DBPedia':
         args.stepsize = 7
     elif args.path == 'IMDB' or args.path == 'AGNews':
         args.stepsize = 2
     elif args.path == 'TREC-6':
         args.stepsize = 3
+    elif args.path == 'TREC-50':
+        args.stepsize = 25
     stepsize = args.stepsize
     accuracies_hungarian = []
     accuracies_max = []
