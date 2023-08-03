@@ -66,13 +66,12 @@ class Evaluation:
         #num_predictions = len(np.unique(predictions))
         num_elems = len(targets)
         if self.moreTargets:
-            num_classes = len(targets[0])
-            num_preds = len(predictions[0])
+            num_classes = max(targets)
+            num_preds = max(predictions)
             match = self._hungarian_match_adjusted(predictions, targets, preds_k=num_preds, targets_k=num_classes)
             print(match)
         else:
             num_classes = len(np.unique(targets))
-            num_preds = len(np.unique(predictions))
             match = self._hungarian_match(predictions, targets, preds_k=num_classes, targets_k=num_classes)
         #match_niklas = self._hungarian_match_niklas(predictions, targets, preds_k=num_predictions, targets_k=num_classes)
         reordered_preds = np.zeros(num_elems, dtype=predictions.dtype)
