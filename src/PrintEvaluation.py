@@ -24,7 +24,8 @@ class Evaluation:
                 # elementwise, so each sample contributes once
                 votes = int(((flat_preds == c1) * (flat_targets == c2)).sum())
                 num_correct[c1, c2] = votes
-        #print(sum(num_correct[pred,:]))
+        print(sum(num_correct[0,:]))
+        print(sum(num_correct[:, 0]))
         match = [(pred, np.argmax(num_correct[pred,:])) for pred in range(preds_k)]
         res = []
         for out_c, gt_c in match:
