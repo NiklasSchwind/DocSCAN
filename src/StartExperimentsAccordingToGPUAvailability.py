@@ -9,22 +9,18 @@ import copy
 
 Experiments_proto = [
 
-
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-50', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-6', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': '20newsgroup', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': '20newsgroup', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'DBPedia', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'DBPedia', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'ag_news', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-6', '--model_method': 'kmeans_train_mini_batch', '--repetitions': 9},
+{'--path': 'TREC-50', '--model_method': 'kmeans_train_mini_batch', '--repetitions': 9},
+{'--path': 'IMDB', '--model_method': 'kmeans_train_mini_batch', '--repetitions': 9},
+{'--path': 'TREC-6', '--model_method': 'SVM', '--repetitions': 9},
+{'--path': 'TREC-50', '--model_method': 'SVM', '--repetitions': 9},
+{'--path': 'IMDB', '--model_method': 'SVM', '--repetitions': 9},
+{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'IMDB', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'IMDB', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
 
 	]
 
@@ -42,7 +38,7 @@ realistic_entropy_weight = {'RNC':3.0, 'DBPedia': 3.0, 'DBPedia_smaller': 3.0, '
 Experiments = []
 
 includeSBert = True
-onlySBert = False
+onlySBert = True
 for experiment in Experiments_proto:
 	experiment_IS_optimal = copy.deepcopy(experiment)
 	experiment_IS_realistic = copy.deepcopy(experiment)
