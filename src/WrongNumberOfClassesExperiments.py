@@ -527,7 +527,7 @@ if __name__ == "__main__":
 
     if args.path == 'DBPedia':
         args.stepsize = 7
-    elif args.path == 'IMDB' or args.path == 'AGNews':
+    elif args.path == 'IMDB' or args.path == 'ag_news':
         args.stepsize = 2
     elif args.path == 'TREC-6':
         args.stepsize = 3
