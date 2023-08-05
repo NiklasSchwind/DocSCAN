@@ -9,18 +9,10 @@ import copy
 
 Experiments_proto = [
 
-{'--path': 'TREC-6', '--model_method': 'kmeans_train_mini_batch', '--repetitions': 9},
-{'--path': 'TREC-50', '--model_method': 'kmeans_train_mini_batch', '--repetitions': 9},
-{'--path': 'IMDB', '--model_method': 'kmeans_train_mini_batch', '--repetitions': 9},
-{'--path': 'TREC-6', '--model_method': 'SVM', '--repetitions': 9},
-{'--path': 'TREC-50', '--model_method': 'SVM', '--repetitions': 9},
-{'--path': 'IMDB', '--model_method': 'SVM', '--repetitions': 9},
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-50', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'TREC-6', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'IMDB', '--model_method': 'NLPSCAN_fast', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'IMDB', '--model_method': 'NLPSCAN_fast', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+
+{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
 
 	]
 
