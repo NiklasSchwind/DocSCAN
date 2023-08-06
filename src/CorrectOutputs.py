@@ -18,7 +18,7 @@ def correct_accuracy_calculation_selflabeling(in_file, out_file=None):
             accuracies_beforeSL.append(float(line.split(', ')[0][1:]))
             accuracies_afterSL.append(float(line.split(', ')[-1][:-2]))
             weighted_accuracy_afterSL.append(float(lines_file[j-11].split(', ')[0].split(' ')[3]))
-            out.write(line)
+            out.write(line) #?
         elif line[0:16] == 'Macro Average F1' and i == 1:
             out.write(f'Macro Average F1: {np.mean(weighted_accuracy_afterSL).round(3)} ({np.std(weighted_accuracy_afterSL).round(3)}) \n')
         elif line[0:9] == 'Accuracy:' and i == 0 and line.split(' ')[2][0] == '(':
