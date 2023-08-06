@@ -28,7 +28,6 @@ def correct_accuracy_calculation_selflabeling(in_file, out_file=None):
             out.write(f'Accuracy: {np.mean(accuracies_afterSL).round(3)} ({np.std(accuracies_afterSL).round(3)})\n')
             i += 1
         else:
-            pass
             out.write(line)
     out.close()
     file.close()
