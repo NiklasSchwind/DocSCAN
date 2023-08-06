@@ -9,10 +9,13 @@ import copy
 
 Experiments_proto = [
 
-
+{'--path': 'TREC-50', '--model_method': 'SVM', '--repetitions': 1},
+{'--path': 'TREC-6', '--model_method': 'SVM', '--repetitions': 1},
+{'--path': '20newsgroup', '--model_method': 'SVM', '--repetitions': 1},
 {'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
 {'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
 {'--path': 'ag_news', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
+
 
 	]
 
@@ -30,7 +33,7 @@ realistic_entropy_weight = {'RNC':3.0, 'DBPedia': 3.0, 'DBPedia_smaller': 3.0, '
 Experiments = []
 
 includeSBert = True
-onlySBert = True
+onlySBert = False
 for experiment in Experiments_proto:
 	experiment_IS_optimal = copy.deepcopy(experiment)
 	experiment_IS_realistic = copy.deepcopy(experiment)
@@ -52,10 +55,11 @@ for experiment in Experiments_proto:
 	experiment_SBert['--embedding_model'] = 'SBert'
 	experiment_SBert['--clustering_method'] = 'SCANLoss'
 
-	if (includeSBert and (experiment_SBert['--path'] == 'DBPedia' or experiment_SBert['--path'] == '20newsgroup' or experiment_SBert['--path'] == 'ag_news' or experiment_SBert['--path'] == 'RNC')) or onlySBert:
-		Experiments.append(experiment_SBert)
+	#if (includeSBert and (experiment_SBert['--path'] == 'DBPedia' or experiment_SBert['--path'] == '20newsgroup' or experiment_SBert['--path'] == 'ag_news' or experiment_SBert['--path'] == 'RNC')) or onlySBert:
+	#	Experiments.append(experiment_SBert)
 
 	if not onlySBert:
+		Experiments.append(experiment_SBert)
 		Experiments.append(experiment_IS_realistic)
 		Experiments.append(experiment_IS_optimal)
 ##
@@ -140,9 +144,9 @@ def start_experiment(experiment, device):
 	elif 'kmeans' in experiment['--model_method'] and experiment['--embedding_model'] == 'SBert':
 		outfile = f'BaselineExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}.txt'
 	elif 'SVM' in experiment['--model_method'] and experiment['--embedding_model'] == 'IndicativeSentence':
-		outfile = f'BaselineExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}_indicativesentence_{experiment["--indicative_sentence"]}.txt'
+		outfile = f'SVM_balanced/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}_indicativesentence_{experiment["--indicative_sentence"]}.txt'
 	elif 'SVM' in experiment['--model_method'] and experiment['--embedding_model'] == 'SBert':
-		outfile = f'BaselineExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}.txt'
+		outfile = f'SVM_balanced/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_model_method_{experiment["--model_method"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NLPScanExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'NLPSCAN_fast' and experiment['--embedding_model'] == 'SBert':

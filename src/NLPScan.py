@@ -172,7 +172,9 @@ class DocSCANPipeline():
 
                 svm.fit(self.X, np.array(df_train["label"]))
                 labels = svm.predict(self.X_test)
-                accuracy = sklearn.metrics.accuracy_score(labels,list(self.df_test["label"]))
+                balanced_accuracy = sklearn.metrics.balanced_accuracy_score(labels,list(self.df_test["label"]))
+                accuracy = sklearn.metrics.accuracy_score(labels, list(self.df_test["label"]))
+                print(f"balanced accuracy: {balanced_accuracy}")
                 print(f"accuracy: {accuracy}")
 
             elif mode == 'DocSCAN_finetuning_multi':
