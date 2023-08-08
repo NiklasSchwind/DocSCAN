@@ -19,6 +19,31 @@ Experiments_proto = [
 
 	]
 
+Experiments = [
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'AGNews', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
+
+]
+
 #experiment_prompts = {'DocSCAN_finetuning_multi' : 'PYTHONPATH=src python src/NLPScan.py','DocSCAN_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'SVM_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_mini_batch_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','NLPSCAN_fast': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'DocSCAN': 'PYTHONPATH=src python src/NumberClassesExperiments.py','SVM': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_test': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train_mini_batch' : 'PYTHONPATH=src python src/NLPScan.py'}
 
 optimal_indicative_sentence = {'RNC': 'Category: <mask>. ', 'DBPedia': 'Category: <mask>. ', 'DBPedia_smaller': 'Category: <mask>. ', 'ag_news': 'Category: <mask>. ', 'ag_news_smaller': 'Category: <mask>. ', '20newsgroup': 'Enjoy the following article about <mask>: ', 'TREC-6': ' <mask>.', 'TREC-50':' <mask>.', 'IMDB': ' All in all, it was <mask>.', 'IMDB_smaller': ' All in all, it was <mask>.'}
@@ -63,12 +88,38 @@ for experiment in Experiments_proto:
 		Experiments.append(experiment_IS_realistic)
 		Experiments.append(experiment_IS_optimal)
 ##
+Experiments = [
+{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'AGNews', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
+
+]
 
 def start_experiment(experiment, device):
 	if experiment['--model_method'] == 'PrototypeAccuracy' and experiment['--embedding_model'] != 'IndicativeSentence':
 		outfile = f'PrototypeAccuracy/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}.txt'
 	elif experiment['--model_method'] == 'PrototypeAccuracy' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'PrototypeAccuracy/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}.txt'
+	elif experiment['--embedding_model'] == 'IndicativeSentence' and experiment['--clustering_method'] == 'SCANLoss':
+		outfile = f'IndicativeSentencesExperimentLogs/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Random' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'RandomAugmentationExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] == 'Random' and experiment['--embedding_model'] == 'SBert':
