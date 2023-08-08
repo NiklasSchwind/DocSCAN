@@ -112,6 +112,8 @@ Experiments = [
 				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
 
 ]
+for experiment in Experiments:
+	experiment['--indicative_sentence'] = experiment['--indicative_sentence'].replace('<','^').replace('>', '?').replace(' ', '_').replace('!', '5')
 
 def start_experiment(experiment, device):
 	if experiment['--model_method'] == 'PrototypeAccuracy' and experiment['--embedding_model'] != 'IndicativeSentence':
