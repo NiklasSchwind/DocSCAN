@@ -18,18 +18,15 @@ class Evaluation:
         # Based on implementation from IIC
         num_samples = len(flat_targets)
         num_correct = np.zeros((preds_k, targets_k))
-
         for c1 in range(preds_k):
             for c2 in range(targets_k):
                 # elementwise, so each sample contributes once
                 votes = int(((flat_preds == c1) * (flat_targets == c2)).sum())
                 num_correct[c1, c2] = votes
-
         match = [(pred, np.argmax(num_correct[pred,:])) for pred in range(preds_k)]
         res = []
         for out_c, gt_c in match:
             res.append((out_c, gt_c))
-
         return res
 
     def _hungarian_match(self, flat_preds, flat_targets, preds_k, targets_k):

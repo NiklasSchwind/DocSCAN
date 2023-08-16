@@ -353,15 +353,6 @@ class DocSCANPipeline():
                 else:
                     print(f'############!!!!!!!!!!NO PROTOTYPES found in Experiment {_}!!!!!!!!################')
 
-            elif mode == 'kmeans_train_WNC':
-
-                kmeans = KMeans(n_clusters=self.args.num_classes).fit(preprocessing.normalize(self.X))
-                predictions = kmeans.predict(preprocessing.normalize(self.X_test))
-                targets = [targets_map[i] for i in self.df_test["label"]]
-                evaluation.evaluate(np.array(targets), np.array(predictions))
-                evaluation.print_statistic_of_latest_experiment()
-                evaluation_max.evaluate(np.array(targets), np.array(predictions))
-                evaluation_max.print_statistic_of_latest_experiment()
 
             elif mode == 'kmeans_train_mini_batch_WNC':
 
