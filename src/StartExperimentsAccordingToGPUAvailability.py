@@ -91,25 +91,15 @@ for experiment in Experiments_proto:
 Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'AGNews', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
+{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
 				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
+
 
 ]
 for experiment in Experiments:
