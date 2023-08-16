@@ -308,9 +308,7 @@ class DocScanDataset(torch.utils.data.Dataset):
             sample = {"anchor": anchor}
         return sample
     def collate_fn(self, batch):
-        '''
-        WTF?????
-        '''
+
         anchors = torch.tensor([i["anchor"] for i in batch])
         out = self.embeddings[anchors].to(self.device)
         if self.method == 'SCANLoss':
@@ -355,9 +353,7 @@ class DocScanDataset_old(torch.utils.data.Dataset):
             sample = {"anchor": anchor}
         return sample
     def collate_fn(self, batch):
-        '''
-        WTF?????
-        '''
+
         anchors = torch.tensor([i["anchor"] for i in batch])
         out = self.embeddings[anchors].to(self.device)
         neighbors = torch.tensor([i["anchor"] for i in batch])

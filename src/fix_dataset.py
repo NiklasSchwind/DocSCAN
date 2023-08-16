@@ -64,8 +64,17 @@ def count_labels(data):
         print(f"Label: {label}, Count: {count}")
 
 
-dataset_train = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/RNC/train.jsonl')
-dataset_test = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/RNC/test.jsonl')
-count_labels(dataset_train)
-print('########################')
-count_labels(dataset_test)
+def write_sentences_to_file(path, dataframe):
+    try:
+        with open(path, 'w') as file:
+            sentences = dataframe['sentence']
+            for sentence in sentences:
+                file.write(sentence + '\n')
+
+        print(f"Sentences have been written to '{path}'.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+dataset_train = load_data('/vol/fob-vol7/mi19/schwindn/DocSCAN/TREC-6/train.jsonl')
+write_sentences_to_file('/vol/fob-vol7/mi19/schwindn/NLP-SCAN/trec.txt', dataset_train)
