@@ -79,8 +79,10 @@ Extra_Experiments = [
 ]
 Experiments.extend(Extra_Experiments)
 print(Experiments)
+
 for experiment in Experiments:
-	experiment['--indicative_sentence'] = experiment['--indicative_sentence'].replace('<','^').replace('>', '?').replace(' ', '_').replace('!', '5')
+	if '--indicative_sentence' in experiment.keys():
+		experiment['--indicative_sentence'] = experiment['--indicative_sentence'].replace('<','^').replace('>', '?').replace(' ', '_').replace('!', '5')
 
 def start_experiment(experiment, device):
 	if experiment['--model_method'] == 'PrototypeAccuracy' and experiment['--embedding_model'] != 'IndicativeSentence':
