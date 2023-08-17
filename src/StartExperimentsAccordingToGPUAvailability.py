@@ -9,40 +9,16 @@ import copy
 
 Experiments_proto = [
 
-{'--path': 'TREC-50', '--model_method': 'SVM', '--repetitions': 1},
-{'--path': 'TREC-6', '--model_method': 'SVM', '--repetitions': 1},
-{'--path': '20newsgroup', '--model_method': 'SVM', '--repetitions': 1},
-{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.99, '--num_epochs': 5,   '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'ag_news', '--model_method': 'NLPSCAN_fast_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-{'--path': 'ag_news', '--model_method': 'DocSCAN_WNC', '--threshold': 0.95, '--num_epochs': 5,  '--max_prototypes': 100000000,'--repetitions': 3},
-
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
 
 	]
 
-Experiments = [
-{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-6', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'IMDB', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' All in all, it was <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'TREC-50', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' <mask>.', '--indicative_sentence_position': 'last' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'AGNews', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'DBPedia', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
 
-]
 
 #experiment_prompts = {'DocSCAN_finetuning_multi' : 'PYTHONPATH=src python src/NLPScan.py','DocSCAN_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'SVM_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_mini_batch_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','NLPSCAN_fast': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'DocSCAN': 'PYTHONPATH=src python src/NumberClassesExperiments.py','SVM': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_test': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train_mini_batch' : 'PYTHONPATH=src python src/NLPScan.py'}
 
@@ -88,11 +64,10 @@ for experiment in Experiments_proto:
 		Experiments.append(experiment_IS_realistic)
 		Experiments.append(experiment_IS_optimal)
 ##
-Experiments = [
+Extra_Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
-
 {'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
 				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
@@ -102,6 +77,7 @@ Experiments = [
 
 
 ]
+Experiments.extend(Extra_Experiments)
 for experiment in Experiments:
 	experiment['--indicative_sentence'] = experiment['--indicative_sentence'].replace('<','^').replace('>', '?').replace(' ', '_').replace('!', '5')
 
