@@ -78,6 +78,7 @@ Extra_Experiments = [
 
 ]
 Experiments.extend(Extra_Experiments)
+print(Experiments)
 for experiment in Experiments:
 	experiment['--indicative_sentence'] = experiment['--indicative_sentence'].replace('<','^').replace('>', '?').replace(' ', '_').replace('!', '5')
 
