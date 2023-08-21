@@ -135,6 +135,8 @@ class FinetuningThroughSelflabeling:
 
         if self.embedder.embedding_method == 'SBert' and augmentation_method == 'Dropout':
             embeddings_augmented = self.data_augmenter.SBert_embed_with_dropout(df_augmented['sentence'], 'sentence-transformers/all-mpnet-base-v2',128)
+        elif self.embedder.embedding_method == 'IndicativeSentence' and augmentation_method == 'Dropout':
+            embeddings_augmented = self.data_augmenter.embed_IndicativeSentences_with_dropout(texts = df_augmented['sentence'], indicative_sentence=self.embedder.indicative_sentence, indicative_sentence_position=self.embedder.indicative_sentence_position)
         else:
             embeddings_augmented = self.embedder.embed(df_augmented['sentence'], mode='embed', createNewEmbeddings=True,
                                                safeEmbeddings=False)

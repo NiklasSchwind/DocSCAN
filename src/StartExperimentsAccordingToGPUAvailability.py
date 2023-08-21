@@ -8,13 +8,27 @@ import copy
 
 
 Experiments_proto = [
-
-{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+{'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
 {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': 'TREC-6', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout', '--max_prototypes': 100000000},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': '20newsgroup', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
 {'--path': 'ag_news', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
 				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+{'--path': 'IMDB', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
+				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
+
 
 	]
 
@@ -33,7 +47,7 @@ realistic_entropy_weight = {'RNC':3.0, 'DBPedia': 3.0, 'DBPedia_smaller': 3.0, '
 
 Experiments = []
 
-includeSBert = True
+includeSBert = False
 onlySBert = False
 for experiment in Experiments_proto:
 	experiment_IS_optimal = copy.deepcopy(experiment)
@@ -64,6 +78,7 @@ for experiment in Experiments_proto:
 		Experiments.append(experiment_IS_realistic)
 		Experiments.append(experiment_IS_optimal)
 ##
+'''
 Extra_Experiments = [
 {'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
 				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
@@ -78,8 +93,9 @@ Extra_Experiments = [
 
 ]
 Experiments.extend(Extra_Experiments)
-print(Experiments)
 
+'''
+print(Experiments)
 for experiment in Experiments:
 	if '--indicative_sentence' in experiment.keys():
 		experiment['--indicative_sentence'] = experiment['--indicative_sentence'].replace('<','^').replace('>', '?').replace(' ', '_').replace('!', '5')
@@ -129,10 +145,10 @@ def start_experiment(experiment, device):
 		outfile = f'NoAugmentationExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
 			'--augmentation_method'] == 'Dropout' and experiment['--embedding_model'] == 'IndicativeSentence':
-		outfile = f'DropoutExperiments/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+		outfile = f'DropoutExperimentsoneMore/Dataset_{experiment["--path"]}_Em_IS_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment[
 		'--augmentation_method'] == 'Dropout' and experiment['--embedding_model'] == 'SBert':
-		outfile = f'DropoutExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
+		outfile = f'DropoutExperimentsoneMore/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion' and experiment['--embedding_model'] == 'IndicativeSentence':
 		outfile = f'NewSelflabelingExperiments/Dataset_{experiment["--path"]}_Embedding_{experiment["--embedding_model"]}_clustering_method_{experiment["--clustering_method"]}_model_method_{experiment["--model_method"]}_epochs_{experiment["--num_epochs"]}_indicativesentence_{experiment["--indicative_sentence"]}_entropy_weight_{experiment["--entropy_weight"]}_threshold_{experiment["--threshold"]}_augmentation_method_{experiment["--augmentation_method"]}_t5_model_{experiment["--t5_model"]}_new.txt'
 	elif experiment['--model_method'] == 'DocSCAN_finetuning_multi' and experiment['--augmentation_method'] != 'Deletion' and experiment['--embedding_model'] == 'SBert':
