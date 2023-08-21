@@ -1,5 +1,5 @@
 from typing import List
-from transformers import MarianMTModel, MarianTokenizer, AutoTokenizer, AutoModelWithLMHead, BartTokenizer, BartForConditionalGeneration
+from transformers import MarianMTModel, MarianTokenizer, AutoTokenizer, AutoModelWithLMHead, BartTokenizer, BartForConditionalGeneration, RobertaTokenizer, RobertaModel
 import random
 import torch
 from sentence_transformers import SentenceTransformer
@@ -275,6 +275,55 @@ class DataAugmentation:
 
     def random_sentence(self,texts, alldata):
         return random.choices(alldata,k=len(texts))
+
+    def embed_IndicativeSentences_with_dropout(self,texts, indicative_sentence, indicative_sentence_position, dropout:float = 0.2):
+        embedding_text = []
+        model_name = 'roberta-base'
+        for text in texts:
+            if indicative_sentence_position == 'first':
+                embedding_text.append(indicative_sentence + text)
+            elif indicative_sentence_position == 'last':
+                embedding_text.append(text + indicative_sentence)
+        # print(embedding_text)
+        # Load the RoBERTa model and tokenizer
+        tokenizer = RobertaTokenizer.from_pretrained(model_name)
+        model = RobertaModel.from_pretrained(model_name).to(self.device)
+        for layer in model.encoder.layer:
+            layer.output.dropout.p = dropout
+        num_sentences = len(texts)
+        num_batches = (num_sentences + self.batch_size - 1) // self.batch_size
+
+        # Initialize a list to store the mask token encodings for all batches
+        mask_token_encodings = []
+
+        # Process each batch of input sentences
+        for i in range(num_batches):
+            start = i * self.batch_size
+            end = min((i + 1) * self.batch_size, num_sentences)
+            # Extract the input tensors for the current batch
+            input_ids = []
+            attention_mask = []
+            for text in embedding_text[start:end]:
+                encoded_inputs = tokenizer.encode_plus(text, padding='max_length', return_tensors='pt').to(
+                    self.device)
+                if indicative_sentence_position == 'first':
+                    input_ids.append(encoded_inputs['input_ids'][0, :512])
+                    attention_mask.append(encoded_inputs['attention_mask'][0, :512])
+                elif indicative_sentence_position == 'last':
+                    input_ids.append(encoded_inputs['input_ids'][0, -512:])
+                    attention_mask.append(encoded_inputs['attention_mask'][0, -512:])
+            input_ids = torch.cat(input_ids, dim=0).reshape((end - start, 512))
+            attention_mask = torch.cat(attention_mask, dim=0).reshape((end - start, 512))
+            # Feed the input tensors to the RoBERTa model
+            with torch.no_grad():
+                batch_output = model(input_ids, attention_mask=attention_mask)  # , attention_mask=attention_mask)
+            # Retrieve the encodings of the mask tokens from the output tensor
+            mask_token_indices = torch.where(input_ids == tokenizer.mask_token_id)
+            batch_mask_token_encodings = batch_output[0][mask_token_indices[0], mask_token_indices[1], :]
+            # Add the mask token encodings for the current batch to the list
+            mask_token_encodings.append(batch_mask_token_encodings)
+
+        return torch.cat(mask_token_encodings, dim=0).to(self.device)
 
 
 '''
