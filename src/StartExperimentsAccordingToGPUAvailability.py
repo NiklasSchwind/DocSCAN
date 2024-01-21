@@ -7,7 +7,9 @@ import copy
 
 
 
-Experiments_proto = [
+Experiments_proto = []
+'''
+	[
 {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.99,
 				'--num_epochs': 5, '--augmentation_method': 'Dropout',  '--max_prototypes': 100000000},
 {'--path': 'TREC-50', '--model_method': 'DocSCAN_finetuning_multi', '--threshold': 0.95,
@@ -31,7 +33,7 @@ Experiments_proto = [
 
 
 	]
-
+'''
 
 
 #experiment_prompts = {'DocSCAN_finetuning_multi' : 'PYTHONPATH=src python src/NLPScan.py','DocSCAN_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'SVM_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_mini_batch_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','kmeans_train_NCE': 'PYTHONPATH=src python src/NumberClassesExperiments.py','NLPSCAN_fast': 'PYTHONPATH=src python src/NumberClassesExperiments.py', 'DocSCAN': 'PYTHONPATH=src python src/NumberClassesExperiments.py','SVM': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_test': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train': 'PYTHONPATH=src python src/NLPScan.py', 'kmeans_train_mini_batch' : 'PYTHONPATH=src python src/NLPScan.py'}
@@ -78,23 +80,32 @@ for experiment in Experiments_proto:
 		Experiments.append(experiment_IS_realistic)
 		Experiments.append(experiment_IS_optimal)
 ##
-'''
+
 Extra_Experiments = [
-{'--embedding_model': 'IndicativeSentence', '--path': '20newsgroup', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+{'--embedding_model': 'SBert', '--path': '20newsgroup', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False', '--entropy_weight': 3,
 				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
+{'--embedding_model': 'SBert', '--path': 'IMDB', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False', '--entropy_weight': 3,
 				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
-{'--embedding_model': 'IndicativeSentence', '--path': 'ag_news', '--clustering_method': 'SCANLoss',
-				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False',
-				'--indicative_sentence': ' Related: <mask>.', '--indicative_sentence_position': 'last' },
-
-
+{'--embedding_model': 'SBert', '--path': 'DBPedia', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False', '--entropy_weight': 3,
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'SBert', '--path': 'ag_news', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False', '--entropy_weight': 3,
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'SBert', '--path': 'TREC-50', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False', '--entropy_weight': 3,
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
+{'--embedding_model': 'SBert', '--path': 'TREC-6', '--clustering_method': 'EntropyLoss',
+				'--model_method': 'DocSCAN', '--num_epochs': 5, '--repetitions': 9, '--new_embeddings': 'False', '--entropy_weight': 3,
+				'--indicative_sentence': 'Enjoy the following article about <mask>: ', '--indicative_sentence_position': 'first' },
 ]
+
+
 Experiments.extend(Extra_Experiments)
 
-'''
+
 print(Experiments)
 for experiment in Experiments:
 	if '--indicative_sentence' in experiment.keys():
